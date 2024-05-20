@@ -14,6 +14,19 @@ module.exports = {
         } catch (err) {
             throw err;
         }
+    },
+    getByEmail: async (email) => {
+        try {
+            const [results] = await db.query("SELECT * FROM User WHERE email = ?", [email]);
+            if (results.length > 0) {
+                return results[0];
+            } else {
+                return null;
+            }
+
+        } catch (err) {
+            throw err;
+        }
     }
 
 }
