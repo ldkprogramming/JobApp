@@ -1,18 +1,21 @@
 const db = require('./db');
 
 module.exports = {
-    getAll: (callback) => {
-        db.query("Select * from JobApplication",
-            (err, results)=> {
-            if (err) throw err;
-            callback(results);
-        });
+    getAll: async () => {
+        try {
+            const [results] = await db.query("SELECT * FROM JobApplication");
+            return results;
+        } catch (err) {
+            throw err;
+        }
     },
-    getAllByIdApplicant: (idApplicant, callback) => {
-        const sql = "SELECT * FROM JobApplication WHERE idapplicant = ?";
-        db.query(sql, [idApplicant], (err, results, fields) => {
-            if (err) throw err;
-            callback(results);
-        });
+    getAllByIdApplicant: async (idApplicant) => {
+        try {
+            const sql = "SELECT * FROM JobApplication WHERE idapplicant = ?";
+            const [results] = await db.query(sql, [idApplicant]);
+            return results;
+        } catch (err) {
+            throw err;
+        }
     }
 }

@@ -1,18 +1,22 @@
 const db = require('./db');
 
 module.exports = {
-    getBySiren: (siren, callback) => {
-        const sql = "SELECT * FROM Organisation WHERE SIREN = ?";
-        db.query(sql,
-            [siren],
-            (err, results, fields) => {
-                if (err) throw err;
-                callback(results);
-            });
+    getBySiren: async (siren) => {
+        try {
+            const sql = "SELECT * FROM Organisation WHERE SIREN = ?";
+            const [results] = await db.query(sql, [siren]);
+            return results;
+        } catch (err) {
+            throw err;
+        }
     },
 
     getAll: async () => {
-        const [results] = await db.query("SELECT * FROM Organisation");
-        return results;
+        try {
+            const [results] = await db.query("SELECT * FROM Organisation");
+            return results;
+        } catch (err) {
+            throw err;
+        }
     }
 }

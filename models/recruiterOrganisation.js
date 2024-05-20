@@ -1,29 +1,30 @@
 const db = require('./db');
 
 module.exports = {
-    getAll: (callback) => {
-        db.query("SELECT * FROM RecruiterOrganisation",
-            (err, results, fields) => {
-                if (err) throw err;
-                callback(results);
-            });
+    getAll: async () => {
+        try {
+            const [results] = await db.query("SELECT * FROM RecruiterOrganisation");
+            return results;
+        } catch (err) {
+            throw err;
+        }
     },
-    getAllByIdRecruiter: (idRecruiter, callback) => {
-        const sql = "SELECT * FROM RecruiterOrganisation WHERE idrecruiter = ?";
-        db.query(sql,
-            [idRecruiter],
-            (err, results, fields)=> {
-                if (err) throw err;
-                callback(results);
-            })
+    getAllByIdRecruiter: async (idRecruiter) => {
+        try {
+            const sql = "SELECT * FROM RecruiterOrganisation WHERE idrecruiter = ?";
+            const [results] = await db.query(sql, [idRecruiter]);
+            return results;
+        } catch (err) {
+            throw err;
+        }
     },
-    getAllByIdOrganisation: (idOrganisation, callback) => {
-        const sql = "SELECT * FROM RecruiterOrganisation WHERE idorganisation = ?";
-        db.query(sql,
-            [idOrganisation],
-            (err, results, fields)=> {
-                if (err) throw err;
-                callback(results);
-            })
+    getAllByIdOrganisation: async (idOrganisation) => {
+        try {
+            const sql = "SELECT * FROM RecruiterOrganisation WHERE idorganisation = ?";
+            const [results] = await db.query(sql, [idOrganisation]);
+            return results;
+        } catch (err) {
+            throw err;
+        }
     },
 }
