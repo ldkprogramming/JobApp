@@ -1,12 +1,16 @@
 const db = require('./db');
 
 module.exports = {
-    getAll: (callback) => {
-        db.query("select * from JobOffer",
-             (err, results, fields) => {
-            if (err) throw err;
-            callback(results);
-        });
+    // getAll: (callback) => {
+    //     db.query("select * from JobOffer",
+    //          (err, results, fields) => {
+    //         if (err) throw err;
+    //         callback(results);
+    //     });
+    // },
+    getAll: async () => {
+        const [results] = await db.query("SELECT * FROM JobOffer");
+        return results;
     },
     getAllByIdJobDescription: (idJobDescription, callback) => {
         const sql = "SELECT * FROM JobOffer WHERE idjobdescription = ?";

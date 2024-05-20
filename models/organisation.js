@@ -10,14 +10,7 @@ module.exports = {
                 callback(results);
             });
     },
-    // getAll: (callback) => {
-    //     const sql = "SELECT * FROM Organisation";
-    //     db.query(sql,
-    //         (err, results, fields) => {
-    //             if (err) throw err;
-    //             callback(results);
-    //         });
-    // }
+
     getAll: async () => {
         const [results] = await db.query("SELECT * FROM Organisation");
         return results;
