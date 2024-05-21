@@ -22,5 +22,13 @@ module.exports = {
         } catch (err) {
             throw err;
         }
+    },
+    getAllByStatus: async (status) => {
+        try {
+            const [results] = await db.query("SELECT * FROM Organisation WHERE status = ?", [status]);
+            return results;
+        } catch (err) {
+            throw err;
+        }
     }
 }

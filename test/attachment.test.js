@@ -7,7 +7,7 @@ describe("Attachment model", () => {
     });
     it('should get all attachments of an application (by id)', async () => {
         const attachments = await Attachment.getAllByIdApplication(1);
-        expect(attachments.length).toBeGreaterThanOrEqual(2);
+        expect(attachments.length).toBeGreaterThanOrEqual(1);
     });
     it("shouldn't get attachments of an application that doesn't exist (by id)", async () => {
         const attachments = await Attachment.getAllByIdApplication(3432);

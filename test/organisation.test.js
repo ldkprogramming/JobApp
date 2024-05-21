@@ -7,8 +7,8 @@ describe("Organisation model", () => {
         expect(organisations.length).toBeGreaterThanOrEqual(2);
     });
     it('should get an organisation (by siren/id)', async () => {
-        const organisation = await Organisation.getBySiren(666666000);
-        expect(organisation.name).toBe('Pokemon Ltd');
+        const organisation = await Organisation.getBySiren(123456789);
+        expect(organisation.name).toBe('Tech Solutions Inc.');
     });
     it("shouldn't get an organisation that doesn't exist (by siren/id)", async () => {
         const organisation = await Organisation.getBySiren(39939390);

@@ -27,4 +27,28 @@ module.exports = {
             throw err;
         }
     },
+    getAllByStatus: async (status) => {
+        try {
+            const sql = "SELECT * FROM RecruiterOrganisation WHERE status = ?";
+            const [results] = await db.query(sql, [status]);
+            return results;
+        } catch (err) {
+            throw err;
+        }
+    },
+    getAllByStatusWithInfo: async (status) => {
+        try {
+            const sql = `
+            SELECT * FROM RecruiterOrganisation AS RO 
+            JOIN Recruiter AS R on RO.idrecruiter = R.id
+            JOIN Organisation AS O on RO.idorganisation = O.SIREN
+            JOIN User AS U on U.id = R.iduser
+            WHERE RO.status = ?
+            `;
+            const [results] = await db.query(sql, [status]);
+            return results;
+        } catch (err) {
+            throw err;
+        }
+    },
 }

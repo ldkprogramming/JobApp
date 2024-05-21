@@ -1,9 +1,13 @@
 var express = require('express');
 var router = express.Router();
+const asyncHandler = require('express-async-handler');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+const User = require('../models/user');
+
+/* GET all users. */
+router.get('/', asyncHandler(async (req, res, next) => {
+  const users = await User.getAll();
+  res.render('admin/manage_users', {users: users})
+}));
 
 module.exports = router;

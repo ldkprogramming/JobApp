@@ -43,7 +43,6 @@
     </div>
 </nav>
 
-
 <div class="container mt-5">
     <div class="input-group mb-3">
         <input
@@ -64,18 +63,14 @@
 
     <div class="row justify-content-center">
         <div class="col-md-6">
-
-            <% adminOrganisations.forEach((adminOrganisation) => { %>
+            <% adminOrganisations.forEach((adminOrganisation) => {%>
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><%= adminOrganisation.name %></h5>
-                        <p class="card-text">Description</p>
-                        <button type="button" class="btn btn-success">Accept</button>
-                        <button type="button" class="btn btn-danger">Refuse</button>
+                        <p class="card-text"><%= adminOrganisation.status%></p>
                     </div>
                 </div>
-            <% }); %>
-
+            <% });%>
         </div>
     </div>
 </div>

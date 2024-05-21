@@ -9,6 +9,15 @@ module.exports = {
             throw err;
         }
     },
+    getAllByStatusWithInfo: async (status) => {
+        try {
+            const sql = "SELECT * FROM AdminOrganisation JOIN Organisation ON AdminOrganisation.idorganisation = Organisation.SIREN WHERE status = ?";
+            const [results] = await db.query(sql, [status]);
+            return results;
+        } catch (err) {
+            throw err;
+        }
+    },
     getAllByIdAdmin: async (idAdmin) => {
         try {
             const sql = "SELECT * FROM AdminOrganisation WHERE idadmin = ?";

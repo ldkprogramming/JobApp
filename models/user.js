@@ -27,6 +27,19 @@ module.exports = {
         } catch (err) {
             throw err;
         }
+    },
+    getById: async (id) => {
+        try {
+            const [results] = await db.query("SELECT * FROM User WHERE id = ?", [id]);
+            if (results.length > 0) {
+                return results[0];
+            } else {
+                return null;
+            }
+
+        } catch (err) {
+            throw err;
+        }
     }
 
 }

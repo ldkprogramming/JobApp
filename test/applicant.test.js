@@ -8,8 +8,8 @@ describe("Applicant model", () => {
         await db.end();
     });
     it('should get an applicant by email', async () => {
-        const applicant = await Applicant.getByEmail("karlo.e@gmail.com");
-        expect(applicant.lastname).toBe("engel");
+        const applicant = await Applicant.getByEmail("bob.brown@example.com");
+        expect(applicant.lastname).toBe("Brown");
     });
     it("shouldn't get any applicant that isn't registered (by email)", async () => {
         const applicant = await Applicant.getByEmail("non.biolet@etu.utc.fr");
