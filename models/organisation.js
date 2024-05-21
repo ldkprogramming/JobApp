@@ -5,7 +5,11 @@ module.exports = {
         try {
             const sql = "SELECT * FROM Organisation WHERE SIREN = ?";
             const [results] = await db.query(sql, [siren]);
-            return results;
+            if (results.length > 0) {
+                return results[0];
+            } else {
+                return null;
+            }
         } catch (err) {
             throw err;
         }

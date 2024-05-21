@@ -4,7 +4,6 @@ const Recruiter = require('../models/recruiter');
 describe('Recruiter model', () => {
     it('should get all recruiters', async () => {
         const recruiters = await Recruiter.getAll();
-        console.log(recruiters);
         expect(recruiters.length).toBeGreaterThanOrEqual(1);
     });
     afterAll(async () => {
