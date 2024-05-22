@@ -39,7 +39,7 @@ module.exports = {
     getAllByStatusWithInfo: async (status) => {
         try {
             const sql = `
-            SELECT JO.status, JO.deadline, JD.description, JD.title
+            SELECT JO.status, JO.deadline, JD.description, JD.title, O.name
             FROM JobOffer AS JO
             JOIN JobDescription AS JD
             ON JO.idjobdescription = JD.id

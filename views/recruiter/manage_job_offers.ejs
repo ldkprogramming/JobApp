@@ -6,8 +6,7 @@
     <title>Recruiter Home</title>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-    />
+            rel="stylesheet"/>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -28,6 +27,9 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" href="manage_offers.html">Manage Offers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/job-offers/expired">Expired Offers</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="add_organisation.html"
@@ -77,10 +79,17 @@
             </div>
 
             <div class="list-group">
+                <% jobOffers.forEach((jobOffer)=>{%>
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1"><%= jobOffer.title%>></h5>
+                            <small><%= jobOffer.status%></small>
+                        </div>
+                    </a>
+                <% });%>
                 <a
                         href="#"
-                        class="list-group-item list-group-item-action flex-column align-items-start"
-                >
+                        class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">Software Engineer</h5>
                         <small>Expired</small>
@@ -88,6 +97,7 @@
                     <small>Safran, Paris</small>
                     <p class="mb-1">Description</p>
                 </a>
+
                 <a
                         href="#"
                         class="list-group-item list-group-item-action flex-column align-items-start"
