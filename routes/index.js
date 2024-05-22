@@ -20,6 +20,10 @@ router.get('/admin', (req, res, next) => {
 
 router.get('/applicant', (req, res, next) => {
   res.render('applicant/home');
+});
+
+router.get('/recruiter', (req, res, next) => {
+  res.render('recruiter/home');
 })
 
 module.exports = router;

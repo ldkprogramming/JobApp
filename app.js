@@ -10,6 +10,8 @@ var testingRouter = require('./routes/testing');
 var usersRouter = require('./routes/users');
 var organisationRegistrationRequests = require('./routes/adminOrganisations');
 var recruiterRegistrationRequests = require('./routes/recruiterOrganisations');
+var jobOffersRouter = require('./routes/jobOffers');
+var jobApplicationsRouter = require('./routes/jobApplications');
 
 var app = express();
 
@@ -29,6 +31,8 @@ app.use('/testing', testingRouter);
 app.use('/users', usersRouter);
 app.use('/organisation-registration-requests', organisationRegistrationRequests);
 app.use('/recruiter-registration-requests', recruiterRegistrationRequests);
+app.use('/job-offers', jobOffersRouter);
+app.use('/job-applications', jobApplicationsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

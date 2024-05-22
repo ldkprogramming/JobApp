@@ -29,7 +29,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="home_user.html">User Panel</a>
+        <a class="navbar-brand" href="/applicant">UserTest Panel</a>
         <button
                 class="navbar-toggler"
                 type="button"
@@ -44,15 +44,18 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="offers.html">Offers</a>
+                    <a class="nav-link" href="/job-offers/published">Offers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="history.html">History</a>
+                    <a class="nav-link" href="/job-applications">History</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="become_recruiter.html"
                     >Become Recruiter</a
                     >
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/recruiter">Recruit</a>
                 </li>
             </ul>
         </div>
@@ -81,8 +84,8 @@
                     <input
                             type="text"
                             class="form-control"
-                            placeholder="Search offers..."
-                            aria-label="Search offers"
+                            placeholder="Search jobOffers..."
+                            aria-label="Search jobOffers"
                             aria-describedby="button-addon2"
                     />
                     <button class="btn btn-primary" type="button" id="searchButton">
@@ -95,13 +98,13 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-md-10">
-                            <% offers.forEach((offer)=> { %>
+                            <% jobOffers.forEach((jobOffer)=> { %>
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title"><%=offer.title%></h5>
-                                        <h6 class="card-subtitle mb-2 text-muted"><%=offer.deadline%>></h6>
-                                        <p class="card-text"><%=offer.name%></p>
-                                        <p class="card-text"><%=offer.description%>></p>
+                                        <h5 class="card-title"><%=jobOffer.title%></h5>
+                                        <h6 class="card-subtitle mb-2 text-muted"><%=jobOffer.deadline%></h6>
+                                        <p class="card-text"><%=jobOffer.name%></p>
+                                        <p class="card-text"><%=jobOffer.description%></p>
                                         <div class="drop-zone mt-3">
                                             <p>Drag & Drop files here</p>
                                             <p>or</p>

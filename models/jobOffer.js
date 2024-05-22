@@ -38,16 +38,15 @@ module.exports = {
     },
     getAllByStatusWithInfo: async (status) => {
         try {
-            const sql = ```
-            SELECT JO.status AS offerstatus, deadline, indication, numberofattachments, title,
-            JD.status AS descriptionstatus, supervisor, type, place, workload, salary, description, O.name 
+            const sql = `
+            SELECT JO.status, JO.deadline, JD.description, JD.title
             FROM JobOffer AS JO
             JOIN JobDescription AS JD
-            ON JO.iddescription = JD.id
+            ON JO.idjobdescription = JD.id
             JOIN Organisation AS O
             ON JD.idorganisation = O.SIREN
-            WHERE offerstatus = ?
-            ```
+            WHERE JO.status = ?
+            `
             const [results] = await db.query(sql, [status]);
             return results;
         } catch (err) {
