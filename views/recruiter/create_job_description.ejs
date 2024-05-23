@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Posting Form</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Job Description</h5>
+              <form method="post" action="/submit-job-posting">
+                <div class="mb-3">
+                  <label for="title" class="form-label">Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    placeholder="Enter job title"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="status" class="form-label">Status</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="status"
+                    name="status"
+                    placeholder="Enter job status"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="supervisor" class="form-label">Supervisor</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="supervisor"
+                    name="supervisor"
+                    placeholder="Enter supervisor name"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="type" class="form-label">Type</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="type"
+                    name="type"
+                    placeholder="Enter job type"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="place" class="form-label">Place</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="place"
+                    name="place"
+                    placeholder="Enter job place"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="workload" class="form-label">Workload</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="workload"
+                    name="workload"
+                    placeholder="Enter workload"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="salary" class="form-label">Salary</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="salary"
+                    name="salary"
+                    placeholder="Enter salary"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="description" class="form-label"
+                    >Description</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="description"
+                    name="description"
+                    placeholder="Enter job description"
+                    rows="3"
+                  ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="siren" class="form-label">SIREN</label>
+                  <select
+                    id="siren"
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Company</option>
+                    <% organisations.forEach((organisation) => { %>
+                    <option value="<%= organisation.id %>">
+                      <%= organisation.name %>
+                    </option>
+                    <% }) %>
+                  </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                  Submit Job Description
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
