@@ -27,6 +27,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// session setup
+app.use(session({
+  secret: 'votre_secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie : {
+    maxAge: 60 * 60 * 1000 // 1 h
+  }
+}));
+
 // use routers
 app.use("/", indexRouter);
 app.use("/testing", testingRouter);
@@ -39,16 +49,6 @@ app.use("/recruiter-registration-requests", recruiterRegistrationRequests);
 app.use("/job-offers", jobOffersRouter);
 app.use("/job-applications", jobApplicationsRouter);
 app.use("/job-descriptions", jobDescriptionsRouter);
-
-// session setup
-app.use(session({
-  secret: 'votre_secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie : {
-    maxAge: 60 * 60 * 1000 // 1 h
-  }
-}));
 
 
 // catch 404 and forward to error handler
