@@ -16,4 +16,16 @@ describe('User model', () => {
         const user = await User.getByEmail("non.biolet@etu.utc.fr");
         expect(user).toBeNull();
     });
+    it('should get all roles of a user (by email)', async () => {
+        const roles = await User.getRolesByEmail("harry.walker@example.com");
+        expect(roles).toContain('recruiter');
+    });
+    it("shouldn't get roles of a user that doesn't exist (by email)", async () => {
+        const roles = await User.getRolesByEmail("nope@example.com");
+        expect(roles.length).toBe(0);
+    });
+    it('should check credentials', async () => {
+        expect(await User.isLoginValid("harry.walker@example.com", "password10")).toBeTruthy();
+        expect(await User.isLoginValid("harry.walker@example.com", "password010101001")).toBeFalsy();
+    });
 });

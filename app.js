@@ -3,6 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var session = require('express-session');
 
 // router setup
 var indexRouter = require("./routes/index");
@@ -38,6 +39,17 @@ app.use("/recruiter-registration-requests", recruiterRegistrationRequests);
 app.use("/job-offers", jobOffersRouter);
 app.use("/job-applications", jobApplicationsRouter);
 app.use("/job-descriptions", jobDescriptionsRouter);
+
+// session setup
+app.use(session({
+  secret: 'votre_secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie : {
+    maxAge: 60 * 60 * 1000 // 1 h
+  }
+}));
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

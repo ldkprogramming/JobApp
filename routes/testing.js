@@ -26,4 +26,11 @@ router.get('/get-all-job-descriptions',  asyncHandler(async (req, res, next) => 
     res.render("test/get_all_job_descriptions", {title: "all job descriptions", jobDescriptions: result});
 }));
 
+router.get('who-am-i', asyncHandler(async(req, res, next) => {
+    res.json({
+        'user' : req.session.user,
+        'roles' : req.session.roles
+    })
+}))
+
 module.exports = router;

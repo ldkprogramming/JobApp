@@ -14,6 +14,11 @@ router.get('/login', (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
 
+  if (true) {
+    return;
+  } else {
+    res.send('Nom d\'utilisateur ou mot de passe incorrect.');
+  }
 });
 
 router.get('/logout', (req, res) => {

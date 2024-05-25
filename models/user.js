@@ -75,13 +75,16 @@ module.exports = {
         LEFT JOIN Admin AS ADM ON ADM.iduser = U.id
         WHERE U.id = ?
       `, [id]);
-      if (results.appid) {
+      if (results.length === 0) {
+        return roles;
+      }
+      if (results[0].appid) {
         roles.push('applicant');
       }
-      if (results.recid) {
+      if (results[0].recid) {
         roles.push('recruiter');
       }
-      if (results.admid) {
+      if (results[0].admid) {
         roles.push('admin');
       }
       return roles;
@@ -100,13 +103,16 @@ module.exports = {
         LEFT JOIN Admin AS ADM ON ADM.iduser = U.id
         WHERE U.email = ?
       `,[email]);
-      if (results.appid) {
+      if (results.length === 0) {
+        return roles;
+      }
+      if (results[0].appid) {
         roles.push('applicant');
       }
-      if (results.recid) {
+      if (results[0].recid) {
         roles.push('recruiter');
       }
-      if (results.admid) {
+      if (results[0].admid) {
         roles.push('admin');
       }
       return roles;
@@ -114,5 +120,15 @@ module.exports = {
       throw err;
     }
   },
+  isLoginValid: async (email, pwd) => {
+    try {
+      const [results] = await db.query(`
+        SELECT * FROM User WHERE email = ? AND pwd = ?
+      `, [email, pwd])
+      return (results.length !== 0);
+    } catch (err) {
+      throw err;
+    }
+  }
 
 };
