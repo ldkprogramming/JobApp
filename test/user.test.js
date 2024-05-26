@@ -28,4 +28,8 @@ describe('User model', () => {
         expect(await User.isLoginValid("harry.walker@example.com", "password10")).toBeTruthy();
         expect(await User.isLoginValid("harry.walker@example.com", "password010101001")).toBeFalsy();
     });
+    it('should get roles and ids for a user (by email)', async () => {
+        const map = await User.getRolesIdMapByEmail("harry.walker@example.com");
+        console.log(map);
+    });
 });

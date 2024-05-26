@@ -120,6 +120,26 @@ module.exports = {
       throw err;
     }
   },
+  getRolesIdMapByEmail: async(email) => {
+    try {
+      const [results] = await db.query(`
+        SELECT U.id, APP.id AS applicantId, REC.id AS recruiterId, ADM.id AS adminId
+        FROM User AS U 
+        LEFT JOIN Applicant AS APP ON APP.iduser = U.id
+        LEFT JOIN Recruiter AS REC ON REC.iduser = U.id
+        LEFT JOIN Admin AS ADM ON ADM.iduser = U.id
+        WHERE U.email = ?
+      `,[email]);
+
+      if (results.length > 0) {
+        return results[0];
+      } else {
+        return null;
+      }
+    } catch (err) {
+      throw err;
+    }
+  },
   isLoginValid: async (email, pwd) => {
     try {
       const [results] = await db.query(`

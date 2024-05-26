@@ -14,7 +14,11 @@ describe("Admin model", () => {
         const admins = await Admin.getAll();
         expect(admins.length).toBeGreaterThanOrEqual(1);
     });
+    it('should return id of the admin (by the id of the user)', async () => {
+        const id = await Admin.getIdByIdUser(1);
+        expect(id).toBe(2);
+    });
     afterAll(async () => {
         await db.end();
-    })
+    });
 })

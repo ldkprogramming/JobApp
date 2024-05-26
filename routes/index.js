@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 const session = require('express-session');
 const User = require('../models/user');
+const Admin = require('../models/admin');
+const Recruiter = require('../models/recruiter');
+const Applicant = require('../models/applicant');
 
 const asyncHandler = require('express-async-handler');
 
@@ -17,8 +20,8 @@ router.get('/login', (req, res, next) => {
 router.post('/login', asyncHandler(async (req, res, next) => {
       if (await User.isLoginValid(req.body.email, req.body.password)) {
         req.session.email = req.body.email;
-        // ajouter un attribut pour le user id ?
-        req.session.roles = await User.getRolesByEmail(req.body.email);
+        req.session.rolesIdMap = await User.getRolesIdMapByEmail(req.body.email);
+
         res.send('Authentification réussie !');
       } else {
         res.send({
