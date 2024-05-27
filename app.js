@@ -37,6 +37,9 @@ app.use(session({
   }
 }));
 
+// secure paths setup
+
+
 // use routers
 app.use("/", indexRouter);
 app.use("/testing", testingRouter);
