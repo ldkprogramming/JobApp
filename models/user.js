@@ -52,9 +52,11 @@ module.exports = {
       throw err;
     }
   },
-  getIdByEmail: async(email) => {
+  getIdByEmail: async (email) => {
     try {
-      const [results] = await db.query("SELECT id FROM User WHERE email = ?", [email]);
+      const [results] = await db.query("SELECT id FROM User WHERE email = ?", [
+        email,
+      ]);
       if (results.length > 0) {
         return results[0].id;
       } else {
@@ -64,72 +66,81 @@ module.exports = {
       throw err;
     }
   },
-  getRolesById: async(id) => {
+  getRolesById: async (id) => {
     try {
       const roles = [];
-      const [results] = await db.query(`
+      const [results] = await db.query(
+        `
         SELECT U.id, APP.id AS appid, REC.id AS recid, ADM.id AS admid
         FROM User AS U 
         LEFT JOIN Applicant AS APP ON APP.iduser = U.id
         LEFT JOIN Recruiter AS REC ON REC.iduser = U.id
         LEFT JOIN Admin AS ADM ON ADM.iduser = U.id
         WHERE U.id = ?
-      `, [id]);
+      `,
+        [id]
+      );
       if (results.length === 0) {
         return roles;
       }
       if (results[0].appid) {
-        roles.push('applicant');
+        roles.push("applicant");
       }
       if (results[0].recid) {
-        roles.push('recruiter');
+        roles.push("recruiter");
       }
       if (results[0].admid) {
-        roles.push('admin');
+        roles.push("admin");
       }
       return roles;
     } catch (err) {
       throw err;
     }
   },
-  getRolesByEmail: async(email) => {
+  getRolesByEmail: async (email) => {
     try {
       const roles = [];
-      const [results] = await db.query(`
+      const [results] = await db.query(
+        `
         SELECT U.id, APP.id AS appid, REC.id AS recid, ADM.id AS admid
         FROM User AS U 
         LEFT JOIN Applicant AS APP ON APP.iduser = U.id
         LEFT JOIN Recruiter AS REC ON REC.iduser = U.id
         LEFT JOIN Admin AS ADM ON ADM.iduser = U.id
         WHERE U.email = ?
-      `,[email]);
+      `,
+        [email]
+      );
       if (results.length === 0) {
         return roles;
       }
       if (results[0].appid) {
-        roles.push('applicant');
+        roles.push("applicant");
       }
       if (results[0].recid) {
-        roles.push('recruiter');
+        roles.push("recruiter");
       }
       if (results[0].admid) {
-        roles.push('admin');
+        roles.push("admin");
       }
       return roles;
     } catch (err) {
       throw err;
     }
   },
-  getRolesIdMapByEmail: async(email) => {
+  getRolesIdMapByEmail: async (email) => {
     try {
-      const [results] = await db.query(`
+      const [results] = await db.query(
+        `
         SELECT U.id, APP.id AS applicantId, REC.id AS recruiterId, ADM.id AS adminId
         FROM User AS U 
         LEFT JOIN Applicant AS APP ON APP.iduser = U.id
         LEFT JOIN Recruiter AS REC ON REC.iduser = U.id
         LEFT JOIN Admin AS ADM ON ADM.iduser = U.id
         WHERE U.email = ?
-      `,[email]);
+      `,
+        [email]
+      );
 
       if (results.length > 0) {
         return results[0];
@@ -142,13 +153,15 @@ module.exports = {
   },
   isLoginValid: async (email, pwd) => {
     try {
-      const [results] = await db.query(`
+      const [results] = await db.query(
+        `
         SELECT * FROM User WHERE email = ? AND pwd = ?
-      `, [email, pwd])
-      return (results.length !== 0);
+      `,
+        [email, pwd]
+      );
+      return results.length !== 0;
     } catch (err) {
       throw err;
     }
-  }
-
+  },
 };
