@@ -9,7 +9,9 @@ module.exports = {
   // }
   getAll: async () => {
     try {
-      const [results] = await db.query("SELECT * FROM User");
+      const [results] = await db.query(
+        "SELECT * FROM User LEFT JOIN Admin on Admin.iduser = User.id"
+      );
       return results;
     } catch (err) {
       throw err;
@@ -158,6 +160,19 @@ module.exports = {
         SELECT * FROM User WHERE email = ? AND pwd = ?
       `,
         [email, pwd]
+      );
+      return results.length !== 0;
+    } catch (err) {
+      throw err;
+    }
+  },
+  isAdmin: async (email, lastname, firstname) => {
+    try {
+      const [results] = await db.query(
+        `
+        SELECT Admin.id FROM Admin JOIN User on User.id = Admin.iduser WHERE lastname = ? AND firstname = ? 
+      `,
+        [lastname, firstname]
       );
       return results.length !== 0;
     } catch (err) {
