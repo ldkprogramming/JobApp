@@ -10,11 +10,11 @@ var sessionUtility = require('./our_modules/sessionUtility');
 var indexRouter = require("./routes/index");
 var testingRouter = require("./routes/testing");
 var usersRouter = require("./routes/users");
-var organisationRegistrationRequests = require("./routes/adminOrganisations");
-var recruiterRegistrationRequests = require("./routes/recruiterOrganisations");
-var jobOffersRouter = require("./routes/jobOffers");
-var jobApplicationsRouter = require("./routes/jobApplications");
-var jobDescriptionsRouter = require("./routes/jobDescriptions");
+// var organisationRegistrationRequests = require("./routes/adminOrganisations");
+// var recruiterRegistrationRequests = require("./routes/recruiterOrganisations");
+// var jobOffersRouter = require("./routes/jobOffers");
+// var jobApplicationsRouter = require("./routes/jobApplications");
+// var jobDescriptionsRouter = require("./routes/jobDescriptions");
 var applicantsRouter = require('./routes/applicants');
 var adminsRouter = require('./routes/admins');
 var recruitersRouter = require('./routes/recruiters');
@@ -79,14 +79,11 @@ app.all("/applicants/:idApplicant*", (req, res, next) => {
 app.use("/", indexRouter);
 app.use("/testing", testingRouter);
 app.use("/users", usersRouter);
-app.use(
-  "/organisation-registration-requests",
-  organisationRegistrationRequests
-);
-app.use("/recruiter-registration-requests", recruiterRegistrationRequests);
-app.use("/job-offers", jobOffersRouter);
-app.use("/job-applications", jobApplicationsRouter);
-app.use("/job-descriptions", jobDescriptionsRouter);
+// app.use("/organisation-registration-requests", organisationRegistrationRequests);
+// app.use("/recruiter-registration-requests", recruiterRegistrationRequests);
+// app.use("/job-offers", jobOffersRouter);
+// app.use("/job-applications", jobApplicationsRouter);
+// app.use("/job-descriptions", jobDescriptionsRouter);
 app.use("/applicants", applicantsRouter);
 app.use("/admins", adminsRouter);
 app.use("/recruiters", recruitersRouter);

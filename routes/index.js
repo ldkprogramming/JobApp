@@ -24,11 +24,11 @@ router.post(
       req.session.email = req.body.email;
       req.session.rolesIdMap = await User.getRolesIdMapByEmail(req.body.email);
       if (req.session.rolesIdMap.adminId) {
-        res.redirect("/admin");
+        res.redirect(`/admins/${req.session.rolesIdMap.adminId}`);
       } else if (req.session.rolesIdMap.recruiterId) {
-        res.redirect("/recruiter");
+        res.redirect(`/recruiters/${req.session.rolesIdMap.recruiterId}`);
       } else if (req.session.rolesIdMap.applicantId) {
-        res.redirect("/applicant");
+        res.redirect(`/applicants/${req.session.rolesIdMap.applicantId}`);
       }
     } else {
       res.send({
