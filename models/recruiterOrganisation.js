@@ -51,4 +51,14 @@ module.exports = {
             throw err;
         }
     },
+    create: async(status, idRecruiter, siren) => {
+        try {
+            const [results] = await db.query(
+                "INSERT INTO RecruiterOrganisation VALUES (?, ?, ?)",
+                [status, idRecruiter, siren]
+            );
+        } catch (err) {
+            throw err;
+        }
+    }
 }

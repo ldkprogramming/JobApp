@@ -53,4 +53,22 @@ module.exports = {
       throw err;
     }
   },
+  getAllByStatusByIdRecruiterWithInfo: async (status, idRecruiter) => {
+    try {
+      const sql = `
+            SELECT *
+            FROM JobOffer 
+            JOIN JobDescription 
+            ON JobOffer.idjobdescription = JobDescription.id
+            JOIN Organisation 
+            ON JobDescription.idorganisation = Organisation.SIREN
+            WHERE JobOffer.status = ?
+            AND JobOffer.idrecruiter = ?
+            `;
+      const [results] = await db.query(sql, [status, idRecruiter]);
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
 };

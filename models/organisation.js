@@ -30,5 +30,15 @@ module.exports = {
         } catch (err) {
             throw err;
         }
+    },
+    create: async(siren, name, type, headquarters, status) => {
+        try {
+            const [results] = await db.query(
+                "INSERT INTO Organisation VALUES (?, ?, ?, ?, ?)",
+                [siren, name, type, headquarters, status]
+            );
+        } catch (err) {
+            throw err;
+        }
     }
 }
