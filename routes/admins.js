@@ -3,11 +3,12 @@ const router = express.Router();
 const asyncHandler = require("express-async-handler");
 const AdminOrganisation = require("../models/adminOrganisation");
 const RecruiterOrganisation = require("../models/recruiterOrganisation");
+const User = require("../models/user");
 
 router.get(
   "/:idAdmin",
   asyncHandler(async (req, res, next) => {
-    res.render("admin/home");
+    res.render("admin/home", {idAdmin: req.session.rolesIdMap.adminId});
   })
 );
 
@@ -18,7 +19,7 @@ router.get(
       "onhold"
     );
     res.render("admin/manage_organisation_registration_requests", {
-      adminOrganisations: adminOrganisations,
+      adminOrganisations: adminOrganisations, idAdmin: req.session.rolesIdMap.adminId
     });
   })
 );
@@ -29,7 +30,7 @@ router.get(
     const registrationRequests =
       await RecruiterOrganisation.getAllByStatusWithInfo("onhold");
     res.render("admin/manage_recruiter_registration_requests", {
-      recruiterOrganisations: registrationRequests,
+      recruiterOrganisations: registrationRequests, idAdmin: req.session.rolesIdMap.adminId
     });
   })
 );
@@ -44,9 +45,14 @@ router.get(
       ...(await AdminOrganisation.getAllByStatusWithInfo("rejected"))
     );
     res.render("admin/organisation_registration_request_history", {
-      adminOrganisations: adminOrganisations,
+      adminOrganisations: adminOrganisations, idAdmin: req.session.rolesIdMap.adminId
     });
   })
 );
+
+router.get('/:idAdmin/users', asyncHandler(async (req, res, next) => {
+    const users = await User.getAll();
+    res.render("admin/manage_users", { users: users, idAdmin: req.session.rolesIdMap.adminId });
+}));
 
 module.exports = router;
