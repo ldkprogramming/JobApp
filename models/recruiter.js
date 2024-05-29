@@ -36,5 +36,16 @@ module.exports = {
         } catch (err) {
             throw err;
         }
+    },
+    create: async (idUser) => {
+        const dateOfCreation = new Date();
+        try {
+            const [results] = await db.query(
+                "INSERT INTO Recruiter VALUES (NULL,?)",
+                [idUser]
+            );
+        } catch (err) {
+            throw err;
+        }
     }
 }
