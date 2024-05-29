@@ -14,6 +14,9 @@ var recruiterRegistrationRequests = require("./routes/recruiterOrganisations");
 var jobOffersRouter = require("./routes/jobOffers");
 var jobApplicationsRouter = require("./routes/jobApplications");
 var jobDescriptionsRouter = require("./routes/jobDescriptions");
+var applicantsRouter = require('./routes/applicants');
+var adminsRouter = require('./routes/admins');
+var recruitersRouter = require('./routes/recruiters');
 
 var app = express();
 
@@ -52,6 +55,9 @@ app.use("/recruiter-registration-requests", recruiterRegistrationRequests);
 app.use("/job-offers", jobOffersRouter);
 app.use("/job-applications", jobApplicationsRouter);
 app.use("/job-descriptions", jobDescriptionsRouter);
+app.use("/applicants", applicantsRouter);
+app.use("/admins", adminsRouter);
+app.use("/recruiters", recruitersRouter);
 
 
 // catch 404 and forward to error handler

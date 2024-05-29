@@ -7,8 +7,7 @@ const JobApplication = require("../models/jobApplication");
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
-    const jobApplications =
-      await JobApplication.getNameAndTitleAndDescription();
+    const jobApplications = await JobApplication.getNameAndTitleAndDescription();
     res.render("applicant/applications", { jobApplications: jobApplications });
   })
 );
