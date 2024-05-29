@@ -2,7 +2,7 @@ const session = require('express-session');
 
 module.exports = {
     hasRole: (currentSession, role) => {
-        if (currentSession.email && (currentSession.rolesIdMap.id !== null)) {
+        if (currentSession.rolesIdMap.id !== null) {
             switch (role) {
                 case "applicant" : {
                     return currentSession.rolesIdMap.applicantId != null;
@@ -18,6 +18,6 @@ module.exports = {
         return false;
     },
     isLoggedIn: (currentSession) => {
-        return (currentSession.email && (currentSession.rolesIdMap.id !== null))
+        return (currentSession.rolesIdMap!== undefined)
     }
 }

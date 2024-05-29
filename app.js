@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var session = require('express-session');
+var sessionUtility = require('./our_modules/sessionUtility');
 
 // router setup
 var indexRouter = require("./routes/index");
@@ -41,7 +42,38 @@ app.use(session({
 }));
 
 // secure paths setup
+app.all("*", (req, res, next) => {
+  const unsecuredPaths = ['/login', '/logout', '/create-account', '/users', '/testing/who-am-i'];
 
+  if (unsecuredPaths.includes(req.path)) {
+    return next();
+  }
+  if (sessionUtility.isLoggedIn(req.session)) {
+    return next();
+  }
+  res.status(403).render("error", { message: `error *: ${Object.keys(req.params)}`, error: {} });
+});
+
+app.all("/admins/:idAdmin*", (req, res, next) => {
+  if (Number(req.params.idAdmin) === req.session.rolesIdMap.adminId) {
+    return next();
+  }
+  res.status(403).render("error", { message: `error admins: ${req.params.idAdmin} !== ${req.session.rolesIdMap.adminId}`, error: {} });
+});
+
+app.all("/recruiters/:idRecruiter*", (req, res, next) => {
+  if (Number(req.params.idRecruiter) === req.session.rolesIdMap.recruiterId) {
+    return next();
+  }
+  res.status(403).render("error", { message: `error`, error: {} });
+});
+
+app.all("/applicants/:idApplicant*", (req, res, next) => {
+  if (Number(req.params.idApplicant) === req.session.rolesIdMap.applicantId) {
+    return next();
+  }
+  res.status(403).render("error", { message: `error admins: ${req.params.idAdmin} !== ${req.session.rolesIdMap.adminId}`, error: {} });
+});
 
 // use routers
 app.use("/", indexRouter);
