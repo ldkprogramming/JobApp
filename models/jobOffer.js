@@ -1,56 +1,56 @@
-const db = require('./db');
+const db = require("./db");
 
 module.exports = {
-    getAll: async () => {
-        try {
-            const [results] = await db.query("SELECT * FROM JobOffer");
-            return results;
-        } catch (err) {
-            throw err;
-        }
-    },
-    getAllByIdJobDescription: async (idJobDescription) => {
-        try {
-            const sql = "SELECT * FROM JobOffer WHERE idjobdescription = ?";
-            const [results] = await db.query(sql, [idJobDescription]);
-            return results;
-        } catch (err) {
-            throw err;
-        }
-    },
-    getAllByIdRecruiter: async (idRecruiter) => {
-        try {
-            const sql = "SELECT * FROM JobOffer WHERE idrecruiter = ?";
-            const [results] = await db.query(sql, [idRecruiter]);
-            return results;
-        } catch (err) {
-            throw err;
-        }
-    },
-    getAllByIdRecruiter: async (idRecruiter) => {
-        try {
-            const sql = "SELECT * FROM JobOffer WHERE idrecruiter = ?";
-            const [results] = await db.query(sql, [idRecruiter]);
-            return results;
-        } catch (err) {
-            throw err;
-        }
-    },
-    getAllByStatusWithInfo: async (status) => {
-        try {
-            const sql = `
-            SELECT JO.status, JO.deadline, JD.description, JD.title, O.name
-            FROM JobOffer AS JO
-            JOIN JobDescription AS JD
-            ON JO.idjobdescription = JD.id
-            JOIN Organisation AS O
-            ON JD.idorganisation = O.SIREN
-            WHERE JO.status = ?
-            `
-            const [results] = await db.query(sql, [status]);
-            return results;
-        } catch (err) {
-            throw err;
-        }
-    },
-}
+  getAll: async () => {
+    try {
+      const [results] = await db.query("SELECT * FROM JobOffer");
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
+  getAllByIdJobDescription: async (idJobDescription) => {
+    try {
+      const sql = "SELECT * FROM JobOffer WHERE idjobdescription = ?";
+      const [results] = await db.query(sql, [idJobDescription]);
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
+  getAllByIdRecruiter: async (idRecruiter) => {
+    try {
+      const sql = "SELECT * FROM JobOffer WHERE idrecruiter = ?";
+      const [results] = await db.query(sql, [idRecruiter]);
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
+  getAllByIdRecruiter: async (idRecruiter) => {
+    try {
+      const sql = "SELECT * FROM JobOffer WHERE idrecruiter = ?";
+      const [results] = await db.query(sql, [idRecruiter]);
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
+  getAllByStatusWithInfo: async (status) => {
+    try {
+      const sql = `
+            SELECT *
+            FROM JobOffer 
+            JOIN JobDescription 
+            ON JobOffer.idjobdescription = JobDescription.id
+            JOIN Organisation 
+            ON JobDescription.idorganisation = Organisation.SIREN
+            WHERE JobOffer.status = ?
+            `;
+      const [results] = await db.query(sql, [status]);
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
+};

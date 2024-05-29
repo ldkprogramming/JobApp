@@ -1,84 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Home</title>
     <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
     />
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
         <a class="navbar-brand" href="/admin">Admin Panel</a>
         <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav"
-                aria-controls="navbarNav"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
-            <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/organisation-registration-requests/onhold">Manage Organisations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/recruiter-registration-requests/onhold">Manage Recruiters</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/users">Manage Users</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/organisation-registration-requests/history">Organisation History</a>
-                </li>
-            </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/organisation-registration-requests/onhold"
+                >Manage Organisations</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/recruiter-registration-requests/onhold"
+                >Manage Recruiters</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users">Manage Users</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/organisation-registration-requests/history"
+                >Organisation History</a
+              >
+            </li>
+          </ul>
         </div>
-    </div>
-</nav>
+      </div>
+    </nav>
 
-<div class="container mt-5">
-    <div class="input-group mb-3">
+    <div class="container mt-5">
+      <div class="input-group mb-3">
         <input
-                type="text"
-                class="form-control"
-                placeholder="Search by Name or SIREN"
-                aria-label="Search"
-                aria-describedby="button-addon2"
+          type="text"
+          class="form-control"
+          placeholder="Search by Name or SIREN"
+          aria-label="Search"
+          aria-describedby="button-addon2"
         />
         <button
-                class="btn btn-outline-secondary"
-                type="button"
-                id="button-addon2"
+          class="btn btn-outline-secondary"
+          type="button"
+          id="button-addon2"
         >
-            Search
+          Search
         </button>
-    </div>
+      </div>
 
-    <div class="row justify-content-center">
+      <div class="row justify-content-center">
         <div class="col-md-6">
-            <% adminOrganisations.forEach((adminOrganisation) => {%>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= adminOrganisation.name %></h5>
-                        <p class="card-text"><%= adminOrganisation.status%></p>
-                    </div>
-                </div>
-            <% });%>
+          <% adminOrganisations.forEach((adminOrganisation) => {%>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= adminOrganisation.name %></h5>
+              <p class="card-text">
+                <strong>Offer status : </strong><%= adminOrganisation.status%>
+              </p>
+            </div>
+          </div>
+          <% });%>
         </div>
+      </div>
     </div>
-</div>
-
-<footer class="footer mt-5 py-3 bg-light fixed-bottom">
-    <div class="container">
-        <span class="text-muted">Page 1/9</span>
-    </div>
-</footer>
-</body>
+  </body>
 </html>
