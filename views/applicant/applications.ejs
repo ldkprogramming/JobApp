@@ -32,14 +32,23 @@
           <li class="nav-item">
             <a class="nav-link" href="/applicants/<%=idApplicant%>/job-applications">History</a>
           </li>
+          <% if ((idAdmin !== null ) && (idAdmin !== undefined)) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/admins/<%=idAdmin%>">Admin Panel</a>
+          </li>
+          <%}%>
+
+          <% if ((idRecruiter !== null ) && (idRecruiter !== undefined)) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/recruiters/<%=idRecruiter%>">Recruiter Panel</a>
+          </li>
+          <%} else {%>
           <li class="nav-item">
             <a class="nav-link" href="/applicants/<%=idApplicant%>/become-recruiter"
             >Become Recruiter</a
             >
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/recruiters/<%=idRecruiter%>">Recruit</a>
-          </li>
+          <%}%>
         </ul>
       </div>
     </div>
