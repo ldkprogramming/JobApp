@@ -42,10 +42,22 @@
                 <li class="nav-item">
                     <a href="/recruiters/<%=idRecruiter%>/create-job-description" class="nav-link">Create Job Description</a>
                 </li>
+                <% if ((idAdmin !== null ) && (idAdmin !== undefined)) { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admins/<%=idAdmin%>">Admin Panel</a>
+                </li>
+                <%}%>
+                <% if ((idApplicant !== null ) && (idApplicant !== undefined)) { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/applicants/<%=idApplicant%>">Applicant Panel</a>
+                </li>
+                <%}%>
+
             </ul>
         </div>
     </div>
 </nav>
+
 
 <div class="container mt-5">
     <div class="row justify-content-center">
