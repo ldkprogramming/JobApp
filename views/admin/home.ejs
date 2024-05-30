@@ -38,6 +38,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/admins/<%=idAdmin%>/organisation-registration-requests/history">Organisation History</a>
                 </li>
+                <% if ((idApplicant !== null ) && (idApplicant !== undefined)) { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/applicants/<%=idApplicant%>">Applicant Panel</a>
+                </li>
+                <%}%>
+                <% if ((idRecruiter !== null ) && (idRecruiter !== undefined)) { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/recruiters/<%=idRecruiter%>">Recruiter Panel</a>
+                </li>
+                <%}%>
             </ul>
         </div>
     </div>

@@ -10,7 +10,7 @@ const recruiterOrganisation = require("../models/recruiterOrganisation");
 router.get(
   "/:idAdmin",
   asyncHandler(async (req, res, next) => {
-    res.render("admin/home", { idAdmin: req.session.rolesIdMap.adminId });
+    res.render("admin/home", { idAdmin: req.session.rolesIdMap.adminId, idRecruiter:req.session.rolesIdMap.recruiterId,  idApplicant:req.session.rolesIdMap.applicantId});
   })
 );
 
@@ -23,6 +23,7 @@ router.get(
     res.render("admin/manage_organisation_registration_requests", {
       adminOrganisations: adminOrganisations,
       idAdmin: req.session.rolesIdMap.adminId,
+        idRecruiter:req.session.rolesIdMap.recruiterId,  idApplicant:req.session.rolesIdMap.applicantId
     });
   })
 );
@@ -35,6 +36,7 @@ router.get(
     res.render("admin/manage_recruiter_registration_requests", {
       recruiterOrganisations: registrationRequests,
       idAdmin: req.session.rolesIdMap.adminId,
+        idRecruiter:req.session.rolesIdMap.recruiterId,  idApplicant:req.session.rolesIdMap.applicantId
     });
   })
 );
@@ -51,6 +53,7 @@ router.get(
     res.render("admin/organisation_registration_request_history", {
       adminOrganisations: adminOrganisations,
       idAdmin: req.session.rolesIdMap.adminId,
+        idRecruiter:req.session.rolesIdMap.recruiterId,  idApplicant:req.session.rolesIdMap.applicantId
     });
   })
 );
@@ -62,6 +65,7 @@ router.get(
     res.render("admin/manage_users", {
       users: users,
       idAdmin: req.session.rolesIdMap.adminId,
+        idRecruiter:req.session.rolesIdMap.recruiterId,  idApplicant:req.session.rolesIdMap.applicantId
     });
   })
 );
