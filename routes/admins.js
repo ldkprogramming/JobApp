@@ -5,6 +5,7 @@ const AdminOrganisation = require("../models/adminOrganisation");
 const RecruiterOrganisation = require("../models/recruiterOrganisation");
 const User = require("../models/user");
 const Organisation = require("../models/organisation");
+const recruiterOrganisation = require("../models/recruiterOrganisation");
 
 router.get(
   "/:idAdmin",
@@ -83,6 +84,30 @@ router.post(
     await Organisation.changeStatus(SIREN, "rejected");
     res.redirect(
       `/admins/${req.params.idAdmin}/organisation-registration-requests/onhold`
+    );
+  })
+);
+
+router.post(
+  "/:idAdmin/accept-recruiter/:id/:SIREN",
+  asyncHandler(async (req, res, next) => {
+    const id = Number(req.params.id);
+    const SIREN = Number(req.params.SIREN);
+    await recruiterOrganisation.changeStatusRecruiter("accepted", id, SIREN);
+    res.redirect(
+      `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
+    );
+  })
+);
+
+router.post(
+  "/:idAdmin/reject-recruiter/:id/:SIREN",
+  asyncHandler(async (req, res, next) => {
+    const id = Number(req.params.id);
+    const SIREN = Number(req.params.SIREN);
+    await recruiterOrganisation.changeStatusRecruiter("rejected", id, SIREN);
+    res.redirect(
+      `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );
   })
 );
