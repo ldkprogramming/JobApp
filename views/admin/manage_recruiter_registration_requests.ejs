@@ -99,13 +99,13 @@
               </p>
               <form
                 method="post"
-                action="/admins/<%=idAdmin%>/accept-recruiter/<%=recruiterOrganisation.id%>/<%=recruiterOrganisation.SIREN%>"
+                action="/admins/<%=idAdmin%>/accept-recruiter/<%=recruiterOrganisation.idrecruiter%>/<%=recruiterOrganisation.SIREN%>"
               >
                 <button type="submit" class="btn btn-success">Accept</button>
               </form>
               <form
                 method="post"
-                action="/admins/<%=idAdmin%>/reject-recruiter/<%=recruiterOrganisation.id%>/<%=recruiterOrganisation.SIREN%>"
+                action="/admins/<%=idAdmin%>/reject-recruiter/<%=recruiterOrganisation.idrecruiter%>/<%=recruiterOrganisation.SIREN%>"
               >
                 <button type="submit" class="btn btn-danger">Refuse</button>
               </form>

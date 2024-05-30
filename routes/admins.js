@@ -89,11 +89,15 @@ router.post(
 );
 
 router.post(
-  "/:idAdmin/accept-recruiter/:id/:SIREN",
+  "/:idAdmin/accept-recruiter/:irRecruiter/:SIREN",
   asyncHandler(async (req, res, next) => {
-    const id = Number(req.params.id);
+    const irRecruiter = Number(req.params.irRecruiter);
     const SIREN = Number(req.params.SIREN);
-    await recruiterOrganisation.changeStatusRecruiter("accepted", id, SIREN);
+    await recruiterOrganisation.changeStatusRecruiter(
+      "accepted",
+      irRecruiter,
+      SIREN
+    );
     res.redirect(
       `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );
@@ -101,11 +105,15 @@ router.post(
 );
 
 router.post(
-  "/:idAdmin/reject-recruiter/:id/:SIREN",
+  "/:idAdmin/reject-recruiter/:idRecruiter/:SIREN",
   asyncHandler(async (req, res, next) => {
-    const id = Number(req.params.id);
+    const idRecruiter = Number(req.params.idRecruiter);
     const SIREN = Number(req.params.SIREN);
-    await recruiterOrganisation.changeStatusRecruiter("rejected", id, SIREN);
+    await recruiterOrganisation.changeStatusRecruiter(
+      "rejected",
+      idRecruiter,
+      SIREN
+    );
     res.redirect(
       `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );
