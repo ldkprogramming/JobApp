@@ -10,7 +10,7 @@ module.exports = {
   getAll: async () => {
     try {
       const [results] = await db.query(
-        "SELECT * FROM User LEFT JOIN Admin on Admin.iduser = User.id"
+        "SELECT User.id as userid, Admin.id as adminid, Admin.iduser, email, pwd, lastname, firstname, phonenumber, dateofcreation, status FROM User LEFT JOIN Admin on Admin.iduser = User.id"
       );
       return results;
     } catch (err) {
@@ -175,6 +175,15 @@ module.exports = {
         [lastname, firstname]
       );
       return results.length !== 0;
+    } catch (err) {
+      throw err;
+    }
+  },
+  giveAdminRight: async (iduser) => {
+    try {
+      const [results] = await db.query("INSERT INTO Admin VALUES (NULL, ?)", [
+        iduser,
+      ]);
     } catch (err) {
       throw err;
     }

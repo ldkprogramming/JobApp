@@ -52,11 +52,20 @@
                 >Organisation History</a
               >
             </li>
+            <% if ((idApplicant !== null ) && (idApplicant !== undefined)) { %>
             <li class="nav-item">
-              <a class="nav-link" href="/recruiteres/<%=idAdmin%>/"
+              <a class="nav-link" href="/applicants/<%=idApplicant%>"
+                >Applicant Panel</a
+              >
+            </li>
+            <%}%> <% if ((idRecruiter !== null ) && (idRecruiter !== undefined))
+            { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/recruiters/<%=idRecruiter%>"
                 >Recruiter Panel</a
               >
             </li>
+            <%}%>
           </ul>
         </div>
       </div>
@@ -79,46 +88,37 @@
           Search
         </button>
       </div>
-
       <div class="row min-vh-100 justify-content-center">
-        <div class="col-md-6">
-          <% recruiterOrganisations.forEach((recruiterOrganisation)=> { %>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">
-                <%= recruiterOrganisation.firstname%> <%=
-                recruiterOrganisation.lastname%>
-              </h5>
-              <p class="card-text">
-                <strong>Company : </strong>
-                <%= recruiterOrganisation.type%><strong> ; </strong><%=
-                recruiterOrganisation.headquarters%><strong> ; </strong><%=
-                recruiterOrganisation.name%>
-              </p>
-              <p class="card-text">
-                <strong>Email : </strong><%= recruiterOrganisation.email%>
-              </p>
-              <p class="card-text">
-                <strong>Phone number : </strong><%=
-                recruiterOrganisation.phonenumber%>
-              </p>
-              <form
-                method="post"
-                action="/admins/<%=idAdmin%>/accept-recruiter/<%=recruiterOrganisation.idrecruiter%>/<%=recruiterOrganisation.SIREN%>"
-              >
-                <button type="submit" class="btn btn-success">Accept</button>
-              </form>
-              <form
-                method="post"
-                action="/admins/<%=idAdmin%>/reject-recruiter/<%=recruiterOrganisation.idrecruiter%>/<%=recruiterOrganisation.SIREN%>"
-              >
-                <button type="submit" class="btn btn-danger">Refuse</button>
-              </form>
-            </div>
-          </div>
-          <% }) %>
+  <div class="col-md-6">
+    <% recruiterOrganisations.forEach((recruiterOrganisation)=> { %>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">
+          <%= recruiterOrganisation.firstname%> <%= recruiterOrganisation.lastname%>
+        </h5>
+        <p class="card-text">
+          <strong>Company : </strong>
+          <%= recruiterOrganisation.type%><strong> ; </strong><%= recruiterOrganisation.headquarters%><strong> ; </strong><%= recruiterOrganisation.name%>
+        </p>
+        <p class="card-text">
+          <strong>Email : </strong><%= recruiterOrganisation.email%>
+        </p>
+        <p class="card-text">
+          <strong>Phone number : </strong><%= recruiterOrganisation.phonenumber%>
+        </p>
+        <div class="d-flex">
+          <form method="post" action="/admins/<%=idAdmin%>/accept-recruiter/<%=recruiterOrganisation.idrecruiter%>/<%=recruiterOrganisation.SIREN%>" class="mr-2">
+            <button type="submit" class="btn btn-success">Accept</button>
+          </form>
+          <form method="post" action="/admins/<%=idAdmin%>/reject-recruiter/<%=recruiterOrganisation.idrecruiter%>/<%=recruiterOrganisation.SIREN%>">
+            <button type="submit" class="btn btn-danger">Refuse</button>
+          </form>
         </div>
       </div>
     </div>
+    <% }) %>
+  </div>
+</div>
+
   </body>
 </html>

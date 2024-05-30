@@ -10,7 +10,11 @@ const recruiterOrganisation = require("../models/recruiterOrganisation");
 router.get(
   "/:idAdmin",
   asyncHandler(async (req, res, next) => {
-    res.render("admin/home", { idAdmin: req.session.rolesIdMap.adminId, idRecruiter:req.session.rolesIdMap.recruiterId,  idApplicant:req.session.rolesIdMap.applicantId});
+    res.render("admin/home", {
+      idAdmin: req.session.rolesIdMap.adminId,
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idApplicant: req.session.rolesIdMap.applicantId,
+    });
   })
 );
 
@@ -23,7 +27,8 @@ router.get(
     res.render("admin/manage_organisation_registration_requests", {
       adminOrganisations: adminOrganisations,
       idAdmin: req.session.rolesIdMap.adminId,
-        idRecruiter:req.session.rolesIdMap.recruiterId,  idApplicant:req.session.rolesIdMap.applicantId
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idApplicant: req.session.rolesIdMap.applicantId,
     });
   })
 );
@@ -36,7 +41,8 @@ router.get(
     res.render("admin/manage_recruiter_registration_requests", {
       recruiterOrganisations: registrationRequests,
       idAdmin: req.session.rolesIdMap.adminId,
-        idRecruiter:req.session.rolesIdMap.recruiterId,  idApplicant:req.session.rolesIdMap.applicantId
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idApplicant: req.session.rolesIdMap.applicantId,
     });
   })
 );
@@ -53,7 +59,8 @@ router.get(
     res.render("admin/organisation_registration_request_history", {
       adminOrganisations: adminOrganisations,
       idAdmin: req.session.rolesIdMap.adminId,
-        idRecruiter:req.session.rolesIdMap.recruiterId,  idApplicant:req.session.rolesIdMap.applicantId
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idApplicant: req.session.rolesIdMap.applicantId,
     });
   })
 );
@@ -65,7 +72,8 @@ router.get(
     res.render("admin/manage_users", {
       users: users,
       idAdmin: req.session.rolesIdMap.adminId,
-        idRecruiter:req.session.rolesIdMap.recruiterId,  idApplicant:req.session.rolesIdMap.applicantId
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idApplicant: req.session.rolesIdMap.applicantId,
     });
   })
 );
@@ -121,6 +129,15 @@ router.post(
     res.redirect(
       `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );
+  })
+);
+
+router.post(
+  "/:idAdmin/give-admin-rights/:iduser",
+  asyncHandler(async (req, res, next) => {
+    const iduser = Number(req.params.iduser);
+    await User.giveAdminRight(iduser);
+    res.redirect(`/admins/${req.params.idAdmin}/users`);
   })
 );
 

@@ -52,6 +52,20 @@
                 >Organisation History</a
               >
             </li>
+            <% if ((idApplicant !== null ) && (idApplicant !== undefined)) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/applicants/<%=idApplicant%>"
+                >Applicant Panel</a
+              >
+            </li>
+            <%}%> <% if ((idRecruiter !== null ) && (idRecruiter !== undefined))
+            { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/recruiters/<%=idRecruiter%>"
+                >Recruiter Panel</a
+              >
+            </li>
+            <%}%>
           </ul>
         </div>
       </div>
@@ -76,35 +90,37 @@
       </div>
 
       <div class="row justify-content-center">
-        <div class="col-md-6">
-          <% adminOrganisations.forEach((adminOrganisation) => { %>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title"><%= adminOrganisation.name %></h5>
-              <p class="card-text">
-                <strong>Headquarters : </strong> <%=
-                adminOrganisation.headquarters %>
-              </p>
-              <p class="card-text">
-                <strong>SIREN Number : </strong> <%= adminOrganisation.SIREN %>
-              </p>
-              <form
-                method="post"
-                action="/admins/<%=idAdmin%>/accept-organisation/<%=adminOrganisation.SIREN%>"
-              >
-                <button type="submit" class="btn btn-success">Accept</button>
-              </form>
-              <form
-                method="post"
-                action="/admins/<%=idAdmin%>/reject-organisation/<%=adminOrganisation.SIREN%>"
-              >
-                <button type="submit" class="btn btn-danger">Refuse</button>
-              </form>
-            </div>
-          </div>
-          <% }); %>
+  <div class="col-md-6">
+    <% adminOrganisations.forEach((adminOrganisation) => { %>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><%= adminOrganisation.name %></h5>
+        <p class="card-text">
+          <strong>Headquarters : </strong> <%= adminOrganisation.headquarters %>
+        </p>
+        <p class="card-text">
+          <strong>SIREN Number : </strong> <%= adminOrganisation.SIREN %>
+        </p>
+        <div class="d-flex">
+          <form
+            method="post"
+            action="/admins/<%=idAdmin%>/accept-organisation/<%=adminOrganisation.SIREN%>"
+            class="mr-2"
+          >
+            <button type="submit" class="btn btn-success">Accept</button>
+          </form>
+          <form
+            method="post"
+            action="/admins/<%=idAdmin%>/reject-organisation/<%=adminOrganisation.SIREN%>"
+          >
+            <button type="submit" class="btn btn-danger">Refuse</button>
+          </form>
         </div>
       </div>
     </div>
+    <% }); %>
+  </div>
+</div>
+
   </body>
 </html>

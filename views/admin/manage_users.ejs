@@ -10,38 +10,66 @@
     />
   </head>
   <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/admins/<%=idAdmin%>">Admin Panel</a>
-      <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/admins/<%=idAdmin%>/organisation-registration-requests/onhold">Manage Organisations</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admins/<%=idAdmin%>/recruiter-registration-requests/onhold">Manage Recruiters</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admins/<%=idAdmin%>/users">Manage Users</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admins/<%=idAdmin%>/organisation-registration-requests/history">Organisation History</a>
-          </li>
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/admins/<%=idAdmin%>">Admin Panel</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/admins/<%=idAdmin%>/organisation-registration-requests/onhold"
+                >Manage Organisations</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/admins/<%=idAdmin%>/recruiter-registration-requests/onhold"
+                >Manage Recruiters</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admins/<%=idAdmin%>/users"
+                >Manage Users</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/admins/<%=idAdmin%>/organisation-registration-requests/history"
+                >Organisation History</a
+              >
+            </li>
+            <% if ((idApplicant !== null ) && (idApplicant !== undefined)) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/applicants/<%=idApplicant%>"
+                >Applicant Panel</a
+              >
+            </li>
+            <%}%> <% if ((idRecruiter !== null ) && (idRecruiter !== undefined))
+            { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/recruiters/<%=idRecruiter%>"
+                >Recruiter Panel</a
+              >
+            </li>
+            <%}%>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
     <div class="container mt-5 min-vh-100">
       <div class="input-group mb-3">
@@ -76,9 +104,15 @@
               </p>
               <button type="button" class="btn btn-primary">Modify</button>
               <% if (!user.iduser) { %>
-              <button type="button" class="btn btn-danger">
-                Give Admin Rights</button
-              ><% } %>
+              <form
+                action="/admins/<%=idAdmin%>/give-admin-rights/<%=user.userid%>"
+                method="POST"
+              >
+                <button type="submit" class="btn btn-danger">
+                  Give Admin Rights
+                </button>
+              </form>
+              <% } %>
               <button type="button" class="btn btn-danger">Delete</button>
             </div>
           </div>
