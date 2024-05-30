@@ -3,8 +3,8 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-var session = require('express-session');
-var sessionUtility = require('./our_modules/sessionUtility');
+var session = require("express-session");
+var sessionUtility = require("./our_modules/sessionUtility");
 
 // router setup
 var indexRouter = require("./routes/index");
@@ -15,9 +15,9 @@ var usersRouter = require("./routes/users");
 // var jobOffersRouter = require("./routes/jobOffers");
 // var jobApplicationsRouter = require("./routes/jobApplications");
 // var jobDescriptionsRouter = require("./routes/jobDescriptions");
-var applicantsRouter = require('./routes/applicants');
-var adminsRouter = require('./routes/admins');
-var recruitersRouter = require('./routes/recruiters');
+var applicantsRouter = require("./routes/applicants");
+var adminsRouter = require("./routes/admins");
+var recruitersRouter = require("./routes/recruiters");
 
 var app = express();
 
@@ -32,18 +32,26 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // session setup
-app.use(session({
-  secret: 'votre_secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie : {
-    maxAge: 60 * 60 * 1000 // 1 h
-  }
-}));
+app.use(
+  session({
+    secret: "votre_secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 60 * 60 * 1000, // 1 h
+    },
+  })
+);
 
 // secure paths setup
 app.all("*", (req, res, next) => {
-  const unsecuredPaths = ['/login', '/logout', '/create-account', '/users', '/testing/who-am-i'];
+  const unsecuredPaths = [
+    "/login",
+    "/logout",
+    "/create-account",
+    "/users",
+    "/testing/who-am-i",
+  ];
 
   if (unsecuredPaths.includes(req.path)) {
     return next();
@@ -51,28 +59,28 @@ app.all("*", (req, res, next) => {
   if (sessionUtility.isLoggedIn(req.session)) {
     return next();
   }
-  res.status(403).render("error", { message: `error *: ${Object.keys(req.params)}`, error: {} });
+  res.redirect("/login");
 });
 
 app.all("/admins/:idAdmin*", (req, res, next) => {
   if (Number(req.params.idAdmin) === req.session.rolesIdMap.adminId) {
     return next();
   }
-  res.status(403).render("error", { message: `error admins: ${req.params.idAdmin} !== ${req.session.rolesIdMap.adminId}`, error: {} });
+  res.redirect("/login");
 });
 
 app.all("/recruiters/:idRecruiter*", (req, res, next) => {
   if (Number(req.params.idRecruiter) === req.session.rolesIdMap.recruiterId) {
     return next();
   }
-  res.status(403).render("error", { message: `error`, error: {} });
+  res.redirect("/login");
 });
 
 app.all("/applicants/:idApplicant*", (req, res, next) => {
   if (Number(req.params.idApplicant) === req.session.rolesIdMap.applicantId) {
     return next();
   }
-  res.status(403).render("error", { message: `error admins: ${req.params.idAdmin} !== ${req.session.rolesIdMap.adminId}`, error: {} });
+  res.redirect("/login");
 });
 
 // use routers
@@ -87,7 +95,6 @@ app.use("/users", usersRouter);
 app.use("/applicants", applicantsRouter);
 app.use("/admins", adminsRouter);
 app.use("/recruiters", recruitersRouter);
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

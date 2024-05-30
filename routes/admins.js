@@ -4,11 +4,12 @@ const asyncHandler = require("express-async-handler");
 const AdminOrganisation = require("../models/adminOrganisation");
 const RecruiterOrganisation = require("../models/recruiterOrganisation");
 const User = require("../models/user");
+const Organisation = require("../models/organisation");
 
 router.get(
   "/:idAdmin",
   asyncHandler(async (req, res, next) => {
-    res.render("admin/home", {idAdmin: req.session.rolesIdMap.adminId});
+    res.render("admin/home", { idAdmin: req.session.rolesIdMap.adminId });
   })
 );
 
@@ -19,7 +20,8 @@ router.get(
       "onhold"
     );
     res.render("admin/manage_organisation_registration_requests", {
-      adminOrganisations: adminOrganisations, idAdmin: req.session.rolesIdMap.adminId
+      adminOrganisations: adminOrganisations,
+      idAdmin: req.session.rolesIdMap.adminId,
     });
   })
 );
@@ -30,7 +32,8 @@ router.get(
     const registrationRequests =
       await RecruiterOrganisation.getAllByStatusWithInfo("onhold");
     res.render("admin/manage_recruiter_registration_requests", {
-      recruiterOrganisations: registrationRequests, idAdmin: req.session.rolesIdMap.adminId
+      recruiterOrganisations: registrationRequests,
+      idAdmin: req.session.rolesIdMap.adminId,
     });
   })
 );
@@ -45,14 +48,43 @@ router.get(
       ...(await AdminOrganisation.getAllByStatusWithInfo("rejected"))
     );
     res.render("admin/organisation_registration_request_history", {
-      adminOrganisations: adminOrganisations, idAdmin: req.session.rolesIdMap.adminId
+      adminOrganisations: adminOrganisations,
+      idAdmin: req.session.rolesIdMap.adminId,
     });
   })
 );
 
-router.get('/:idAdmin/users', asyncHandler(async (req, res, next) => {
+router.get(
+  "/:idAdmin/users",
+  asyncHandler(async (req, res, next) => {
     const users = await User.getAll();
-    res.render("admin/manage_users", { users: users, idAdmin: req.session.rolesIdMap.adminId });
-}));
+    res.render("admin/manage_users", {
+      users: users,
+      idAdmin: req.session.rolesIdMap.adminId,
+    });
+  })
+);
+
+router.post(
+  "/:idAdmin/accept-organisation/:SIREN",
+  asyncHandler(async (req, res, next) => {
+    const SIREN = Number(req.params.SIREN);
+    await Organisation.changeStatus(SIREN, "accepted");
+    res.redirect(
+      `/admins/${req.params.idAdmin}/organisation-registration-requests/onhold`
+    );
+  })
+);
+
+router.post(
+  "/:idAdmin/reject-organisation/:SIREN",
+  asyncHandler(async (req, res, next) => {
+    const SIREN = Number(req.params.SIREN);
+    await Organisation.changeStatus(SIREN, "rejected");
+    res.redirect(
+      `/admins/${req.params.idAdmin}/organisation-registration-requests/onhold`
+    );
+  })
+);
 
 module.exports = router;
