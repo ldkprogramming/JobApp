@@ -38,8 +38,7 @@ router.post('/:idRecruiter/join-organisation', asyncHandler(async (req, res, nex
 }));
 
 router.get('/:idRecruiter/create-job-description', asyncHandler(async (req, res, next) => {
-    // faudra mettre slmt les organisations avec un lien ACTIF vers notre recruteur
-    const organisations = await organisation.getAll();
+    const organisations = await organisation.getAllByIdRecruiter(Number(req.params.idRecruiter));
     res.render('recruiter/create_job_description', {organisations:organisations, idRecruiter: req.session.rolesIdMap.recruiterId, idAdmin:req.session.rolesIdMap.adminId, idApplicant:req.session.rolesIdMap.applicantId});
 }));
 
