@@ -10,7 +10,7 @@ module.exports = {
   getAll: async () => {
     try {
       const [results] = await db.query(
-        "SELECT User.id as userid, Admin.id as adminid, Admin.iduser, email, pwd, lastname, firstname, phonenumber, dateofcreation, status FROM User LEFT JOIN Admin on Admin.iduser = User.id"
+        "SELECT User.id as userid, Admin.id as adminid, Admin.iduser, email, pwd, lastname, firstname, phonenumber, dateofcreation, status FROM User LEFT JOIN Admin on Admin.iduser = User.id WHERE User.status = 1"
       );
       return results;
     } catch (err) {
@@ -22,6 +22,20 @@ module.exports = {
       const [results] = await db.query("SELECT * FROM User WHERE email = ?", [
         email,
       ]);
+      if (results.length > 0) {
+        return results[0];
+      } else {
+        return null;
+      }
+    } catch (err) {
+      throw err;
+    }
+  },
+  getFirstAndLastName: async () => {
+    try {
+      const [results] = await db.query(
+        "SELECT firstname, lastname FROM User WHERE status = 1"
+      );
       if (results.length > 0) {
         return results[0];
       } else {
@@ -184,6 +198,16 @@ module.exports = {
       const [results] = await db.query("INSERT INTO Admin VALUES (NULL, ?)", [
         iduser,
       ]);
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteUser: async (iduser) => {
+    try {
+      const [results] = await db.query(
+        "UPDATE User SET status = 0 WHERE id = ?",
+        [iduser]
+      );
     } catch (err) {
       throw err;
     }

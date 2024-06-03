@@ -141,4 +141,13 @@ router.post(
   })
 );
 
+router.post(
+  "/:idAdmin/delete-users/:iduser",
+  asyncHandler(async (req, res, next) => {
+    const iduser = Number(req.params.iduser);
+    await User.deleteUser(iduser);
+    res.redirect(`/admins/${req.params.idAdmin}/users`);
+  })
+);
+
 module.exports = router;

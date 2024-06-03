@@ -18,7 +18,7 @@ module.exports = {
     workload,
     salary,
     description,
-    idorganisation
+    siren
   ) => {
     try {
       const [results] = await db.query(
@@ -32,7 +32,7 @@ module.exports = {
           workload,
           salary,
           description,
-          idorganisation,
+          siren,
         ]
       );
     } catch (err) {
