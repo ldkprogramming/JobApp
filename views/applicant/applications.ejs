@@ -10,53 +10,65 @@
     />
   </head>
   <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/applicants/<%=idApplicant%>">UserTest Panel</a>
-      <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/applicants/<%=idApplicant%>/job-offers/published">Offers</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/applicants/<%=idApplicant%>/job-applications">History</a>
-          </li>
-          <% if ((idAdmin !== null ) && (idAdmin !== undefined)) { %>
-          <li class="nav-item">
-            <a class="nav-link" href="/admins/<%=idAdmin%>">Admin Panel</a>
-          </li>
-          <%}%>
-
-          <% if ((idRecruiter !== null ) && (idRecruiter !== undefined)) { %>
-          <li class="nav-item">
-            <a class="nav-link" href="/recruiters/<%=idRecruiter%>">Recruiter Panel</a>
-          </li>
-          <%} else {%>
-          <li class="nav-item">
-            <a class="nav-link" href="/applicants/<%=idApplicant%>/become-recruiter"
-            >Become Recruiter</a
-            >
-          </li>
-          <%}%>
-        </ul>
-        <a class="btn btn-danger d-flex ms-auto" href="/logout">
-          Log Out
-        </a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/applicants/<%=idApplicant%>"
+          >User Panel</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/applicants/<%=idApplicant%>/job-offers/published"
+                >Offers</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/applicants/<%=idApplicant%>/job-applications"
+                >History</a
+              >
+            </li>
+            <% if ((idAdmin !== null ) && (idAdmin !== undefined)) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/admins/<%=idAdmin%>">Admin Panel</a>
+            </li>
+            <%}%> <% if ((idRecruiter !== null ) && (idRecruiter !== undefined))
+            { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/recruiters/<%=idRecruiter%>"
+                >Recruiter Panel</a
+              >
+            </li>
+            <%} else {%>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/applicants/<%=idApplicant%>/become-recruiter"
+                >Become Recruiter</a
+              >
+            </li>
+            <%}%>
+          </ul>
+          <a class="btn btn-danger d-flex ms-auto" href="/logout"> Log Out </a>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
+    <% if (jobApplications.length > 0) { %>
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-8">
@@ -76,5 +88,12 @@
         </div>
       </div>
     </div>
+    <%} else {%>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+      <div class="alert alert-danger" role="alert">
+        No offer linked to this applicant !
+      </div>
+    </div>
+    <% } %>
   </body>
 </html>

@@ -92,6 +92,8 @@
         </button>
       </div>
       <div class="row min-vh-100 justify-content-center">
+    
+  <%if (recruiterOrganisations.length > 0) {%>
   <div class="col-md-6">
     <% recruiterOrganisations.forEach((recruiterOrganisation)=> { %>
     <div class="card">
@@ -122,6 +124,13 @@
     <% }) %>
   </div>
 </div>
+<% } else { %>
+  <div class="d-flex justify-content-center align-items-center vh-100">
+      <div class="alert alert-danger" role="alert">
+        No recruiter to manage !
+      </div>
+    </div>
+    <% } %>
 
   </body>
 </html>

@@ -40,4 +40,25 @@ module.exports = {
       throw err;
     }
   },
+  create: async (idApplicant, idJobOffer) => {
+    try {
+      const date = new Date();
+      const [results] = await db.query(
+        "INSERT INTO JobApplication VALUES (NULL, ?, ?, ?)",
+        [date, idApplicant, idJobOffer]
+      );
+    } catch (err) {
+      throw err;
+    }
+  },
+  getIdByApplicantAndJobOffer: async (idApplicant, idJobOffer) => {
+    try {
+      const sql =
+        "SELECT id FROM JobApplication WHERE idapplicant = ? AND offer = ?";
+      const [results] = await db.query(sql, [idApplicant, idJobOffer]);
+      return results[0].id;
+    } catch (err) {
+      throw err;
+    }
+  },
 };

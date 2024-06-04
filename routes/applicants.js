@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 const JobOffer = require("../models/jobOffer");
 const JobApplication = require("../models/jobApplication");
 const Recruiter = require("../models/recruiter");
+const Attachement = require("../models/attachment");
 
 router.get(
   "/:idApplicant",
@@ -42,6 +43,21 @@ router.get(
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idAdmin: req.session.rolesIdMap.adminId,
     });
+  })
+);
+
+router.post(
+  "/:idApplicant/job-applications/:idJobOffer",
+  asyncHandler(async (req, res, next) => {
+    await JobApplication.create(req.params.idApplicant, req.params.idJobOffer);
+    const jobApplications = await JobApplication.getIdByApplicantAndJobOffer(
+      req.params.idApplicant,
+      req.params.idJobOffer
+    );
+    await Attachement.create(jobApplications, req.body.url);
+    await Attachement.res.redirect(
+      `/applicants/${req.params.idApplicant}/job-applications`
+    );
   })
 );
 

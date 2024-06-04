@@ -60,38 +60,11 @@
     </div>
 </nav>
 
+<%if (jobOffers.length > 0) {%>
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="mb-3">
-                <div class="input-group">
-                    <button
-                            class="btn btn-outline-secondary"
-                            type="button"
-                            id="sortByName"
-                    >
-                        Sort by Name
-                    </button>
-                    <button
-                            class="btn btn-outline-secondary"
-                            type="button"
-                            id="sortByDate"
-                    >
-                        Sort by Organisation
-                    </button>
-                    <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Search offers..."
-                            aria-label="Search offers"
-                            aria-describedby="button-addon2"
-                    />
-                    <button class="btn btn-primary" type="button" id="searchButton">
-                        Search
-                    </button>
-                </div>
-            </div>
-
             <div class="list-group">
                 <% jobOffers.forEach((jobOffer)=>{%>
                     <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
@@ -119,5 +92,12 @@
         </div>
     </div>
 </div>
+<%} else {%>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="alert alert-danger" role="alert">
+          No Offer to manage !
+        </div>
+      </div>
+      <% } %>
 </body>
 </html>
