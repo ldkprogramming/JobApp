@@ -52,19 +52,40 @@ module.exports = {
       throw err;
     }
   },
-    getAllByIdRecruiter: async (idRecruiter) => {
-      try {
-        const [results] = await db.query(`
+  getAllByIdRecruiter: async (idRecruiter) => {
+    try {
+      const [results] = await db.query(
+        `
         SELECT O.SIREN, O.name, O.type, O.headquarters, O.status
         FROM Organisation AS O
         JOIN RecruiterOrganisation AS RO
         ON O.SIREN = RO.idorganisation
         WHERE RO.idrecruiter = ?
         AND RO.status = 'accepted'
-        `, [idRecruiter]);
-        return results;
-      } catch (err) {
-        throw err;
-      }
+        `,
+        [idRecruiter]
+      );
+      return results;
+    } catch (err) {
+      throw err;
     }
+  },
+  getSIRENAndNameByNotIdRecruiterAndStatus: async (idRecruiter, status) => {
+    try {
+      const [results] = await db.query(
+        `
+        SELECT O.SIREN, O.name
+        FROM Organisation AS O
+        JOIN RecruiterOrganisation AS RO
+        ON O.SIREN = RO.idorganisation
+        WHERE NOT RO.idrecruiter = ?
+        AND RO.status = ?
+        `,
+        [idRecruiter, status]
+      );
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
 };

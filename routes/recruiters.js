@@ -63,9 +63,13 @@ router.post(
 router.get(
   "/:idRecruiter/join-organisation",
   asyncHandler(async (req, res, next) => {
-    // faudra faire en sorte quil puisse pas rerejoindre une organisation
-    // et aussi eviter qd y a plusieurs fois meme demande
+    const orga1 = await organisation.getAllByStatus("accepted");
+    const orga2 = await organisation.getAllByIdRecruiter(
+      Number(req.params.idRecruiter)
+    );
+    let difference = orga1.filter((x) => !orga2.includes(x));
     res.render("recruiter/join_organisation", {
+      organisations: difference,
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idAdmin: req.session.rolesIdMap.adminId,
       idApplicant: req.session.rolesIdMap.applicantId,
