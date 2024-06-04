@@ -68,6 +68,7 @@ router.get(
       Number(req.params.idRecruiter)
     );
     let difference = orga1.filter((x) => !orga2.includes(x));
+    res.json(difference);
     res.render("recruiter/join_organisation", {
       organisations: difference,
       idRecruiter: req.session.rolesIdMap.recruiterId,
