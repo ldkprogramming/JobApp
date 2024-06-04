@@ -73,6 +73,8 @@
         </div>
       </div>
     </nav>
+
+    <% if (organisations.length > 0) { %>
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
@@ -167,7 +169,8 @@
                 </div>
                 <div class="mb-3">
                   <label for="siren" class="form-label">SIREN</label>
-                  <select name = "siren"
+                  <select
+                    name="siren"
                     id="siren"
                     class="form-select"
                     aria-label="Default select example"
@@ -190,5 +193,12 @@
         </div>
       </div>
     </div>
+    <% } else { %>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+      <div class="alert alert-danger" role="alert">
+        No organisation linked to this recruiter !
+      </div>
+    </div>
+    <% } %>
   </body>
 </html>
