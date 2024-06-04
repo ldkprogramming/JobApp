@@ -81,7 +81,7 @@
               <h5 class="card-title">Job Description</h5>
               <form
                 method="post"
-                action="/recruiters/<%idRecruiter%>/create-job-description"
+                action="/recruiters/<%=idRecruiter%>/create-job-description"
               >
                 <div class="mb-3">
                   <label for="title" class="form-label">Title</label>
@@ -167,14 +167,14 @@
                 </div>
                 <div class="mb-3">
                   <label for="siren" class="form-label">SIREN</label>
-                  <select
+                  <select name = "siren"
                     id="siren"
                     class="form-select"
                     aria-label="Default select example"
                   >
                     <option selected>Company</option>
                     <% organisations.forEach((organisation) => { %>
-                    <option value="<%= organisation.id %>">
+                    <option value="<%= organisation.SIREN %>">
                       <%= organisation.name %>
                     </option>
                     <% }) %>

@@ -127,7 +127,7 @@ router.post(
       req.body.workload,
       req.body.salary,
       req.body.description,
-      req.body.SIREN
+      req.body.siren
     );
     res.redirect(
       `/recruiters/${Number(req.params.idRecruiter)}/create-job-description`
