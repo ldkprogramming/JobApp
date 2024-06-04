@@ -63,14 +63,13 @@ router.post(
 router.get(
   "/:idRecruiter/join-organisation",
   asyncHandler(async (req, res, next) => {
-    const orga1 = await organisation.getAllByStatus("accepted");
-    const orga2 = await organisation.getAllByIdRecruiter(
-      Number(req.params.idRecruiter)
-    );
-    let difference = orga1.filter((x) => !orga2.includes(x));
-    res.json(difference);
+    const organisations =
+      await organisation.getSIRENAndNameByNotIdRecruiterAndStatus(
+        req.session.rolesIdMap.recruiterId,
+        "accepted"
+      );
     res.render("recruiter/join_organisation", {
-      organisations: difference,
+      organisations: organisations,
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idAdmin: req.session.rolesIdMap.adminId,
       idApplicant: req.session.rolesIdMap.applicantId,

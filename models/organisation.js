@@ -74,14 +74,11 @@ module.exports = {
     try {
       const [results] = await db.query(
         `
-        SELECT O.SIREN, O.name
-        FROM Organisation AS O
-        JOIN RecruiterOrganisation AS RO
-        ON O.SIREN = RO.idorganisation
-        WHERE NOT RO.idrecruiter = ?
-        AND RO.status = ?
-        `,
-        [idRecruiter, status]
+        SELECT * FROM Organisation 
+        WHERE Organisation.status = ?
+        AND Organisation.SIREN NOT IN 
+        (SELECT RecruiterOrganisation.idorganisation FROM RecruiterOrganisation WHERE RecruiterOrganisation.idrecruiter = ?)`,
+        [status, idRecruiter]
       );
       return results;
     } catch (err) {
