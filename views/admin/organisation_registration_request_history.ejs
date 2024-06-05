@@ -53,9 +53,7 @@
               >
             </li>
           </ul>
-          <a class="btn btn-danger d-flex ms-auto" href="/logout">
-            Log Out
-          </a>
+          <a class="btn btn-danger d-flex ms-auto" href="/logout"> Log Out </a>
         </div>
       </div>
     </nav>
@@ -78,20 +76,45 @@
         </button>
       </div>
 
+      <% if (organisations.length > 0) {%>
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <% adminOrganisations.forEach((adminOrganisation) => {%>
+          <% organisations.forEach((organisation) => {%>
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title"><%= adminOrganisation.name %></h5>
+              <h5 class="card-title">
+                <strong>Company : </strong><%= organisation.name %>
+              </h5>
               <p class="card-text">
-                <strong>Offer status : </strong><%= adminOrganisation.status%>
+                <strong>SIREN : </strong><%= organisation.SIREN%>
               </p>
+              <p class="card-text">
+                <strong>Address : </strong><%= organisation.headquarters%>
+              </p>
+              <% if (organisation.status === "accepted") {%>
+              <strong class="d-inline">Offer status : </strong>
+              <p class="card-text text-success d-inline">
+                <%= organisation.status%>
+              </p>
+              <% } else if (organisation.status === "rejected") {%>
+              <strong class="d-inline">Offer status : </strong>
+              <p class="card-text text-danger d-inline">
+                <%= organisation.status%>
+              </p>
+              <% } else {%>
+              <strong class="d-inline">Offer status : </strong>
+              <p class="card-text text-warning d-inline">
+                <%= organisation.status%>
+              </p>
+              <% } %>
             </div>
           </div>
           <% });%>
         </div>
       </div>
+      <% } else { %>
+      <div class="alert alert-warning" role="alert">No organisation found.</div>
+      <% } %>
     </div>
   </body>
 </html>

@@ -85,4 +85,14 @@ module.exports = {
       throw err;
     }
   },
+  getAllExceptOnHold: async () => {
+    try {
+      const [results] = await db.query(
+        "SELECT * FROM Organisation WHERE status != 'onhold'"
+      );
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
 };

@@ -161,7 +161,11 @@ router.post(
     // faudra changer en select
     // faut gerer quand y a une erreur pour bien redirect
     await Recruiter.create(Number(req.params.idApplicant));
-    await RecruiterOrganisation.create("onhold", recruiterId, req.body.siren);
+    const idUser = await await RecruiterOrganisation.create(
+      "onhold",
+      recruiterId,
+      req.body.siren
+    );
     res.redirect(`/recruiters/${Number(req.params.idApplicant)}`);
   })
 );
