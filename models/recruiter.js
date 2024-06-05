@@ -39,11 +39,11 @@ module.exports = {
       throw err;
     }
   },
-  create: async (idApplicant, status) => {
+  create: async (idUser, status) => {
     try {
       const [results] = await db.query(
-        "INSERT INTO Recruiter VALUES (NULL, (SELECT iduser FROM Applicant WHERE id = ?), ?)",
-        [idApplicant, status]
+        "INSERT INTO Recruiter VALUES (NULL, ?, ?)",
+        [idUser, status]
       );
     } catch (err) {
       throw err;

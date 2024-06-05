@@ -18,6 +18,7 @@ router.get(
       idApplicant: req.session.rolesIdMap.applicantId,
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idAdmin: req.session.rolesIdMap.adminId,
+      idUser: req.session.rolesIdMap.id,
     });
   })
 );
@@ -33,6 +34,7 @@ router.get(
       idApplicant: req.session.rolesIdMap.applicantId,
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idAdmin: req.session.rolesIdMap.adminId,
+      idUser: req.session.rolesIdMap.id,
     });
   })
 );
@@ -49,6 +51,7 @@ router.get(
       idApplicant: req.session.rolesIdMap.applicantId,
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idAdmin: req.session.rolesIdMap.adminId,
+      idUser: req.session.rolesIdMap.id,
     });
   })
 );
@@ -81,6 +84,7 @@ router.get(
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idAdmin: req.session.rolesIdMap.adminId,
       idJobApplication: req.params.idJobApplication,
+      idUser: req.session.rolesIdMap.id,
     });
   })
 );
@@ -103,11 +107,16 @@ router.get(
   "/:idApplicant/become-recruiter",
   asyncHandler(async (req, res, next) => {
     const organisations = await Organisation.getAllByStatus("accepted");
+    const recruiterOrganisations = await RecruiterOrganisation.getAllByIdUser(
+      req.session.rolesIdMap.id
+    );
     res.render("applicant/recruiter_registration_request", {
       organisations: organisations,
+      recruiterOrganisations: recruiterOrganisations,
       idApplicant: req.session.rolesIdMap.applicantId,
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idAdmin: req.session.rolesIdMap.adminId,
+      idUser: req.session.rolesIdMap.id,
     });
   })
 );
@@ -154,14 +163,34 @@ router.post(
 /* Join Organisation */
 
 router.post(
-  "/:idApplicant/join-organisation",
+  "/:idApplicant/join-organisation/:idUser",
   asyncHandler(async (req, res, next) => {
-    await Recruiter.create(req.params.idApplicant, "onhold");
-    await RecruiterOrganisation.createNew(
+    await Recruiter.create(req.params.idUser, "onhold");
+    await RecruiterOrganisation.createByIdUser(
       "onhold",
-      req.params.idApplicant,
+      req.params.idUser,
+      req.body.siren
+    );
+    res.redirect(`/applicants/${Number(req.params.idApplicant)}`);
+  })
+);
+
+/* Create Organisation */
+router.post(
+  "/:idApplicant/create-organisation/:idUser",
+  asyncHandler(async (req, res, next) => {
+    await Organisation.create(
       req.body.siren,
-      "yes"
+      req.body.name,
+      req.body.type,
+      req.body.headquarters,
+      "onhold"
+    );
+    await Recruiter.create(req.params.idUser, "onhold");
+    await RecruiterOrganisation.createByIdUser(
+      "onhold",
+      req.params.idUser,
+      req.body.siren
     );
     res.redirect(`/applicants/${Number(req.params.idApplicant)}`);
   })
