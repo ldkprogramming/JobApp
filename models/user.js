@@ -1,4 +1,6 @@
 const db = require("./db.js");
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 module.exports = {
   // getAll: (callback) => {
   //     db.query("SELECT * FROM User",
@@ -169,13 +171,18 @@ module.exports = {
   },
   isLoginValid: async (email, pwd) => {
     try {
+
       const [results] = await db.query(
         `
-        SELECT * FROM User WHERE email = ? AND pwd = ?
+        SELECT * FROM User WHERE email = ?
       `,
-        [email, pwd]
+        [email]
       );
-      return results.length !== 0;
+      if (results.length === 0) {
+        return false;
+      }
+      const match = await bcrypt.compare(pwd, results[0].pwd);
+      return match;
     } catch (err) {
       throw err;
     }

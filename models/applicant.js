@@ -36,5 +36,13 @@ module.exports = {
         } catch (err) {
             throw err;
         }
+    },
+    create : async (idUser) => {
+        try {
+            const sql = 'INSERT INTO Applicant VALUES (NULL, ?)';
+            await db.query(sql, [idUser]);
+        } catch (err) {
+            throw err;
+        }
     }
 }
