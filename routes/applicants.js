@@ -55,9 +55,7 @@ router.post(
       req.params.idJobOffer
     );
     await Attachement.create(jobApplications, req.body.url);
-    await Attachement.res.redirect(
-      `/applicants/${req.params.idApplicant}/job-applications`
-    );
+    res.redirect(`/applicants/${req.params.idApplicant}/job-applications`);
   })
 );
 
