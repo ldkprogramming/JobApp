@@ -82,4 +82,33 @@ router.post(
   })
 );
 
+router.get(
+  "/:idApplicant/complete-offer/:idJobApplication",
+  asyncHandler(async (req, res, next) => {
+    const jobOffers =
+      await JobOffer.getAllByIdApplicantAndOfferIdAndApplicationId(
+        req.params.idJobApplication
+      );
+    res.render("applicant/complete_offer", {
+      jobOffers: jobOffers,
+      idApplicant: req.session.rolesIdMap.applicantId,
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idAdmin: req.session.rolesIdMap.adminId,
+      idJobApplication: req.params.idJobApplication,
+    });
+  })
+);
+
+router.post(
+  "/:idApplicant/complete-job-applications/:idJobOffer",
+  asyncHandler(async (req, res, next) => {
+    const idJobApplication = await JobApplication.getIdByApplicantAndJobOffer(
+      req.params.idApplicant,
+      req.params.idJobOffer
+    );
+    await Attachement.create(idJobApplication, req.body.url);
+    res.redirect(`/applicants/${req.params.idApplicant}/job-applications`);
+  })
+);
+
 module.exports = router;

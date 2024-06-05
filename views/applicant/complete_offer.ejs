@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Page</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .card {
+        margin-bottom: 20px;
+      }
+
+      .drop-zone {
+        border: 2px dashed #ccc;
+        border-radius: 10px;
+        padding: 40px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .drop-zone:hover {
+        border-color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/applicants/<%=idApplicant%>"
+          >User Panel</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/applicants/<%=idApplicant%>/job-offers/published"
+                >Offers</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/applicants/<%=idApplicant%>/job-applications"
+                >History</a
+              >
+            </li>
+            <% if ((idAdmin !== null ) && (idAdmin !== undefined)) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/admins/<%=idAdmin%>">Admin Panel</a>
+            </li>
+            <%}%> <% if ((idRecruiter !== null ) && (idRecruiter !== undefined))
+            { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/recruiters/<%=idRecruiter%>"
+                >Recruiter Panel</a
+              >
+            </li>
+            <%} else {%>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/applicants/<%=idApplicant%>/become-recruiter"
+                >Become Recruiter</a
+              >
+            </li>
+            <%}%>
+          </ul>
+          <a class="btn btn-danger d-flex ms-auto" href="/logout"> Log Out </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <%if (jobOffers.length > 0) {%>
+          <div class="list-group">
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-md-10">
+                  <% jobOffers.forEach((jobOffer)=> { %>
+                  <div class="card">
+                    <div class="card-body">
+                      <form
+                        method="post"
+                        action="/applicants/<%=idApplicant%>/complete-job-applications/<%=jobOffer.id%>"
+                      >
+                        <input
+                          type="hidden"
+                          name="idJobOffer"
+                          value="<%=jobOffer.id%>"
+                        />
+                        <h5 class="card-title"><%=jobOffer.title%></h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                          <%=jobOffer.deadline%>
+                        </h6>
+                        <p class="card-text"><%=jobOffer.name%></p>
+                        <p class="card-text">
+                          <strong>Description : </strong
+                          ><%=jobOffer.description%>
+                        </p>
+                        <p class="card-text">
+                          <strong>Salary : </strong><%=jobOffer.salary%>$ per
+                          year
+                        </p>
+                        <p class="card-text">
+                          <strong>Workload : </strong><%=jobOffer.workload%>
+                        </p>
+                        <p class="card-text">
+                          <strong>Place : </strong><%=jobOffer.place%>
+                        </p>
+                        <p class="card-text">
+                          <strong>Supervisor : </strong><%=jobOffer.supervisor%>
+                        </p>
+                        <div class="drop-zone mt-3">
+                          <p class="card-text">
+                            <strong>Number of attachements required : </strong
+                            ><%=jobOffer.numberofattachments%>
+                          </p>
+                          <p>Drag & Drop files here</p>
+                          <p>or</p>
+                          <p>
+                            <input
+                              name="url"
+                              type="file"
+                              multiple="multiple"
+                              accept=".pdf,.doc,.docx,.txt"
+                            />
+                          </p>
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                          Apply
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                  <% }) %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } else { %>
+          <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="alert alert-danger" role="alert">No offer yet !</div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

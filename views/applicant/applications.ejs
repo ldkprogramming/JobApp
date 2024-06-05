@@ -78,9 +78,14 @@
               <h5 class="card-title"><%=jobApplication.title%></h5>
               <p class="card-text"><%=jobApplication.description%></p>
               <p class="card-text"><%=jobApplication.name%></p>
-              <button class="btn btn-success me-2" type="button">
-                Complete
-              </button>
+              <form
+                action="/applicants/<%=idApplicant%>/complete-offer/<%=jobApplication.jaid%>"
+                method="get"
+              >
+                <button class="btn btn-success me-2" type="submit">
+                  Complete
+                </button>
+              </form>
               <button class="btn btn-danger" type="button">Cancel</button>
             </div>
           </div>

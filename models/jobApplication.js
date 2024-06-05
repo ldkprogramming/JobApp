@@ -22,7 +22,7 @@ module.exports = {
   getNameAndTitleAndDescriptionByIdApplicant: async (idApplicant) => {
     try {
       const [results] = await db.query(
-        "SELECT title, description, name FROM JobApplication JOIN JobOffer on JobApplication.offer = JobOffer.id JOIN JobDescription on JobOffer.idjobdescription = JobDescription.id JOIN Organisation on JobDescription.idorganisation = Organisation.SIREN WHERE JobApplication.idapplicant = ?",
+        "SELECT title,name,description,JobApplication.id as jaid FROM JobApplication JOIN JobOffer on JobApplication.offer = JobOffer.id JOIN JobDescription on JobOffer.idjobdescription = JobDescription.id JOIN Organisation on JobDescription.idorganisation = Organisation.SIREN WHERE JobApplication.idapplicant = ?",
         [idApplicant]
       );
       return results;
