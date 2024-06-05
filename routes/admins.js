@@ -21,11 +21,9 @@ router.get(
 router.get(
   "/:idAdmin/organisation-registration-requests/onhold",
   asyncHandler(async (req, res, next) => {
-    const adminOrganisations = await AdminOrganisation.getAllByStatusWithInfo(
-      "onhold"
-    );
+    const organisations = await Organisation.getAllByStatus("onhold");
     res.render("admin/manage_organisation_registration_requests", {
-      adminOrganisations: adminOrganisations,
+      organisations: organisations,
       idAdmin: req.session.rolesIdMap.adminId,
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idApplicant: req.session.rolesIdMap.applicantId,

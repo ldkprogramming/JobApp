@@ -92,30 +92,30 @@
         </button>
       </div>
 
-      <% if (adminOrganisations.length > 0) { %>
+      <% if (organisations.length > 0) { %>
       <div class="row justify-content-center">
   <div class="col-md-6">
-    <% adminOrganisations.forEach((adminOrganisation) => { %>
+    <% organisations.forEach((organisation) => { %>
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title"><%= adminOrganisation.name %></h5>
+        <h5 class="card-title"><%= organisation.name %></h5>
         <p class="card-text">
-          <strong>Headquarters : </strong> <%= adminOrganisation.headquarters %>
+          <strong>Headquarters : </strong> <%= organisation.headquarters %>
         </p>
         <p class="card-text">
-          <strong>SIREN Number : </strong> <%= adminOrganisation.SIREN %>
+          <strong>SIREN Number : </strong> <%= organisation.SIREN %>
         </p>
         <div class="d-flex">
           <form
             method="post"
-            action="/admins/<%=idAdmin%>/accept-organisation/<%=adminOrganisation.SIREN%>"
+            action="/admins/<%=idAdmin%>/accept-organisation/<%=organisation.SIREN%>"
             class="mr-2"
           >
             <button type="submit" class="btn btn-success">Accept</button>
           </form>
           <form
             method="post"
-            action="/admins/<%=idAdmin%>/reject-organisation/<%=adminOrganisation.SIREN%>"
+            action="/admins/<%=idAdmin%>/reject-organisation/<%=organisation.SIREN%>"
           >
             <button type="submit" class="btn btn-danger">Refuse</button>
           </form>
