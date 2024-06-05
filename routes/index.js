@@ -33,9 +33,6 @@ router.post(
     } else {
       res.send({
         message: "Nom d'utilisateur ou mot de passe incorrect.",
-        test: "hey",
-        email: req.body.email,
-        password: req.body.password,
       });
     }
   })

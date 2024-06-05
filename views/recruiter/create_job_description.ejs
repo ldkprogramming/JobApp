@@ -56,18 +56,6 @@
                 >Create Job Description</a
               >
             </li>
-            <% if ((idAdmin !== null ) && (idAdmin !== undefined)) { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/admins/<%=idAdmin%>">Admin Panel</a>
-            </li>
-            <%}%> <% if ((idApplicant !== null ) && (idApplicant !== undefined))
-            { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/applicants/<%=idApplicant%>"
-                >Applicant Panel</a
-              >
-            </li>
-            <%}%>
           </ul>
           <a class="btn btn-danger d-flex ms-auto" href="/logout"> Log Out </a>
         </div>
