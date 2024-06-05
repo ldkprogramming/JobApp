@@ -5,6 +5,8 @@ const JobOffer = require("../models/jobOffer");
 const JobApplication = require("../models/jobApplication");
 const Recruiter = require("../models/recruiter");
 const Attachement = require("../models/attachment");
+const Organisation = require("../models/organisation");
+const RecruiterOrganisation = require("../models/recruiterOrganisation");
 
 router.get(
   "/:idApplicant",
@@ -108,6 +110,59 @@ router.post(
     );
     await Attachement.create(idJobApplication, req.body.url);
     res.redirect(`/applicants/${req.params.idApplicant}/job-applications`);
+  })
+);
+
+router.get(
+  "/:idRecruiter/organisation-registration-request",
+  asyncHandler(async (req, res, next) => {
+    res.render("recruiter/organisation_registration_request", {
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idAdmin: req.session.rolesIdMap.adminId,
+      idApplicant: req.session.rolesIdMap.applicantId,
+    });
+  })
+);
+
+router.post(
+  "/:idRecruiter/organisation-registration-request",
+  asyncHandler(async (req, res, next) => {
+    await Organisation.create(
+      req.body.siren,
+      req.body.name,
+      req.body.type,
+      req.body.headquarters,
+      "onhold"
+    );
+    res.redirect(`/recruiters/${Number(req.params.idRecruiter)}`);
+  })
+);
+
+router.get(
+  "/:idRecruiter/join-organisation",
+  asyncHandler(async (req, res, next) => {
+    const organisations =
+      await organisation.getSIRENAndNameByNotIdRecruiterAndStatus(
+        req.session.rolesIdMap.recruiterId,
+        "accepted"
+      );
+    res.render("recruiter/join_organisation", {
+      organisations: organisations,
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idAdmin: req.session.rolesIdMap.adminId,
+      idApplicant: req.session.rolesIdMap.applicantId,
+    });
+  })
+);
+
+router.post(
+  "/:idApplicant/join-organisation",
+  asyncHandler(async (req, res, next) => {
+    // faudra changer en select
+    // faut gerer quand y a une erreur pour bien redirect
+    await Recruiter.create(Number(req.params.idApplicant));
+    await RecruiterOrganisation.create("onhold", recruiterId, req.body.siren);
+    res.redirect(`/recruiters/${Number(req.params.idApplicant)}`);
   })
 );
 

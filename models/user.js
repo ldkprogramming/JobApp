@@ -1,5 +1,5 @@
 const db = require("./db.js");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const saltRounds = 10;
 module.exports = {
   // getAll: (callback) => {
@@ -171,7 +171,6 @@ module.exports = {
   },
   isLoginValid: async (email, pwd) => {
     try {
-
       const [results] = await db.query(
         `
         SELECT * FROM User WHERE email = ?
@@ -215,6 +214,21 @@ module.exports = {
         "UPDATE User SET status = 0 WHERE id = ?",
         [iduser]
       );
+    } catch (err) {
+      throw err;
+    }
+  },
+  getByIdApplicant: async (id) => {
+    try {
+      const [results] = await db.query(
+        "SELECT iduser FROM Applicant WHERE idapplicant = ?",
+        [id]
+      );
+      if (results.length > 0) {
+        return results[0];
+      } else {
+        return null;
+      }
     } catch (err) {
       throw err;
     }
