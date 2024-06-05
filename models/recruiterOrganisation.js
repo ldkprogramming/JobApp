@@ -52,11 +52,21 @@ module.exports = {
       throw err;
     }
   },
-  create: async (status, idRecruiter, siren) => {
+  create: async (status, idRecruiter, siren, isNew) => {
     try {
       const [results] = await db.query(
-        "INSERT INTO RecruiterOrganisation VALUES (?, ?, ?)",
-        [status, idRecruiter, siren]
+        "INSERT INTO RecruiterOrganisation VALUES (?, ?, ?,?)",
+        [status, idRecruiter, siren, isNew]
+      );
+    } catch (err) {
+      throw err;
+    }
+  },
+  createNew: async (status, idApplicant, siren, isNew) => {
+    try {
+      const [results] = await db.query(
+        "INSERT INTO RecruiterOrganisation VALUES (?, (SELECT id FROM Recruiter WHERE iduser IN (SELECT iduser FROM Applicant WHERE id = ?)), ?, ?)",
+        [status, idApplicant, siren, isNew]
       );
     } catch (err) {
       throw err;

@@ -7,6 +7,9 @@ const Recruiter = require("../models/recruiter");
 const Attachement = require("../models/attachment");
 const Organisation = require("../models/organisation");
 const RecruiterOrganisation = require("../models/recruiterOrganisation");
+const User = require("../models/user");
+
+/* Home */
 
 router.get(
   "/:idApplicant",
@@ -18,6 +21,8 @@ router.get(
     });
   })
 );
+
+/* Job Offers */
 
 router.get(
   "/:idApplicant/job-offers/published",
@@ -61,28 +66,7 @@ router.post(
   })
 );
 
-router.get(
-  "/:idApplicant/become-recruiter",
-  asyncHandler(async (req, res, next) => {
-    // a faire
-    res.render("applicant/recruiter_registration_request", {
-      idApplicant: req.session.rolesIdMap.applicantId,
-      idRecruiter: req.session.rolesIdMap.recruiterId,
-      idAdmin: req.session.rolesIdMap.adminId,
-    });
-  })
-);
-
-router.post(
-  "/:idApplicant/become-recruiter",
-  asyncHandler(async (req, res, next) => {
-    // ptet verifications de si deja compte recruiter
-    await Recruiter.create(req.session.rolesIdMap.id);
-    const newId = await Recruiter.getIdByIdUser(req.session.rolesIdMap.id);
-    req.session.rolesIdMap.recruiterId = newId;
-    res.redirect(`/recruiters/${newId}`);
-  })
-);
+/* Complete Job Offers */
 
 router.get(
   "/:idApplicant/complete-offer/:idJobApplication",
@@ -113,7 +97,36 @@ router.post(
   })
 );
 
+/* Become Recruiter */
+
 router.get(
+  "/:idApplicant/become-recruiter",
+  asyncHandler(async (req, res, next) => {
+    const organisations = await Organisation.getAllByStatus("accepted");
+    res.render("applicant/recruiter_registration_request", {
+      organisations: organisations,
+      idApplicant: req.session.rolesIdMap.applicantId,
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idAdmin: req.session.rolesIdMap.adminId,
+    });
+  })
+);
+
+/*
+router.post(
+  "/:idApplicant/become-recruiter",
+  asyncHandler(async (req, res, next) => {
+    // ptet verifications de si deja compte recruiter
+    await Recruiter.create(req.session.rolesIdMap.id);
+    const newId = await Recruiter.getIdByIdUser(req.session.rolesIdMap.id);
+    req.session.rolesIdMap.recruiterId = newId;
+    res.redirect(`/recruiters/${newId}`);
+  })
+); */
+
+/* Job Offers History */
+
+/*router.get(
   "/:idRecruiter/organisation-registration-request",
   asyncHandler(async (req, res, next) => {
     res.render("recruiter/organisation_registration_request", {
@@ -122,7 +135,7 @@ router.get(
       idApplicant: req.session.rolesIdMap.applicantId,
     });
   })
-);
+);*/
 
 router.post(
   "/:idRecruiter/organisation-registration-request",
@@ -138,35 +151,19 @@ router.post(
   })
 );
 
-router.get(
-  "/:idRecruiter/join-organisation",
-  asyncHandler(async (req, res, next) => {
-    const organisations =
-      await organisation.getSIRENAndNameByNotIdRecruiterAndStatus(
-        req.session.rolesIdMap.recruiterId,
-        "accepted"
-      );
-    res.render("recruiter/join_organisation", {
-      organisations: organisations,
-      idRecruiter: req.session.rolesIdMap.recruiterId,
-      idAdmin: req.session.rolesIdMap.adminId,
-      idApplicant: req.session.rolesIdMap.applicantId,
-    });
-  })
-);
+/* Join Organisation */
 
 router.post(
   "/:idApplicant/join-organisation",
   asyncHandler(async (req, res, next) => {
-    // faudra changer en select
-    // faut gerer quand y a une erreur pour bien redirect
-    await Recruiter.create(Number(req.params.idApplicant));
-    const idUser = await await RecruiterOrganisation.create(
+    await Recruiter.create(req.params.idApplicant, "onhold");
+    await RecruiterOrganisation.createNew(
       "onhold",
-      recruiterId,
-      req.body.siren
+      req.params.idApplicant,
+      req.body.siren,
+      "yes"
     );
-    res.redirect(`/recruiters/${Number(req.params.idApplicant)}`);
+    res.redirect(`/applicants/${Number(req.params.idApplicant)}`);
   })
 );
 

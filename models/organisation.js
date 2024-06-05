@@ -1,4 +1,5 @@
 const db = require("./db");
+const { getAllByStatus } = require("./recruiterOrganisation");
 
 module.exports = {
   getBySiren: async (siren) => {

@@ -56,105 +56,97 @@
     </nav>
 
     <% if (organisations.length > 0) { %>
-    <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Join Organisation</h5>
-              <form
-                method="post"
-                action="/recruiters/<%=idRecruiter%>/join-organisation"
-              >
-              <div class="mb-3">
-                  <label for="siren" class="form-label">SIREN</label>
-                  <select
-                    name="siren"
-                    id="siren"
-                    class="form-select"
-                    aria-label="Default select example"
-                  >
-                    <% organisations.forEach((organisation) => { %>
-                    <option value="<%= organisation.SIREN %>">
-                      <%= organisation.name %>
-                    </option>
-                    <% }) %>
-                  </select>
-                </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Join</button>
-              </form>
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Add Organisation</h5>
+                <form method="post" action="/applicants/<%=idApplicant%>/create-organisation">
+                  <div class="mb-3">
+                    <label for="sirenInput" class="form-label">SIREN</label>
+                    <input
+                      name="siren"
+                      type="text"
+                      class="form-control"
+                      id="sirenInput"
+                      placeholder="Enter SIREN"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="nameInput" class="form-label">Name</label>
+                    <input
+                      name="name"
+                      type="text"
+                      class="form-control"
+                      id="nameInput"
+                      placeholder="Enter Name"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="typeInput" class="form-label">Type</label>
+                    <input
+                      name="type"
+                      type="text"
+                      class="form-control"
+                      id="typeInput"
+                      placeholder="Enter Type"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="headquartersInput" class="form-label">Headquarters</label>
+                    <textarea
+                      name="headquarters"
+                      class="form-control"
+                      id="headquartersInput"
+                      rows="3"
+                      placeholder="Enter Headquarters"
+                      required
+                    ></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Join Organisation</h5>
+                <form method="post" action="/applicants/<%=idApplicant%>/join-organisation">
+                  <div class="mb-3">
+                    <label for="siren" class="form-label">SIREN</label>
+                    <select
+                      name="siren"
+                      id="siren"
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <% organisations.forEach((organisation) => { %>
+                      <option value="<%= organisation.SIREN %>">
+                        <%= organisation.name %>
+                      </option>
+                      <% }) %>
+                    </select>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Join</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     <% } else { %>
-    <div class="d-flex justify-content-center align-items-center vh-100">
-      <div class="alert alert-danger" role="alert">
-        No organisation available !
-      </div>
-    </div>
-    <% } %>
-
-    <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Add Organisation</h5>
-                    <form method="post" action="/recruiters/<%=idRecruiter%>/organisation-registration-request">
-                        <div class="mb-3">
-                            <label for="sirenInput" class="form-label">SIREN</label>
-                            <input
-                                    name="siren"
-                                    type="text"
-                                    class="form-control"
-                                    id="sirenInput"
-                                    placeholder="Enter SIREN"
-                                    required
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label for="nameInput" class="form-label">Name</label>
-                            <input
-                                    name="name"
-                                    type="text"
-                                    class="form-control"
-                                    id="nameInput"
-                                    placeholder="Enter Name"
-                                    required
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label for="typeInput" class="form-label">Type</label>
-                            <input
-                                    name="type"
-                                    type="text"
-                                    class="form-control"
-                                    id="typeInput"
-                                    placeholder="Enter Type"
-                                    required
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label for="headquartersInput" class="form-label"
-                            >Headquarters</label
-                            >
-                            <textarea
-                                    name="headquarters"
-                                    class="form-control"
-                                    id="headquartersInput"
-                                    rows="3"
-                                    placeholder="Enter Headquarters"
-                                    required
-                            ></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-            </div>
+      <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="alert alert-danger" role="alert">
+          No organisation available!
         </div>
+      </div>
+    <% } %>
+    
     </div>
 </div>
 
