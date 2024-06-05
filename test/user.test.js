@@ -25,7 +25,7 @@ describe('User model', () => {
         expect(roles.length).toBe(0);
     });
     it('should check credentials', async () => {
-        expect(await User.isLoginValid("harry.walker@example.com", "password10")).toBeTruthy();
+        expect(await User.isLoginValid("karlou@gmail.com", "a")).toBeTruthy();
         expect(await User.isLoginValid("harry.walker@example.com", "password010101001")).toBeFalsy();
     });
     it('should get roles and ids for a user (by email)', async () => {
