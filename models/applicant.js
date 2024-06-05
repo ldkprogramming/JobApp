@@ -44,5 +44,13 @@ module.exports = {
         } catch (err) {
             throw err;
         }
+    },
+    deleteById: async (id) => {
+        try {
+            const sql = 'DELETE FROM Applicant WHERE id = ?';
+            await db.query(sql, [id]);
+        } catch (err) {
+            throw err;
+        }
     }
 }
