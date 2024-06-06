@@ -27,7 +27,13 @@ router.get(
 router.get(
   "/:idAdmin/organisation-registration-requests/history",
   asyncHandler(async (req, res, next) => {
-    const organisations = await Organisation.getAllExceptOnHold();
+    let organisations;
+    if (req.query.search) {
+        organisations = await Organisation.getAllLikeNameOrSirenExceptOnhold(req.query.search)
+    } else {
+        organisations = await Organisation.getAllExceptOnHold();
+    }
+
     res.render("admin/organisation_registration_request_history", {
       organisations: organisations,
       idAdmin: req.session.rolesIdMap.adminId,
@@ -39,23 +45,28 @@ router.get(
 
 /* Manage Organisations */
 
-router.get(
-  "search/:SIREN",
-  asyncHandler(async (req, res, next) => {
-    const organisations = await Organisation.getBySiren(req.params.SIREN);
-    res.render("admin/manage_organisation_registration_requests", {
-      organisations: organisations,
-      idAdmin: req.session.rolesIdMap.adminId,
-      idRecruiter: req.session.rolesIdMap.recruiterId,
-      idApplicant: req.session.rolesIdMap.applicantId,
-    });
-  })
-);
+// router.get(
+//   "search/:SIREN",
+//   asyncHandler(async (req, res, next) => {
+//     const organisations = await Organisation.getBySiren(req.params.SIREN);
+//     res.render("admin/manage_organisation_registration_requests", {
+//       organisations: organisations,
+//       idAdmin: req.session.rolesIdMap.adminId,
+//       idRecruiter: req.session.rolesIdMap.recruiterId,
+//       idApplicant: req.session.rolesIdMap.applicantId,
+//     });
+//   })
+// );
 
 router.get(
   "/:idAdmin/organisation-registration-requests/onhold",
   asyncHandler(async (req, res, next) => {
-    const organisations = await Organisation.getAllByStatus("onhold");
+      let organisations;
+      if (req.query.siren) {
+           organisations = await Organisation.getAllLikeSiren(req.query.siren);
+      } else {
+          organisations = await Organisation.getAllByStatus("onhold");
+      }
     res.render("admin/manage_organisation_registration_requests", {
       organisations: organisations,
       idAdmin: req.session.rolesIdMap.adminId,
@@ -134,7 +145,12 @@ router.post(
 router.get(
   "/:idAdmin/users",
   asyncHandler(async (req, res, next) => {
-    const users = await User.getAll();
+      let users;
+      if (req.query.search) {
+          users = await User.getAllLikeLastnameOrFirstname(req.query.search)
+      } else {
+          users = await User.getAll();
+      }
     res.render("admin/manage_users", {
       users: users,
       idAdmin: req.session.rolesIdMap.adminId,
