@@ -40,7 +40,7 @@ router.get(
 /* Manage Organisations */
 
 router.get(
-  "search-organisation/:SIREN",
+  "search/:SIREN",
   asyncHandler(async (req, res, next) => {
     const organisations = await Organisation.getBySiren(req.params.SIREN);
     res.render("admin/manage_organisation_registration_requests", {
