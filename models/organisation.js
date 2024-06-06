@@ -105,4 +105,17 @@ module.exports = {
       throw err;
     }
   },
+  getAllLikeNameOrSirenExceptOnhold: async (search) => {
+    try {
+      const sql = `
+      SELECT * FROM Organisation 
+      WHERE status != 'onhold'
+      AND ((SIREN LIKE CONCAT(?,'%')) OR (name LIKE CONCAT(?,'%')))
+      `
+      const [results] = await db.query(sql, [search, search]);
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  }
 };

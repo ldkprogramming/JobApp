@@ -27,7 +27,13 @@ router.get(
 router.get(
   "/:idAdmin/organisation-registration-requests/history",
   asyncHandler(async (req, res, next) => {
-    const organisations = await Organisation.getAllExceptOnHold();
+    let organisations;
+    if (req.query.search) {
+        organisations = await Organisation.getAllLikeNameOrSirenExceptOnhold(req.query.search)
+    } else {
+        organisations = await Organisation.getAllExceptOnHold();
+    }
+
     res.render("admin/organisation_registration_request_history", {
       organisations: organisations,
       idAdmin: req.session.rolesIdMap.adminId,
