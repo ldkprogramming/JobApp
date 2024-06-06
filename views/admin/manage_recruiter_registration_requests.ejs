@@ -79,29 +79,25 @@
       </div>
       <div class="row min-vh-100 justify-content-center">
     
-  <%if (recruiterOrganisations.length > 0) {%>
+  <%if (recruiterInfos.length > 0) {%>
   <div class="col-md-6">
-    <% recruiterOrganisations.forEach((recruiterOrganisation)=> { %>
+    <% recruiterInfos.forEach((recruiterInfo)=> { %>
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">
-          <%= recruiterOrganisation.firstname%> <%= recruiterOrganisation.lastname%>
+          <%= recruiterInfo.firstname%> <%= recruiterInfo.lastname%>
         </h5>
         <p class="card-text">
-          <strong>Company : </strong>
-          <%= recruiterOrganisation.type%><strong> ; </strong><%= recruiterOrganisation.headquarters%><strong> ; </strong><%= recruiterOrganisation.name%>
+          <strong>Email : </strong><%= recruiterInfo.email%>
         </p>
         <p class="card-text">
-          <strong>Email : </strong><%= recruiterOrganisation.email%>
-        </p>
-        <p class="card-text">
-          <strong>Phone number : </strong><%= recruiterOrganisation.phonenumber%>
+          <strong>Phone number : </strong><%= recruiterInfo.phonenumber%>
         </p>
         <div class="d-flex">
-          <form method="post" action="/admins/<%=idAdmin%>/accept-recruiter/<%=recruiterOrganisation.idrecruiter%>/<%=recruiterOrganisation.SIREN%>" class="mr-2">
+          <form method="post" action="/admins/<%=idAdmin%>/accept-recruiter/<%=recruiterInfo.idrecruiter%>/<%=recruiterInfo.iduser%>" class="mr-2">
             <button type="submit" class="btn btn-success">Accept</button>
           </form>
-          <form method="post" action="/admins/<%=idAdmin%>/reject-recruiter/<%=recruiterOrganisation.idrecruiter%>/<%=recruiterOrganisation.SIREN%>">
+          <form method="post" action="/admins/<%=idAdmin%>/reject-recruiter/<%=recruiterInfo.idrecruiter%>/<%=recruiterInfo.iduser%>">
             <button type="submit" class="btn btn-danger">Refuse</button>
           </form>
         </div>

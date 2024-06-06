@@ -1,4 +1,5 @@
 const db = require("./db");
+const { changeStatusRecruiter } = require("./recruiterOrganisation");
 
 module.exports = {
   getByEmail: async (email) => {
@@ -45,6 +46,35 @@ module.exports = {
         "INSERT INTO Recruiter VALUES (NULL, ?, ?)",
         [idUser, status]
       );
+    } catch (err) {
+      throw err;
+    }
+  },
+  getAllByStatusWithInfo: async (status) => {
+    try {
+      const sql = `
+            SELECT R.id as idrecruiter, iduser, email, lastname, firstname, phonenumber, dateofcreation, U.status as userstatus, R.status as recruiterstatus FROM Recruiter AS R 
+            JOIN User AS U on R.iduser = U.id
+            WHERE R.status = ?
+            `;
+      const [results] = await db.query(sql, [status]);
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
+  changeStatusRecruiter: async (status, idRecruiter) => {
+    try {
+      const sql = "UPDATE Recruiter SET status = ? WHERE id = ?";
+      await db.query(sql, [status, idRecruiter]);
+    } catch (err) {
+      throw err;
+    }
+  },
+  changeStatusUser: async (status, idUser) => {
+    try {
+      const sql = "UPDATE User SET status = ? WHERE id = ?";
+      await db.query(sql, [status, idUser]);
     } catch (err) {
       throw err;
     }

@@ -92,4 +92,14 @@ module.exports = {
       throw err;
     }
   },
+  changeStatusByRecruiter: async (status, idRecruiter) => {
+    try {
+      const [results] = await db.query(
+        "UPDATE RecruiterOrganisation SET status = ? WHERE idrecruiter = ?",
+        [status, idRecruiter]
+      );
+    } catch (err) {
+      throw err;
+    }
+  },
 };

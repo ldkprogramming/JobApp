@@ -7,6 +7,7 @@ const User = require("../models/user");
 const Organisation = require("../models/organisation");
 const recruiterOrganisation = require("../models/recruiterOrganisation");
 const organisation = require("../models/organisation");
+const Recruiter = require("../models/recruiter");
 
 /* Home */
 
@@ -78,10 +79,9 @@ router.post(
 router.get(
   "/:idAdmin/recruiter-registration-requests/onhold",
   asyncHandler(async (req, res, next) => {
-    const registrationRequests =
-      await RecruiterOrganisation.getAllByStatusWithInfo("onhold");
+    const recruiterInfos = await Recruiter.getAllByStatusWithInfo("onhold");
     res.render("admin/manage_recruiter_registration_requests", {
-      recruiterOrganisations: registrationRequests,
+      recruiterInfos: recruiterInfos,
       idAdmin: req.session.rolesIdMap.adminId,
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idApplicant: req.session.rolesIdMap.applicantId,
@@ -90,15 +90,11 @@ router.get(
 );
 
 router.post(
-  "/:idAdmin/accept-recruiter/:irRecruiter/:SIREN",
+  "/:idAdmin/accept-recruiter/:idRecruiter/:idUser",
   asyncHandler(async (req, res, next) => {
-    const irRecruiter = Number(req.params.irRecruiter);
-    const SIREN = Number(req.params.SIREN);
-    await recruiterOrganisation.changeStatusRecruiter(
-      "accepted",
-      irRecruiter,
-      SIREN
-    );
+    const idRecruiter = Number(req.params.idRecruiter);
+    await Recruiter.changeStatusRecruiter("accepted", idRecruiter);
+    await Recruiter.changeStatusUser(0, req.params.idUser);
     res.redirect(
       `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );
@@ -106,15 +102,14 @@ router.post(
 );
 
 router.post(
-  "/:idAdmin/reject-recruiter/:idRecruiter/:SIREN",
+  "/:idAdmin/reject-recruiter/:idRecruiter/:idUser",
   asyncHandler(async (req, res, next) => {
     const idRecruiter = Number(req.params.idRecruiter);
-    const SIREN = Number(req.params.SIREN);
-    await recruiterOrganisation.changeStatusRecruiter(
+    await Recruiter.changeStatusRecruiter("rejected", idRecruiter);
+    await RecruiterOrganisation.changeStatusByRecruiter(
       "rejected",
-      idRecruiter,
-      SIREN
-    );
+      idRecruiter
+    ); // Reject recruiter for this organisation however organisation could still be accepted
     res.redirect(
       `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );
