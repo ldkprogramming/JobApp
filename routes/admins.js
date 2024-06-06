@@ -6,6 +6,10 @@ const RecruiterOrganisation = require("../models/recruiterOrganisation");
 const User = require("../models/user");
 const Organisation = require("../models/organisation");
 const recruiterOrganisation = require("../models/recruiterOrganisation");
+const organisation = require("../models/organisation");
+const Recruiter = require("../models/recruiter");
+
+/* Home */
 
 router.get(
   "/:idAdmin",
@@ -18,46 +22,29 @@ router.get(
   })
 );
 
-router.get(
-  "/:idAdmin/organisation-registration-requests/onhold",
-  asyncHandler(async (req, res, next) => {
-    const adminOrganisations = await AdminOrganisation.getAllByStatusWithInfo(
-      "onhold"
-    );
-    res.render("admin/manage_organisation_registration_requests", {
-      adminOrganisations: adminOrganisations,
-      idAdmin: req.session.rolesIdMap.adminId,
-      idRecruiter: req.session.rolesIdMap.recruiterId,
-      idApplicant: req.session.rolesIdMap.applicantId,
-    });
-  })
-);
-
-router.get(
-  "/:idAdmin/recruiter-registration-requests/onhold",
-  asyncHandler(async (req, res, next) => {
-    const registrationRequests =
-      await RecruiterOrganisation.getAllByStatusWithInfo("onhold");
-    res.render("admin/manage_recruiter_registration_requests", {
-      recruiterOrganisations: registrationRequests,
-      idAdmin: req.session.rolesIdMap.adminId,
-      idRecruiter: req.session.rolesIdMap.recruiterId,
-      idApplicant: req.session.rolesIdMap.applicantId,
-    });
-  })
-);
+/* Organisation History */
 
 router.get(
   "/:idAdmin/organisation-registration-requests/history",
   asyncHandler(async (req, res, next) => {
-    const adminOrganisations = await AdminOrganisation.getAllByStatusWithInfo(
-      "accepted"
-    );
-    adminOrganisations.push(
-      ...(await AdminOrganisation.getAllByStatusWithInfo("rejected"))
-    );
+    const organisations = await Organisation.getAllExceptOnHold();
     res.render("admin/organisation_registration_request_history", {
-      adminOrganisations: adminOrganisations,
+      organisations: organisations,
+      idAdmin: req.session.rolesIdMap.adminId,
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idApplicant: req.session.rolesIdMap.applicantId,
+    });
+  })
+);
+
+/* Manage Organisations */
+
+router.get(
+  "search/:SIREN",
+  asyncHandler(async (req, res, next) => {
+    const organisations = await Organisation.getBySiren(req.params.SIREN);
+    res.render("admin/manage_organisation_registration_requests", {
+      organisations: organisations,
       idAdmin: req.session.rolesIdMap.adminId,
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idApplicant: req.session.rolesIdMap.applicantId,
@@ -66,11 +53,11 @@ router.get(
 );
 
 router.get(
-  "/:idAdmin/users",
+  "/:idAdmin/organisation-registration-requests/onhold",
   asyncHandler(async (req, res, next) => {
-    const users = await User.getAll();
-    res.render("admin/manage_users", {
-      users: users,
+    const organisations = await Organisation.getAllByStatus("onhold");
+    res.render("admin/manage_organisation_registration_requests", {
+      organisations: organisations,
       idAdmin: req.session.rolesIdMap.adminId,
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idApplicant: req.session.rolesIdMap.applicantId,
@@ -100,16 +87,27 @@ router.post(
   })
 );
 
-router.post(
-  "/:idAdmin/accept-recruiter/:irRecruiter/:SIREN",
+/* Manage Recruiters */
+
+router.get(
+  "/:idAdmin/recruiter-registration-requests/onhold",
   asyncHandler(async (req, res, next) => {
-    const irRecruiter = Number(req.params.irRecruiter);
-    const SIREN = Number(req.params.SIREN);
-    await recruiterOrganisation.changeStatusRecruiter(
-      "accepted",
-      irRecruiter,
-      SIREN
-    );
+    const recruiterInfos = await Recruiter.getAllByStatusWithInfo("onhold");
+    res.render("admin/manage_recruiter_registration_requests", {
+      recruiterInfos: recruiterInfos,
+      idAdmin: req.session.rolesIdMap.adminId,
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idApplicant: req.session.rolesIdMap.applicantId,
+    });
+  })
+);
+
+router.post(
+  "/:idAdmin/accept-recruiter/:idRecruiter/:idUser",
+  asyncHandler(async (req, res, next) => {
+    const idRecruiter = Number(req.params.idRecruiter);
+    await Recruiter.changeStatusRecruiter("accepted", idRecruiter);
+    await Recruiter.changeStatusUser(0, req.params.idUser);
     res.redirect(
       `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );
@@ -117,18 +115,32 @@ router.post(
 );
 
 router.post(
-  "/:idAdmin/reject-recruiter/:idRecruiter/:SIREN",
+  "/:idAdmin/reject-recruiter/:idRecruiter/:idUser",
   asyncHandler(async (req, res, next) => {
     const idRecruiter = Number(req.params.idRecruiter);
-    const SIREN = Number(req.params.SIREN);
-    await recruiterOrganisation.changeStatusRecruiter(
+    await Recruiter.changeStatusRecruiter("rejected", idRecruiter);
+    await RecruiterOrganisation.changeStatusByRecruiter(
       "rejected",
-      idRecruiter,
-      SIREN
-    );
+      idRecruiter
+    ); // Reject recruiter for this organisation however organisation could still be accepted
     res.redirect(
       `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );
+  })
+);
+
+/* Manage Users */
+
+router.get(
+  "/:idAdmin/users",
+  asyncHandler(async (req, res, next) => {
+    const users = await User.getAll();
+    res.render("admin/manage_users", {
+      users: users,
+      idAdmin: req.session.rolesIdMap.adminId,
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idApplicant: req.session.rolesIdMap.applicantId,
+    });
   })
 );
 

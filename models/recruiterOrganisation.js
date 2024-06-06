@@ -9,6 +9,16 @@ module.exports = {
       throw err;
     }
   },
+  getAllByIdUser: async (idUser) => {
+    try {
+      const sql =
+        "SELECT * FROM RecruiterOrganisation WHERE idrecruiter = (SELECT id FROM Recruiter WHERE iduser = ?) AND status != 'rejected'";
+      const [results] = await db.query(sql, [idUser]);
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
   getAllByIdRecruiter: async (idRecruiter) => {
     try {
       const sql = "SELECT * FROM RecruiterOrganisation WHERE idrecruiter = ?";
@@ -62,11 +72,31 @@ module.exports = {
       throw err;
     }
   },
+  createByIdUser: async (status, idUser, siren) => {
+    try {
+      const [results] = await db.query(
+        "INSERT INTO RecruiterOrganisation VALUES (?, (SELECT id FROM Recruiter WHERE iduser = ? AND status != 'rejected'), ?)",
+        [status, idUser, siren]
+      );
+    } catch (err) {
+      throw err;
+    }
+  },
   changeStatusRecruiter: async (status, id, SIREN) => {
     try {
       const [results] = await db.query(
         "UPDATE RecruiterOrganisation SET status = ? WHERE idrecruiter = ? AND idorganisation = ?",
         [status, id, SIREN]
+      );
+    } catch (err) {
+      throw err;
+    }
+  },
+  changeStatusByRecruiter: async (status, idRecruiter) => {
+    try {
+      const [results] = await db.query(
+        "UPDATE RecruiterOrganisation SET status = ? WHERE idrecruiter = ?",
+        [status, idRecruiter]
       );
     } catch (err) {
       throw err;

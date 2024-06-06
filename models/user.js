@@ -221,7 +221,7 @@ module.exports = {
   getByIdApplicant: async (id) => {
     try {
       const [results] = await db.query(
-        "SELECT iduser FROM Applicant WHERE idapplicant = ?",
+        "SELECT iduser FROM Applicant WHERE id = ?",
         [id]
       );
       if (results.length > 0) {

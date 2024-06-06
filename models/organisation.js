@@ -1,4 +1,5 @@
 const db = require("./db");
+const { getAllByStatus } = require("./recruiterOrganisation");
 
 module.exports = {
   getBySiren: async (siren) => {
@@ -79,6 +80,16 @@ module.exports = {
         AND Organisation.SIREN NOT IN 
         (SELECT RecruiterOrganisation.idorganisation FROM RecruiterOrganisation WHERE RecruiterOrganisation.idrecruiter = ?)`,
         [status, idRecruiter]
+      );
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
+  getAllExceptOnHold: async () => {
+    try {
+      const [results] = await db.query(
+        "SELECT * FROM Organisation WHERE status != 'onhold'"
       );
       return results;
     } catch (err) {
