@@ -19,6 +19,24 @@ module.exports = {
       throw err;
     }
   },
+  getAllLikeLastnameOrFirstname: async (search) => {
+    try {
+      const [results] = await db.query(
+          `
+          SELECT User.id as userid, Admin.id as adminid, 
+          Admin.iduser, email, pwd, lastname, firstname, 
+          phonenumber, dateofcreation, status 
+          FROM User LEFT JOIN Admin on Admin.iduser = User.id 
+          WHERE User.status = 1
+          AND ((lastname LIKE CONCAT(?,'%')) OR (firstname LIKE CONCAT(?,'%')))
+          `,
+          [search, search]
+      );
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
   getByEmail: async (email) => {
     try {
       const [results] = await db.query("SELECT * FROM User WHERE email = ?", [

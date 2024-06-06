@@ -139,7 +139,12 @@ router.post(
 router.get(
   "/:idAdmin/users",
   asyncHandler(async (req, res, next) => {
-    const users = await User.getAll();
+      let users;
+      if (req.query.search) {
+          users = await User.getAllLikeLastnameOrFirstname(req.query.search)
+      } else {
+          users = await User.getAll();
+      }
     res.render("admin/manage_users", {
       users: users,
       idAdmin: req.session.rolesIdMap.adminId,

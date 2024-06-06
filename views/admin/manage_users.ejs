@@ -61,8 +61,11 @@
     </nav>
 
     <div class="container mt-5 min-vh-100">
+      <form action="" method="get">
       <div class="input-group mb-3">
+
         <input
+                name="search"
           type="text"
           class="form-control"
           placeholder="Search by First or Last Name"
@@ -71,12 +74,14 @@
         />
         <button
           class="btn btn-outline-secondary"
-          type="button"
+          type="submit"
           id="button-addon2"
         >
           Search
         </button>
+
       </div>
+      </form>
 
     <%if (users.length > 0) {%>
       <div class="row justify-content-center">
