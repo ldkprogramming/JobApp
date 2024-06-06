@@ -40,6 +40,19 @@ router.get(
 /* Manage Organisations */
 
 router.get(
+  "search-organisation/:SIREN",
+  asyncHandler(async (req, res, next) => {
+    const organisations = await Organisation.getBySiren(req.params.SIREN);
+    res.render("admin/manage_organisation_registration_requests", {
+      organisations: organisations,
+      idAdmin: req.session.rolesIdMap.adminId,
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idApplicant: req.session.rolesIdMap.applicantId,
+    });
+  })
+);
+
+router.get(
   "/:idAdmin/organisation-registration-requests/onhold",
   asyncHandler(async (req, res, next) => {
     const organisations = await Organisation.getAllByStatus("onhold");

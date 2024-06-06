@@ -60,22 +60,26 @@
       </div>
     </nav>
 
+
     <div class="container mt-5">
+      <form method="get" action="search-organisation/">
       <div class="input-group mb-3">
         <input
+          name="SIREN"
           type="text"
           class="form-control"
-          placeholder="Search by Name or SIREN"
+          placeholder="Search by SIREN"
           aria-label="Search"
           aria-describedby="button-addon2"
         />
         <button
           class="btn btn-outline-secondary"
-          type="button"
+          type="submit"
           id="button-addon2"
         >
           Search
         </button>
+      </form>
       </div>
 
       <% if (organisations.length > 0) { %>
