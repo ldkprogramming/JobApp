@@ -15,6 +15,15 @@ module.exports = {
       throw err;
     }
   },
+  getAllLikeSiren: async (siren) => {
+    try {
+      const sql = "SELECT * FROM Organisation WHERE SIREN LIKE CONCAT(?,'%')";
+      const [results] = await db.query(sql, [siren]);
+      return results
+    } catch (err) {
+      throw err;
+    }
+  },
 
   getAll: async () => {
     try {
