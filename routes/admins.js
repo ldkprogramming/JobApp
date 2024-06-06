@@ -1,12 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const asyncHandler = require("express-async-handler");
-const AdminOrganisation = require("../models/adminOrganisation");
 const RecruiterOrganisation = require("../models/recruiterOrganisation");
 const User = require("../models/user");
 const Organisation = require("../models/organisation");
-const recruiterOrganisation = require("../models/recruiterOrganisation");
-const organisation = require("../models/organisation");
 const Recruiter = require("../models/recruiter");
 
 /* Home */
@@ -81,6 +78,14 @@ router.post(
   asyncHandler(async (req, res, next) => {
     const SIREN = Number(req.params.SIREN);
     await Organisation.changeStatus(SIREN, "accepted");
+    
+    // obtenir le ou les recruteurs qui ont fait la demande et les accepter
+    const recruiterOrganisations = await RecruiterOrganisation.getAllByIdOrganisation(SIREN);
+      for (let recruiterOrganisation of recruiterOrganisations) {
+          await RecruiterOrganisation.changeStatusRecruiter('accepted', recruiterOrganisation.idrecruiter, recruiterOrganisation.idorganisation);
+          await Recruiter.changeStatusRecruiter('accepted', recruiterOrganisation.idrecruiter);
+      }
+
     res.redirect(
       `/admins/${req.params.idAdmin}/organisation-registration-requests/onhold`
     );
@@ -91,10 +96,18 @@ router.post(
   "/:idAdmin/reject-organisation/:SIREN",
   asyncHandler(async (req, res, next) => {
     const SIREN = Number(req.params.SIREN);
-    await Organisation.changeStatus(SIREN, "rejected");
+    // on supprime le compte recruteur inactif, la demande, et lorganisation
+      const recruiterOrganisations = await RecruiterOrganisation.getAllByIdOrganisation(SIREN);
+      for (let recruiterOrganisation of recruiterOrganisations) {
+          await Recruiter.delete(Number(recruiterOrganisation.idrecruiter));
+      }
+      await RecruiterOrganisation.deleteByIdOrganisation(SIREN);
+      await Organisation.delete(SIREN);
+
     res.redirect(
       `/admins/${req.params.idAdmin}/organisation-registration-requests/onhold`
     );
+
   })
 );
 

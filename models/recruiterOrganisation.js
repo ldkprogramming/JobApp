@@ -102,4 +102,15 @@ module.exports = {
       throw err;
     }
   },
+  deleteByIdOrganisation: async (idOrganisation) => {
+    try {
+      const sql = `
+      DELETE FROM RecruiterOrganisation
+      WHERE idorganisation = ?
+      `
+      await db.query(sql, [idOrganisation])
+    } catch (err) {
+      throw err;
+    }
+  }
 };

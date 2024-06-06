@@ -79,4 +79,15 @@ module.exports = {
       throw err;
     }
   },
+  delete: async (id) => {
+    try {
+      const sql = `
+      DELETE FROM Recruiter
+      WHERE id=?
+      `
+      await db.query(sql, [id]);
+    } catch (err) {
+      throw err;
+    }
+  }
 };
