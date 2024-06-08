@@ -146,26 +146,14 @@ router.post(
   })
 );*/
 
-router.post(
-  "/:idRecruiter/organisation-registration-request",
-  asyncHandler(async (req, res, next) => {
-    await Organisation.create(
-      req.body.siren,
-      req.body.name,
-      req.body.type,
-      req.body.headquarters,
-      "onhold"
-    );
-    res.redirect(`/recruiters/${Number(req.params.idRecruiter)}`);
-  })
-);
-
 /* Join Organisation */
 
 router.post(
   "/:idApplicant/join-organisation/:idUser",
   asyncHandler(async (req, res, next) => {
-    await Recruiter.create(req.params.idUser, "onhold");
+      if ((await Recruiter.getIdByIdUser(req.params.idUser))=== null) {
+          await Recruiter.create(req.params.idUser, "onhold");
+      }
     await RecruiterOrganisation.createByIdUser(
       "onhold",
       req.params.idUser,
@@ -186,7 +174,9 @@ router.post(
       req.body.headquarters,
       "onhold"
     );
-    await Recruiter.create(req.params.idUser, "onhold");
+      if ((await Recruiter.getIdByIdUser(req.params.idUser))=== null) {
+          await Recruiter.create(req.params.idUser, "onhold");
+      }
     await RecruiterOrganisation.createByIdUser(
       "onhold",
       req.params.idUser,

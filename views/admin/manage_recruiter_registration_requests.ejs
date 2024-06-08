@@ -88,16 +88,19 @@
           <%= recruiterInfo.firstname%> <%= recruiterInfo.lastname%>
         </h5>
         <p class="card-text">
+          <strong>Organisation : </strong><%= recruiterInfo.name%>
+        </p>
+        <p class="card-text">
           <strong>Email : </strong><%= recruiterInfo.email%>
         </p>
         <p class="card-text">
           <strong>Phone number : </strong><%= recruiterInfo.phonenumber%>
         </p>
         <div class="d-flex">
-          <form method="post" action="/admins/<%=idAdmin%>/accept-recruiter/<%=recruiterInfo.idrecruiter%>/<%=recruiterInfo.iduser%>" class="mr-2">
+          <form method="post" action="/admins/<%=idAdmin%>/accept-recruiter/<%=recruiterInfo.id%>/<%=recruiterInfo.iduser%>/<%=recruiterInfo.SIREN%>" class="mr-2">
             <button type="submit" class="btn btn-success">Accept</button>
           </form>
-          <form method="post" action="/admins/<%=idAdmin%>/reject-recruiter/<%=recruiterInfo.idrecruiter%>/<%=recruiterInfo.iduser%>">
+          <form method="post" action="/admins/<%=idAdmin%>/reject-recruiter/<%=recruiterInfo.id%>/<%=recruiterInfo.iduser%>/<%=recruiterInfo.SIREN%>">
             <button type="submit" class="btn btn-danger">Refuse</button>
           </form>
         </div>

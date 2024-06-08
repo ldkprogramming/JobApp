@@ -102,4 +102,26 @@ module.exports = {
       throw err;
     }
   },
+  deleteByIdOrganisation: async (idOrganisation) => {
+    try {
+      const sql = `
+      DELETE FROM RecruiterOrganisation
+      WHERE idorganisation = ?
+      `
+      await db.query(sql, [idOrganisation])
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteByIdOrganisationAndIdRecruiter: async (idOrganisation, idRecruiter) => {
+    try {
+      const sql = `
+      DELETE FROM RecruiterOrganisation
+      WHERE idorganisation = ? AND idrecruiter = ?
+      `
+      await db.query(sql, [idOrganisation, idRecruiter])
+    } catch (err) {
+      throw err;
+    }
+  }
 };

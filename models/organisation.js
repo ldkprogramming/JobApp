@@ -117,5 +117,16 @@ module.exports = {
     } catch (err) {
       throw err;
     }
+  },
+  delete: async (siren) => {
+    try {
+      const sql = `
+      DELETE FROM Organisation
+      WHERE SIREN = ?
+      `
+      await db.query(sql, [siren]);
+    } catch (err) {
+      throw err;
+    }
   }
 };

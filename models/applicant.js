@@ -52,5 +52,20 @@ module.exports = {
         } catch (err) {
             throw err;
         }
+    },
+    getIdUserById: async (id) => {
+        try {
+            const sql = `
+            SELECT iduser FROM Applicant
+            WHERE id = ?`;
+            const [results] = db.query(sql, [id]);
+            if (results.length > 0) {
+                return results[0].iduser;
+            } else {
+                return null;
+            }
+        } catch (err) {
+            throw err;
+        }
     }
 }
