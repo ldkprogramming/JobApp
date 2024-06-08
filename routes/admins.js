@@ -84,6 +84,7 @@ router.post(
       for (let recruiterOrganisation of recruiterOrganisations) {
           await RecruiterOrganisation.changeStatusRecruiter('accepted', recruiterOrganisation.idrecruiter, recruiterOrganisation.idorganisation);
           await Recruiter.changeStatusRecruiter('accepted', recruiterOrganisation.idrecruiter);
+          // faut delete le compte applicant de lutilisateur
       }
 
     res.redirect(
@@ -96,11 +97,8 @@ router.post(
   "/:idAdmin/reject-organisation/:SIREN",
   asyncHandler(async (req, res, next) => {
     const SIREN = Number(req.params.SIREN);
-    // on supprime le compte recruteur inactif, la demande, et lorganisation
+    // on supprime la demande, et lorganisation, mais pas le compte
       const recruiterOrganisations = await RecruiterOrganisation.getAllByIdOrganisation(SIREN);
-      for (let recruiterOrganisation of recruiterOrganisations) {
-          await Recruiter.delete(Number(recruiterOrganisation.idrecruiter));
-      }
       await RecruiterOrganisation.deleteByIdOrganisation(SIREN);
       await Organisation.delete(SIREN);
 
@@ -116,7 +114,8 @@ router.post(
 router.get(
   "/:idAdmin/recruiter-registration-requests/onhold",
   asyncHandler(async (req, res, next) => {
-    const recruiterInfos = await Recruiter.getAllByStatusWithInfo("onhold");
+
+    const recruiterInfos = await Recruiter.getAllJoining();
     res.render("admin/manage_recruiter_registration_requests", {
       recruiterInfos: recruiterInfos,
       idAdmin: req.session.rolesIdMap.adminId,
@@ -127,11 +126,12 @@ router.get(
 );
 
 router.post(
-  "/:idAdmin/accept-recruiter/:idRecruiter/:idUser",
+  "/:idAdmin/accept-recruiter/:idRecruiter/:idUser/:siren",
   asyncHandler(async (req, res, next) => {
     const idRecruiter = Number(req.params.idRecruiter);
     await Recruiter.changeStatusRecruiter("accepted", idRecruiter);
-    await Recruiter.changeStatusUser(0, req.params.idUser);
+    await RecruiterOrganisation.changeStatusRecruiter("accepted", idRecruiter, req.params.siren);
+    // faut delete le compte user du recruiter
     res.redirect(
       `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );
@@ -139,14 +139,11 @@ router.post(
 );
 
 router.post(
-  "/:idAdmin/reject-recruiter/:idRecruiter/:idUser",
+  "/:idAdmin/reject-recruiter/:idRecruiter/:idUser/:siren",
   asyncHandler(async (req, res, next) => {
     const idRecruiter = Number(req.params.idRecruiter);
-    await Recruiter.changeStatusRecruiter("rejected", idRecruiter);
-    await RecruiterOrganisation.changeStatusByRecruiter(
-      "rejected",
-      idRecruiter
-    ); // Reject recruiter for this organisation however organisation could still be accepted
+    // on supprime uniquement le recruiter organisation
+      await RecruiterOrganisation.deleteByIdOrganisationAndIdRecruiter(req.params.siren, idRecruiter)
     res.redirect(
       `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );

@@ -89,5 +89,36 @@ module.exports = {
     } catch (err) {
       throw err;
     }
+  },
+  getAllJoining: async () => {
+    try {
+      const sql = `
+     SELECT 
+          r.id,
+          r.status,
+          u.email,
+          u.id AS iduser,
+          u.lastname,
+          u.firstname,
+          u.phonenumber,
+          o.SIREN,
+          o.name
+      FROM 
+          Recruiter r
+      JOIN 
+          RecruiterOrganisation ro ON r.id = ro.idrecruiter
+      JOIN 
+          Organisation o ON ro.idorganisation = o.SIREN
+      JOIN 
+          User u ON r.iduser = u.id
+      WHERE 
+          ro.status = 'onhold'
+          AND o.status = 'accepted';
+      `
+      const [results] = await db.query(sql);
+      return results;
+    } catch (err) {
+      throw err;
+    }
   }
 };
