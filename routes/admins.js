@@ -5,6 +5,7 @@ const RecruiterOrganisation = require("../models/recruiterOrganisation");
 const User = require("../models/user");
 const Organisation = require("../models/organisation");
 const Recruiter = require("../models/recruiter");
+const Applicant = require("../models/applicant");
 
 /* Home */
 
@@ -85,6 +86,10 @@ router.post(
           await RecruiterOrganisation.changeStatusRecruiter('accepted', recruiterOrganisation.idrecruiter, recruiterOrganisation.idorganisation);
           await Recruiter.changeStatusRecruiter('accepted', recruiterOrganisation.idrecruiter);
           // faut delete le compte applicant de lutilisateur
+          let idApplicant = await Applicant.getIdByIdUser(await Recruiter.getIdUserById(recruiterOrganisation.idrecruiter));
+          if (idApplicant!== null) {
+              await Applicant.deleteById(idApplicant);
+          }
       }
 
     res.redirect(
@@ -132,6 +137,10 @@ router.post(
     await Recruiter.changeStatusRecruiter("accepted", idRecruiter);
     await RecruiterOrganisation.changeStatusRecruiter("accepted", idRecruiter, req.params.siren);
     // faut delete le compte user du recruiter
+      let idApplicant = await Applicant.getIdByIdUser(Number(req.params.idUser));
+      if (idApplicant !== null) {
+          await Applicant.deleteById(idApplicant);
+      }
     res.redirect(
       `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );
