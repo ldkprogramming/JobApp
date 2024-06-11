@@ -60,7 +60,8 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Manage Applications for</h5>
-                    <p class="card-text">Frontend Engineer, Capgemini, Paris</p>
+                    <p class="card-text"><%=jobOffer.title%>, <%=jobOffer.name%></p>
+                    <p class="card-text"><%=jobOffer.deadline%></p>
                 </div>
             </div>
         </div>
@@ -87,6 +88,8 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <% if (jobApplications.length > 0 ) {%>
+            <% jobApplications.forEach((jobApplication) => {%>
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Application 1</h5>
@@ -100,19 +103,8 @@
                     <button class="btn btn-danger" type="button">Cancel</button>
                 </div>
             </div>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Application 2</h5>
-                    <p class="card-text">Jean Louis</p>
-                    <button class="btn btn-primary me-2" type="button">
-                        Download Files
-                    </button>
-                    <button class="btn btn-secondary me-2" type="button">
-                        Contact
-                    </button>
-                    <button class="btn btn-danger" type="button">Cancel</button>
-                </div>
-            </div>
+            <%});%>
+            <%}%>
         </div>
     </div>
 </div>

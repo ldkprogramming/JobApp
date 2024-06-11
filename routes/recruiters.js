@@ -177,7 +177,7 @@ router.post(
 );
 
 router.get("/:idRecruiter/manage-job-applications/:idOffer", asyncHandler(async (req, res, next) => {
-    const offer = await JobOffer.get(Number(req.params.idOffer));
+    const offer = await JobOffer.getWithInfo(Number(req.params.idOffer));
     const applications = await JobApplication.getAllByIdOfferWithInfo(Number(req.params.idOffer));
     res.render("recruiter/manage_job_applications", {
         jobOffer: offer,

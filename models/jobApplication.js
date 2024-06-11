@@ -70,9 +70,10 @@ module.exports = {
       ON JA.idoffer = JO.id
       WHERE JA.id = ?
       `
-      await db.query(sql, [idOffer])
+      const [results] =  await db.query(sql, [idOffer]);
+      return results;
     } catch (err) {
-
+      throw err;
     }
   }
 };
