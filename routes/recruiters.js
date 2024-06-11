@@ -139,4 +139,40 @@ router.post(
   })
 );
 
+// create offer
+router.get(
+    "/:idRecruiter/create-job-offer",
+    asyncHandler(async (req, res, next) => {
+        let recruiterOrganisation = await RecruiterOrganisation.getAllByIdRecruiterAccepted(Number(req.params.idRecruiter));
+        let descriptionArray = [];
+        for (const r of recruiterOrganisation) {
+            descriptionArray.push(...(await JobDescription.getAllByIdOrganisation(r.idorganisation)))
+        }
+        res.render("recruiter/create_job_offer", {
+            jobDescriptions : descriptionArray,
+            idRecruiter: req.session.rolesIdMap.recruiterId,
+            idAdmin: req.session.rolesIdMap.adminId,
+            idApplicant: req.session.rolesIdMap.applicantId,
+        });
+    })
+);
+
+
+router.post(
+    "/:idRecruiter/create-job-offer",
+    asyncHandler(async (req, res, next) => {
+        await JobOffer.create(
+            'published',
+            req.body.deadline,
+            req.body.indication,
+            req.body.numberofattachments,
+            Number(req.body.idjobdescription),
+            Number(req.params.idRecruiter)
+        );
+        res.redirect(
+            `/recruiters/${Number(req.params.idRecruiter)}/create-job-offer`
+        );
+    })
+);
+
 module.exports = router;

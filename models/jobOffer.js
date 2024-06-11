@@ -81,4 +81,15 @@ module.exports = {
       throw err;
     }
   },
+  create: async(status, deadline, indication, numberOfAttachments, idJobDescription, idRecruiter) => {
+    try {
+      const sql = `
+      INSERT INTO JobOffer
+      VALUES (NULL, ?, ?, ?, ?, ?, ?)
+      `
+      await db.query(sql, [status, deadline, indication, numberOfAttachments, idJobDescription, idRecruiter]);
+    } catch (err) {
+      throw (err);
+    }
+  }
 };
