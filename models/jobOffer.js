@@ -56,7 +56,13 @@ module.exports = {
   getAllByStatusByIdRecruiterWithInfo: async (status, idRecruiter) => {
     try {
       const sql = `
-            SELECT *
+            SELECT 
+            JobOffer.id,
+            JobDescription.title,
+            JobOffer.status as jobOfferStatus,
+            JobDescription.description,
+            JobOffer.deadline,
+            Organisation.name as organisationName
             FROM JobOffer 
             JOIN JobDescription 
             ON JobOffer.idjobdescription = JobDescription.id
@@ -91,5 +97,38 @@ module.exports = {
     } catch (err) {
       throw (err);
     }
-  }
+  },
+  get: async (id) => {
+    try {
+      const sql = `SELECT * FROM JobOffer WHERE id = ?`
+      const [results] = await db.query(sql, [id]);
+      if (results.length > 0) {
+        return results[0];
+      } else {
+        return null;
+      }
+    } catch (err) {
+      throw err;
+    }
+  },
+  getWithInfo: async (id) => {
+    try {
+      const sql = `
+        SELECT * 
+        FROM JobOffer as JO
+        JOIN JobDescription AS JD 
+        ON JO.idjobdescription = JD.id
+        WHERE JO.id = ?
+        `
+      const [results] = await db.query(sql, [id]);
+      if (results.length > 0) {
+        return results[0];
+      } else {
+        return null;
+      }
+    } catch (err) {
+      throw err;
+    }
+  },
+
 };

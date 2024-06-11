@@ -7,6 +7,7 @@ const RecruiterOrganisation = require("../models/recruiterOrganisation");
 const organisation = require("../models/organisation");
 const JobDescription = require("../models/jobDescription");
 const User = require("../models/user");
+const JobApplication = require("../models/jobApplication");
 
 router.get(
   "/:idRecruiter",
@@ -174,5 +175,17 @@ router.post(
         );
     })
 );
+
+router.get("/:idRecruiter/manage-job-applications/:idOffer", asyncHandler(async (req, res, next) => {
+    const offer = await JobOffer.get(Number(req.params.idOffer));
+    const applications = await JobApplication.getAllByIdOfferWithInfo(Number(req.params.idOffer));
+    res.render("recruiter/manage_job_applications", {
+        jobOffer: offer,
+        jobApplications : applications,
+        idRecruiter: req.session.rolesIdMap.recruiterId,
+        idAdmin: req.session.rolesIdMap.adminId,
+        idApplicant: req.session.rolesIdMap.applicantId,
+    })
+}));
 
 module.exports = router;

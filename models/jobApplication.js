@@ -61,4 +61,18 @@ module.exports = {
       throw err;
     }
   },
+  getAllByIdOfferWithInfo: async (idOffer) => {
+    try {
+      const sql = `
+      SELECT *
+      FROM JobOffer as JO
+      JOIN JobApplication as JA
+      ON JA.idoffer = JO.id
+      WHERE JA.id = ?
+      `
+      await db.query(sql, [idOffer])
+    } catch (err) {
+
+    }
+  }
 };
