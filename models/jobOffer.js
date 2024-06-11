@@ -39,9 +39,12 @@ module.exports = {
   getAllByStatusWithInfo: async (status) => {
     try {
       const sql = `
-            SELECT *
-            FROM JobOffer 
-            JOIN JobDescription 
+            SELECT JobOffer.id, JobDescription.title, JobOffer.deadline,
+            Organisation.name, JobDescription.description,
+            JobDescription.salary, JobDescription.workload, JobDescription.place,
+            JobDescription.supervisor, JobOffer.numberofattachments
+            FROM JobOffer
+            JOIN JobDescription
             ON JobOffer.idjobdescription = JobDescription.id
             JOIN Organisation 
             ON JobDescription.idorganisation = Organisation.SIREN

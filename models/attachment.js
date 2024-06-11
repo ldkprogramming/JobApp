@@ -21,11 +21,11 @@ module.exports = {
       throw err;
     }
   },
-  create: async (idApplication, url) => {
+  create: async (idApplication, data, name, type) => {
     try {
       const [results] = await db.query(
-        "INSERT INTO Attachment VALUES (NULL, ?, ?)",
-        [idApplication, url]
+        "INSERT INTO Attachment VALUES (NULL, ?, ?, ?, ?)",
+        [idApplication, data, name, type]
       );
       return results.insertId;
     } catch (err) {
