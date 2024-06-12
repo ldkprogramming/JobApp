@@ -39,4 +39,17 @@ module.exports = {
       throw err;
     }
   },
+    getAllByIdOrganisation: async (idOrganisation) => {
+      try {
+          const sql = `
+      SELECT * FROM JobDescription
+      WHERE idorganisation = ? 
+      `;
+          const [results] = await db.query(sql, [idOrganisation]);
+          return results;
+      } catch (err) {
+          throw err;
+      }
+
+    }
 };

@@ -75,55 +75,54 @@
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-8">
-          <%if (jobOffers.length > 0) {%>
-          <div class="list-group">
             <div class="container">
               <div class="row justify-content-center">
                 <div class="col-md-10">
-                  <% jobOffers.forEach((jobOffer)=> { %>
                   <div class="card">
                     <div class="card-body">
                       <form
                         method="post"
-                        action="/applicants/<%=idApplicant%>/complete-job-applications/<%=jobOffer.id%>"
+                        action="/applicants/<%=idApplicant%>/complete-application/<%=jobApplication.id%>"
+                        enctype="multipart/form-data"
                       >
-                        <input
-                          type="hidden"
-                          name="idJobOffer"
-                          value="<%=jobOffer.id%>"
-                        />
-                        <h5 class="card-title"><%=jobOffer.title%></h5>
+                        <h5 class="card-title"><%=jobApplication.title%></h5>
                         <h6 class="card-subtitle mb-2 text-muted">
-                          <%=jobOffer.deadline%>
+                          <%=jobApplication.deadline%>
                         </h6>
-                        <p class="card-text"><%=jobOffer.name%></p>
+                        <p class="card-text"><%=jobApplication.name%></p>
                         <p class="card-text">
                           <strong>Description : </strong
-                          ><%=jobOffer.description%>
+                          ><%=jobApplication.description%>
                         </p>
                         <p class="card-text">
-                          <strong>Salary : </strong><%=jobOffer.salary%>$ per
+                          <strong>Salary : </strong><%=jobApplication.salary%>$ per
                           year
                         </p>
                         <p class="card-text">
-                          <strong>Workload : </strong><%=jobOffer.workload%>
+                          <strong>Workload : </strong><%=jobApplication.workload%>
                         </p>
                         <p class="card-text">
-                          <strong>Place : </strong><%=jobOffer.place%>
+                          <strong>Place : </strong><%=jobApplication.place%>
                         </p>
                         <p class="card-text">
-                          <strong>Supervisor : </strong><%=jobOffer.supervisor%>
+                          <strong>Supervisor : </strong><%=jobApplication.supervisor%>
                         </p>
+
+                        <div class="alert alert-danger">
+                          You can <strong>submit new documents</strong> here. <br>
+                          This <strong>will delete your previous documents</strong> , and replace them with new ones.
+                          Be sure to include all documents needed
+                        </div>
                         <div class="drop-zone mt-3">
                           <p class="card-text">
                             <strong>Number of attachements required : </strong
-                            ><%=jobOffer.numberofattachments%>
+                            ><%=jobApplication.numberofattachments%>
                           </p>
                           <p>Drag & Drop files here</p>
                           <p>or</p>
                           <p>
                             <input
-                              name="url"
+                              name="attachments"
                               type="file"
                               multiple="multiple"
                               accept=".pdf,.doc,.docx,.txt"
@@ -136,16 +135,9 @@
                       </form>
                     </div>
                   </div>
-                  <% }) %>
                 </div>
               </div>
             </div>
-          </div>
-          <% } else { %>
-          <div class="d-flex justify-content-center align-items-center vh-100">
-            <div class="alert alert-danger" role="alert">No offer yet !</div>
-          </div>
-          <% } %>
         </div>
       </div>
     </div>

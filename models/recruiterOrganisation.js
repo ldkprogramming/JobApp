@@ -123,5 +123,14 @@ module.exports = {
     } catch (err) {
       throw err;
     }
-  }
+  },
+  getAllByIdRecruiterAccepted: async (idRecruiter) => {
+    try {
+      const sql = "SELECT * FROM RecruiterOrganisation WHERE idrecruiter = ? AND status = 'accepted'";
+      const [results] = await db.query(sql, [idRecruiter]);
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
 };

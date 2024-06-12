@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Organisation</title>
+    <title>Job Posting Form</title>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -30,12 +30,12 @@
                     <a class="nav-link" href="/recruiters/<%=idRecruiter%>/job-offers/history">Manage Offers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/recruiters/<%=idRecruiter%>/organisation-registration-request"
+                    <a class="nav-link" href="/recruiters/<%=idRecruiter%>/jobDescription-registration-request"
                     >Add Organisation</a
                     >
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/recruiters/<%=idRecruiter%>/join-organisation"
+                    <a class="nav-link" href="/recruiters/<%=idRecruiter%>/join-jobDescription"
                     >Join Organisation</a
                     >
                 </li>
@@ -59,64 +59,68 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Add Organisation</h5>
-                    <form method="post" action="/recruiters/<%=idRecruiter%>/organisation-registration-request">
+                    <h5 class="card-title">Job Offer</h5>
+                    <form
+                            method="post"
+                            action="/recruiters/<%=idRecruiter%>/create-job-offer"
+                    >
                         <div class="mb-3">
-                            <label for="sirenInput" class="form-label">SIREN</label>
+                            <label for="deadline" class="form-label">deadline</label>
                             <input
-                                    name="siren"
-                                    type="text"
+                                    type="date"
                                     class="form-control"
-                                    id="sirenInput"
-                                    placeholder="Enter SIREN"
-                                    required
+                                    id="deadline"
+                                    name="deadline"
+                                    placeholder="Enter deadline"
                             />
                         </div>
                         <div class="mb-3">
-                            <label for="nameInput" class="form-label">Name</label>
+                            <label for="indication" class="form-label">Indication</label>
                             <input
-                                    name="name"
                                     type="text"
                                     class="form-control"
-                                    id="nameInput"
-                                    placeholder="Enter Name"
-                                    required
+                                    id="indication"
+                                    name="indication"
+                                    placeholder="Enter job indication"
                             />
                         </div>
                         <div class="mb-3">
-                            <label for="typeInput" class="form-label">Type</label>
+                            <label for="numberofattachments" class="form-label">Supervisor</label>
                             <input
-                                    name="type"
-                                    type="text"
+                                    type="number"
                                     class="form-control"
-                                    id="typeInput"
-                                    placeholder="Enter Type"
-                                    required
+                                    id="numberofattachments"
+                                    name="numberofattachments"
+                                    placeholder="Enter number of attachments"
                             />
                         </div>
+
                         <div class="mb-3">
-                            <label for="headquartersInput" class="form-label"
-                            >Headquarters</label
+                            <label for="idjobdescription" class="form-label">Select Job Description</label>
+                            <select
+                                    name="idjobdescription"
+                                    id="idjobdescription"
+                                    class="form-select"
+                                    aria-label="Default select example"
                             >
-                            <textarea
-                                    name="headquarters"
-                                    class="form-control"
-                                    id="headquartersInput"
-                                    rows="3"
-                                    placeholder="Enter Headquarters"
-                                    required
-                            ></textarea>
+
+                                <% jobDescriptions.forEach((jobDescription) => { %>
+                                    <option value="<%= jobDescription.id %>">
+                                        <%= jobDescription.title %>
+                                    </option>
+
+                                <% }) %>
+                            </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                        <button type="submit" class="btn btn-primary">
+                            Submit Job Description
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
-
