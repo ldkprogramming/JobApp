@@ -120,10 +120,7 @@ module.exports = {
   },
   delete: async (siren) => {
     try {
-      const sql = `
-      DELETE FROM Organisation
-      WHERE SIREN = ?
-      `
+      const sql = `DELETE FROM Organisation WHERE SIREN = ?`
       await db.query(sql, [siren]);
     } catch (err) {
       throw err;

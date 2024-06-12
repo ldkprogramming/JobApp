@@ -9,24 +9,6 @@ module.exports = {
       throw err;
     }
   },
-  getAllByIdJobDescription: async (idJobDescription) => {
-    try {
-      const sql = "SELECT * FROM JobOffer WHERE idjobdescription = ?";
-      const [results] = await db.query(sql, [idJobDescription]);
-      return results;
-    } catch (err) {
-      throw err;
-    }
-  },
-  getAllByIdRecruiter: async (idRecruiter) => {
-    try {
-      const sql = "SELECT * FROM JobOffer WHERE idrecruiter = ?";
-      const [results] = await db.query(sql, [idRecruiter]);
-      return results;
-    } catch (err) {
-      throw err;
-    }
-  },
   getAllByIdRecruiter: async (idRecruiter) => {
     try {
       const sql = "SELECT * FROM JobOffer WHERE idrecruiter = ?";
@@ -80,22 +62,9 @@ module.exports = {
       throw err;
     }
   },
-  getAllByIdApplicantAndOfferIdAndApplicationId: async (idApplication) => {
-    try {
-      const sql =
-        "SELECT * FROM JobApplication JOIN JobOffer on JobOffer.id = JobApplication.offer JOIN JobDescription on JobDescription.id = JobOffer.idjobdescription WHERE JobApplication.id = ?";
-      const [results] = await db.query(sql, [idApplication]);
-      return results;
-    } catch (err) {
-      throw err;
-    }
-  },
   create: async(status, deadline, indication, numberOfAttachments, idJobDescription, idRecruiter) => {
     try {
-      const sql = `
-      INSERT INTO JobOffer
-      VALUES (NULL, ?, ?, ?, ?, ?, ?)
-      `
+      const sql = `INSERT INTO JobOffer VALUES (NULL, ?, ?, ?, ?, ?, ?)`
       await db.query(sql, [status, deadline, indication, numberOfAttachments, idJobDescription, idRecruiter]);
     } catch (err) {
       throw (err);

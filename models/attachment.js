@@ -34,9 +34,7 @@ module.exports = {
   },
   deleteByIdApplication: async (idApplication) => {
     try {
-      await db.query(`
-    DELETE FROM Attachment WHERE idapplication = ?
-    `, [idApplication])
+      await db.query(`DELETE FROM Attachment WHERE idapplication = ?`, [idApplication])
     } catch (err) {
       throw err;
     }

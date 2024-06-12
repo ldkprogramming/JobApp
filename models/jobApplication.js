@@ -9,16 +9,7 @@ module.exports = {
       throw err;
     }
   },
-  getNameAndTitleAndDescription: async () => {
-    try {
-      const [results] = await db.query(
-        "SELECT DISTINCT title, description, name FROM JobApplication JOIN JobOffer on JobApplication.idoffer = JobOffer.id JOIN JobDescription on JobOffer.idjobdescription = JobDescription.id JOIN Organisation on JobDescription.idorganisation = Organisation.SIREN"
-      );
-      return results;
-    } catch (err) {
-      throw err;
-    }
-  },
+
   getNameAndTitleAndDescriptionByIdApplicant: async (idApplicant) => {
     try {
       const [results] = await db.query(
@@ -31,15 +22,6 @@ module.exports = {
     }
   },
 
-  getAllByIdApplicant: async (idApplicant) => {
-    try {
-      const sql = "SELECT * FROM JobApplication WHERE idapplicant = ?";
-      const [results] = await db.query(sql, [idApplicant]);
-      return results;
-    } catch (err) {
-      throw err;
-    }
-  },
   create: async (idApplicant, idJobOffer) => {
     try {
       const date = new Date();
@@ -80,10 +62,7 @@ module.exports = {
   },
   delete: async (id) => {
     try {
-      const sql = `
-      DELETE FROM JobApplication
-      WHERE id = ?
-      `;
+      const sql = `DELETE FROM JobApplication WHERE id = ?`;
       await db.query(sql, [id]);
     } catch (err) {
 
