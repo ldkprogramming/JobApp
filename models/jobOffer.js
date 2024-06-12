@@ -20,6 +20,7 @@ module.exports = {
   },
   getAllByStatusWithInfo: async (status) => {
     try {
+      const date = new Date();
       const sql = `
             SELECT JobOffer.id, JobDescription.title, JobOffer.deadline,
             Organisation.name, JobDescription.description,
@@ -30,9 +31,9 @@ module.exports = {
             ON JobOffer.idjobdescription = JobDescription.id
             JOIN Organisation 
             ON JobDescription.idorganisation = Organisation.SIREN
-            WHERE JobOffer.status = ?
+            WHERE JobOffer.status = ? AND JobOffer.deadline > ?
             `;
-      const [results] = await db.query(sql, [status]);
+      const [results] = await db.query(sql, [status, date]);
       return results;
     } catch (err) {
       throw err;
@@ -62,17 +63,31 @@ module.exports = {
       throw err;
     }
   },
-  create: async(status, deadline, indication, numberOfAttachments, idJobDescription, idRecruiter) => {
+  create: async (
+    status,
+    deadline,
+    indication,
+    numberOfAttachments,
+    idJobDescription,
+    idRecruiter
+  ) => {
     try {
-      const sql = `INSERT INTO JobOffer VALUES (NULL, ?, ?, ?, ?, ?, ?)`
-      await db.query(sql, [status, deadline, indication, numberOfAttachments, idJobDescription, idRecruiter]);
+      const sql = `INSERT INTO JobOffer VALUES (NULL, ?, ?, ?, ?, ?, ?)`;
+      await db.query(sql, [
+        status,
+        deadline,
+        indication,
+        numberOfAttachments,
+        idJobDescription,
+        idRecruiter,
+      ]);
     } catch (err) {
-      throw (err);
+      throw err;
     }
   },
   get: async (id) => {
     try {
-      const sql = `SELECT * FROM JobOffer WHERE id = ?`
+      const sql = `SELECT * FROM JobOffer WHERE id = ?`;
       const [results] = await db.query(sql, [id]);
       if (results.length > 0) {
         return results[0];
@@ -95,7 +110,7 @@ module.exports = {
         JOIN Organisation as O
         ON O.SIREN = JD.idorganisation
         WHERE JO.id = ?
-        `
+        `;
       const [results] = await db.query(sql, [id]);
       if (results.length > 0) {
         return results[0];
@@ -106,5 +121,4 @@ module.exports = {
       throw err;
     }
   },
-
 };

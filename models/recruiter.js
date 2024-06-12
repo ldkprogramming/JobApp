@@ -73,7 +73,7 @@ module.exports = {
   },
   delete: async (id) => {
     try {
-      const sql = `DELETE FROM Recruiter WHERE id=?`
+      const sql = `DELETE FROM Recruiter WHERE id=?`;
       await db.query(sql, [id]);
     } catch (err) {
       throw err;
@@ -103,7 +103,7 @@ module.exports = {
       WHERE 
           ro.status = 'onhold'
           AND o.status = 'accepted';
-      `
+      `;
       const [results] = await db.query(sql);
       return results;
     } catch (err) {
@@ -114,16 +114,23 @@ module.exports = {
     try {
       const sql = `
       SELECT iduser FROM Recruiter WHERE id = ?
-      `
+      `;
       const [results] = await db.query(sql, [id]);
       if (results.length > 0) {
         return results[0].iduser;
       } else {
         return null;
       }
-
-    } catch(err) {
+    } catch (err) {
       throw err;
     }
-  }
+  },
+  deleteByUserId: async (idUser) => {
+    try {
+      const sql = `DELETE FROM Recruiter WHERE iduser = ?`;
+      await db.query(sql, [idUser]);
+    } catch (err) {
+      throw err;
+    }
+  },
 };
