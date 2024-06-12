@@ -118,34 +118,46 @@ router.post(
 /* Complete Job Offers */
 
 router.get(
-  "/:idApplicant/complete-offer/:idJobApplication",
+  "/:idApplicant/complete-application/:idJobApplication",
   asyncHandler(async (req, res, next) => {
-    const jobOffers =
-      await JobOffer.getAllByIdApplicantAndOfferIdAndApplicationId(
-        req.params.idJobApplication
-      );
+      // ptet verifier sil a le droit dy aller
+      const jobApplication = await JobApplication.getWithInfo(Number(req.params.idJobApplication));
+      console.log(jobApplication);
     res.render("applicant/complete_offer", {
-      jobOffers: jobOffers,
       idApplicant: req.session.rolesIdMap.applicantId,
       idRecruiter: req.session.rolesIdMap.recruiterId,
       idAdmin: req.session.rolesIdMap.adminId,
-      idJobApplication: req.params.idJobApplication,
       idUser: req.session.rolesIdMap.id,
+        jobApplication: jobApplication
     });
   })
 );
+router.post("/:idApplicant/complete-application/:idJobApplication", upload.array('attachments', 20),  asyncHandler(async (req, res, next) => {
+    await Attachment.deleteByIdApplication(Number(req.params.idJobApplication));
+    const fileInsertPromises = req.files.map(async (file) => {
+        try {
+            // Read the file data asynchronously
+            const fileData = await asyncFs.readFile(file.path);
 
-router.post(
-  "/:idApplicant/complete-job-applications/:idJobOffer",
-  asyncHandler(async (req, res, next) => {
-    const idJobApplication = await JobApplication.getIdByApplicantAndJobOffer(
-      req.params.idApplicant,
-      req.params.idJobOffer
-    );
-    await Attachment.create(idJobApplication, req.body.url);
-    res.redirect(`/applicants/${req.params.idApplicant}/job-applications`);
-  })
-);
+            // Insert the file data into the SQL database
+            await Attachment.create(Number(req.params.idJobApplication), fileData, file.originalname, file.mimetype);
+
+            // Optionally delete the file from the server after saving to the database
+            await asyncFs.unlink(file.path);
+
+            return Promise.resolve(); // Resolve promise if successful
+        } catch (err) {
+            return Promise.reject(`Error processing file ${file.originalname}: ${err}`);
+        }
+    });
+    try {
+        await Promise.all(fileInsertPromises);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+    res.redirect('back');
+}));
+
 
 /* Become Recruiter */
 
@@ -167,30 +179,6 @@ router.get(
   })
 );
 
-/*
-router.post(
-  "/:idApplicant/become-recruiter",
-  asyncHandler(async (req, res, next) => {
-    // ptet verifications de si deja compte recruiter
-    await Recruiter.create(req.session.rolesIdMap.id);
-    const newId = await Recruiter.getIdByIdUser(req.session.rolesIdMap.id);
-    req.session.rolesIdMap.recruiterId = newId;
-    res.redirect(`/recruiters/${newId}`);
-  })
-); */
-
-/* Job Offers History */
-
-/*router.get(
-  "/:idRecruiter/organisation-registration-request",
-  asyncHandler(async (req, res, next) => {
-    res.render("recruiter/organisation_registration_request", {
-      idRecruiter: req.session.rolesIdMap.recruiterId,
-      idAdmin: req.session.rolesIdMap.adminId,
-      idApplicant: req.session.rolesIdMap.applicantId,
-    });
-  })
-);*/
 
 /* Join Organisation */
 
