@@ -1,5 +1,6 @@
 const db = require("./db");
 const { changeStatusRecruiter } = require("./recruiterOrganisation");
+const { getAllLikeLastnameOrFirstname } = require("./user");
 
 module.exports = {
   getByEmail: async (email) => {
@@ -129,6 +130,19 @@ module.exports = {
     try {
       const sql = `DELETE FROM Recruiter WHERE iduser = ?`;
       await db.query(sql, [idUser]);
+    } catch (err) {
+      throw err;
+    }
+  },
+  getAllLikeLastnameOrFirstname: async (search) => {
+    try {
+      const sql = `
+      SELECT R.id as idrecruiter, iduser, email, lastname, firstname, phonenumber, dateofcreation, U.status as userstatus, R.status as recruiterstatus FROM Recruiter AS R 
+      JOIN User AS U on R.iduser = U.id
+      WHERE R.status = "accepted" AND ((firstname LIKE CONCAT(?,'%')) OR (lastname LIKE CONCAT(?,'%')))
+      `;
+      const [results] = await db.query(sql, [search, search]);
+      return results;
     } catch (err) {
       throw err;
     }

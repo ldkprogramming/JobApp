@@ -66,19 +66,69 @@
     </nav>
 
     <div class="container mt-5">
+      <form action="" method="get">
+        <div class="input-group mb-3">
+          <input
+            name="search"
+            type="text"
+            class="form-control"
+            placeholder="Search by first or last name"
+            aria-label="Search"
+            aria-describedby="button-addon2"
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="submit"
+            id="button-addon2"
+          >
+            Search
+          </button>
+        </div>
+      </form>
+      <% if (recruiters.length > 0) {%>
       <div class="row justify-content-center">
         <div class="col-md-6">
+          <% recruiters.forEach((recruiter) => {%>
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Admin Home</h5>
-              <p>
-                Welcome to the admin panel. Please select an option from the
-                navigation bar above.
+              <h5 class="card-title">
+                <strong>Name : </strong><%= recruiter.firstname %> <%=
+                recruiter.lastname %>
+              </h5>
+              <p class="card-text">
+                <strong>Email : </strong><%= recruiter.email%>
               </p>
+              <p class="card-text">
+                <strong>Phonenumber : </strong><%= recruiter.phonenumber%>
+              </p>
+              <p class="card-text">
+                <strong>Date of creation : </strong><%=
+                recruiter.dateofcreation%>
+              </p>
+              <% if (recruiter.recruiterstatus === "accepted") {%>
+              <strong class="d-inline">Recruiter status : </strong>
+              <p class="card-text text-success d-inline">
+                <%= recruiter.recruiterstatus%>
+              </p>
+              <% } else if (recruiter.recruiterstatus === "rejected") {%>
+              <strong class="d-inline">Recruiter status : </strong>
+              <p class="card-text text-danger d-inline">
+                <%= recruiter.recruiterstatus%>
+              </p>
+              <% } else {%>
+              <strong class="d-inline">Recruiter status : </strong>
+              <p class="card-text text-warning d-inline">
+                <%= recruiter.recruiterstatus%>
+              </p>
+              <% } %>
             </div>
           </div>
+          <% });%>
         </div>
       </div>
+      <% } else { %>
+      <div class="alert alert-warning" role="alert">No organisation found.</div>
+      <% } %>
     </div>
   </body>
 </html>

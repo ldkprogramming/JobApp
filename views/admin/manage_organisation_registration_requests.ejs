@@ -52,77 +52,80 @@
                 >Organisation History</a
               >
             </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/admins/<%=idAdmin%>/manage-recruiter/history"
+                >Recruiter History</a
+              >
+            </li>
           </ul>
-          <a class="btn btn-danger d-flex ms-auto" href="/logout">
-            Log Out
-          </a>
+          <a class="btn btn-danger d-flex ms-auto" href="/logout"> Log Out </a>
         </div>
       </div>
     </nav>
 
-
     <div class="container mt-5">
       <form method="get" action="">
-      <div class="input-group mb-3">
-        <input
-          name="siren"
-          type="text"
-          class="form-control"
-          placeholder="Search by SIREN"
-          aria-label="Search"
-          aria-describedby="button-addon2"
-        />
-        <button
-          class="btn btn-outline-secondary"
-          type="submit"
-          id="button-addon2"
-        >
-          Search
-        </button>
-      </div>
-      </form>
-      </div>
-
-      <% if (organisations.length > 0) { %>
-      <div class="row justify-content-center">
-  <div class="col-md-6">
-    <% organisations.forEach((organisation) => { %>
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title"><%= organisation.name %></h5>
-        <p class="card-text">
-          <strong>Headquarters : </strong> <%= organisation.headquarters %>
-        </p>
-        <p class="card-text">
-          <strong>SIREN Number : </strong> <%= organisation.SIREN %>
-        </p>
-        <div class="d-flex">
-          <form
-            method="post"
-            action="/admins/<%=idAdmin%>/accept-organisation/<%=organisation.SIREN%>"
-            class="mr-2"
+        <div class="input-group mb-3">
+          <input
+            name="siren"
+            type="text"
+            class="form-control"
+            placeholder="Search by SIREN"
+            aria-label="Search"
+            aria-describedby="button-addon2"
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="submit"
+            id="button-addon2"
           >
-            <button type="submit" class="btn btn-success">Accept</button>
-          </form>
-          <form
-            method="post"
-            action="/admins/<%=idAdmin%>/reject-organisation/<%=organisation.SIREN%>"
-          >
-            <button type="submit" class="btn btn-danger">Refuse</button>
-          </form>
+            Search
+          </button>
         </div>
+      </form>
+    </div>
+
+    <% if (organisations.length > 0) { %>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <% organisations.forEach((organisation) => { %>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><%= organisation.name %></h5>
+            <p class="card-text">
+              <strong>Headquarters : </strong> <%= organisation.headquarters %>
+            </p>
+            <p class="card-text">
+              <strong>SIREN Number : </strong> <%= organisation.SIREN %>
+            </p>
+            <div class="d-flex">
+              <form
+                method="post"
+                action="/admins/<%=idAdmin%>/accept-organisation/<%=organisation.SIREN%>"
+                class="mr-2"
+              >
+                <button type="submit" class="btn btn-success">Accept</button>
+              </form>
+              <form
+                method="post"
+                action="/admins/<%=idAdmin%>/reject-organisation/<%=organisation.SIREN%>"
+              >
+                <button type="submit" class="btn btn-danger">Refuse</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <% }); %>
       </div>
     </div>
-    <% }); %>
-  </div>
-</div>
-<% } else { %>
-  <div class="d-flex justify-content-center align-items-center vh-100">
+    <% } else { %>
+    <div class="d-flex justify-content-center align-items-center vh-100">
       <div class="alert alert-danger" role="alert">
         No organisation to manage !
       </div>
     </div>
     <% } %>
-
   </body>
 </html>

@@ -43,6 +43,28 @@ router.get(
   })
 );
 
+/* Recruiter History */
+
+router.get(
+  "/:idAdmin/manage-recruiter/history",
+  asyncHandler(async (req, res, next) => {
+    let recruiters;
+    if (req.query.search) {
+      recruiters = await Recruiter.getAllLikeLastnameOrFirstname(
+        req.query.search
+      );
+    } else {
+      recruiters = await Recruiter.getAllByStatusWithInfo("accepted");
+    }
+    res.render("admin/recruiter_history", {
+      recruiters: recruiters,
+      idAdmin: req.session.rolesIdMap.adminId,
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idApplicant: req.session.rolesIdMap.applicantId,
+    });
+  })
+);
+
 /* Manage Organisations */
 
 // router.get(
