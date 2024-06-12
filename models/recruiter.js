@@ -71,20 +71,9 @@ module.exports = {
       throw err;
     }
   },
-  changeStatusUser: async (status, idUser) => {
-    try {
-      const sql = "UPDATE User SET status = ? WHERE id = ?";
-      await db.query(sql, [status, idUser]);
-    } catch (err) {
-      throw err;
-    }
-  },
   delete: async (id) => {
     try {
-      const sql = `
-      DELETE FROM Recruiter
-      WHERE id=?
-      `
+      const sql = `DELETE FROM Recruiter WHERE id=?`
       await db.query(sql, [id]);
     } catch (err) {
       throw err;

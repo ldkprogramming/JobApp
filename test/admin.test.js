@@ -3,8 +3,8 @@ const Admin = require("../models/admin");
 
 describe("Admin model", () => {
   it("should get an admin by email", async () => {
-    const admin = await Admin.getByEmail("john.doe@example.com");
-    expect(admin.lastname).toBe("Doe");
+    const admin = await Admin.getByEmail("admin@gmail.com");
+    expect(admin.lastname).toBe("admin");
   });
   it("shouldn't get any admin that isn't registered (by email) ", async () => {
     const admin = await Admin.getByEmail("nope.biolet@leonie.utc.fr");
@@ -15,8 +15,8 @@ describe("Admin model", () => {
     expect(admins.length).toBeGreaterThanOrEqual(1);
   });
   it("should return id of the admin (by the id of the user)", async () => {
-    const id = await Admin.getIdByIdUser(1);
-    expect(id).toBe(2);
+    const id = await Admin.getIdByIdUser(18);
+    expect(id).toBe(11);
   });
   afterAll(async () => {
     await db.end();
