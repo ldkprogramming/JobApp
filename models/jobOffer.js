@@ -39,9 +39,12 @@ module.exports = {
   getAllByStatusWithInfo: async (status) => {
     try {
       const sql = `
-            SELECT *
-            FROM JobOffer 
-            JOIN JobDescription 
+            SELECT JobOffer.id, JobDescription.title, JobOffer.deadline,
+            Organisation.name, JobDescription.description,
+            JobDescription.salary, JobDescription.workload, JobDescription.place,
+            JobDescription.supervisor, JobOffer.numberofattachments
+            FROM JobOffer
+            JOIN JobDescription
             ON JobOffer.idjobdescription = JobDescription.id
             JOIN Organisation 
             ON JobDescription.idorganisation = Organisation.SIREN
@@ -114,10 +117,14 @@ module.exports = {
   getWithInfo: async (id) => {
     try {
       const sql = `
-        SELECT * 
+        SELECT JO.status, JO.deadline, JO.indication,
+        JD.title,
+        O.name
         FROM JobOffer as JO
         JOIN JobDescription AS JD 
         ON JO.idjobdescription = JD.id
+        JOIN Organisation as O
+        ON O.SIREN = JD.idorganisation
         WHERE JO.id = ?
         `
       const [results] = await db.query(sql, [id]);
