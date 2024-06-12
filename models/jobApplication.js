@@ -53,8 +53,8 @@ module.exports = {
       JOIN User as U
       ON A.iduser = U.id
       WHERE JA.idoffer = ?
-      `
-      const [results] =  await db.query(sql, [idOffer]);
+      `;
+      const [results] = await db.query(sql, [idOffer]);
       return results;
     } catch (err) {
       throw err;
@@ -64,11 +64,9 @@ module.exports = {
     try {
       const sql = `DELETE FROM JobApplication WHERE id = ?`;
       await db.query(sql, [id]);
-    } catch (err) {
-
-    }
+    } catch (err) {}
   },
-  getWithInfo: async(id) => {
+  getWithInfo: async (id) => {
     try {
       const sql = `
       SELECT JA.dateofcreation, JA.id, JD.title, JO.deadline, O.name, JD.description, JD.workload, JD.salary, JD.place, JD.supervisor, JO.numberofattachments 
@@ -80,7 +78,7 @@ module.exports = {
       JOIN Organisation as O
       ON JD.idorganisation = O.SIREN
       WHERE JA.id = ?
-      `
+      `;
       const [results] = await db.query(sql, [id]);
       if (results.length > 0) {
         return results[0];
@@ -90,5 +88,25 @@ module.exports = {
     } catch (err) {
       throw err;
     }
-  }
+  },
+  getAllLikeNameOrByIdApplicant: async (idapplicant, search) => {
+    try {
+      const date = new Date();
+      const sql = `
+      SELECT JA.id, JD.title, JO.deadline, O.name, JD.description, JD.workload, JD.salary, JD.place, JD.supervisor, JO.numberofattachments
+      FROM JobApplication as JA
+      JOIN JobOffer as JO
+      ON JA.idoffer = JO.id
+      JOIN JobDescription as JD
+      ON JO.idjobdescription = JD.id
+      JOIN Organisation as O
+      ON JD.idorganisation = O.SIREN
+      WHERE JA.idapplicant = ? AND ((JD.title LIKE CONCAT(?,'%')) OR (O.name LIKE CONCAT(?,'%')))
+      `;
+      const [results] = await db.query(sql, [idapplicant, search, search]);
+      return results;
+    } catch (err) {
+      throw err;
+    }
+  },
 };

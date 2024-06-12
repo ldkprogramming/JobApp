@@ -57,6 +57,25 @@
 
     <% if (jobApplications.length > 0) { %>
     <div class="container mt-5">
+      <form action="" method="get">
+        <div class="input-group mb-3">
+          <input
+            name="search"
+            type="text"
+            class="form-control"
+            placeholder="Search by Company or Title"
+            aria-label="Search"
+            aria-describedby="button-addon2"
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="submit"
+            id="button-addon2"
+          >
+            Search
+          </button>
+        </div>
+      </form>
       <div class="row justify-content-center">
         <div class="col-md-8">
           <% jobApplications.forEach((jobApplication)=>{%>
@@ -65,9 +84,13 @@
               <h5 class="card-title"><%=jobApplication.title%></h5>
               <p class="card-text"><%=jobApplication.description%></p>
               <p class="card-text"><%=jobApplication.name%></p>
-                <a class="btn btn-success me-2" href="/applicants/<%=idApplicant%>/complete-application/<%=jobApplication.jaid%>" type="submit">
-                  Complete
-                </a>
+              <a
+                class="btn btn-success me-2"
+                href="/applicants/<%=idApplicant%>/complete-application/<%=jobApplication.jaid%>"
+                type="submit"
+              >
+                Complete
+              </a>
               <button class="btn btn-danger" type="button">Cancel</button>
             </div>
           </div>

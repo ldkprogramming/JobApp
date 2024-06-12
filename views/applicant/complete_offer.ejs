@@ -75,69 +75,69 @@
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="container">
-              <div class="row justify-content-center">
-                <div class="col-md-10">
-                  <div class="card">
-                    <div class="card-body">
-                      <form
-                        method="post"
-                        action="/applicants/<%=idApplicant%>/complete-application/<%=jobApplication.id%>"
-                        enctype="multipart/form-data"
-                      >
-                        <h5 class="card-title"><%=jobApplication.title%></h5>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                          <%=jobApplication.deadline%>
-                        </h6>
-                        <p class="card-text"><%=jobApplication.name%></p>
-                        <p class="card-text">
-                          <strong>Description : </strong
-                          ><%=jobApplication.description%>
-                        </p>
-                        <p class="card-text">
-                          <strong>Salary : </strong><%=jobApplication.salary%>$ per
-                          year
-                        </p>
-                        <p class="card-text">
-                          <strong>Workload : </strong><%=jobApplication.workload%>
-                        </p>
-                        <p class="card-text">
-                          <strong>Place : </strong><%=jobApplication.place%>
-                        </p>
-                        <p class="card-text">
-                          <strong>Supervisor : </strong><%=jobApplication.supervisor%>
-                        </p>
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-md-10">
+                <div class="card">
+                  <div class="card-body">
+                    <form
+                      method="post"
+                      action="/applicants/<%=idApplicant%>/complete-application/<%=jobApplication.id%>"
+                      enctype="multipart/form-data"
+                    >
+                      <h5 class="card-title"><%=jobApplication.title%></h5>
+                      <h6 class="card-subtitle mb-2 text-muted">
+                        <%=jobApplication.deadline%>
+                      </h6>
+                      <p class="card-text"><%=jobApplication.name%></p>
+                      <p class="card-text">
+                        <strong>Description : </strong
+                        ><%=jobApplication.description%>
+                      </p>
+                      <p class="card-text">
+                        <strong>Salary : </strong><%=jobApplication.salary%>$
+                        per year
+                      </p>
+                      <p class="card-text">
+                        <strong>Workload : </strong><%=jobApplication.workload%>
+                      </p>
+                      <p class="card-text">
+                        <strong>Place : </strong><%=jobApplication.place%>
+                      </p>
+                      <p class="card-text">
+                        <strong>Supervisor : </strong
+                        ><%=jobApplication.supervisor%>
+                      </p>
 
-                        <div class="alert alert-danger">
-                          You can <strong>submit new documents</strong> here. <br>
-                          This <strong>will delete your previous documents</strong> , and replace them with new ones.
-                          Be sure to include all documents needed
-                        </div>
-                        <div class="drop-zone mt-3">
-                          <p class="card-text">
-                            <strong>Number of attachements required : </strong
-                            ><%=jobApplication.numberofattachments%>
-                          </p>
-                          <p>Drag & Drop files here</p>
-                          <p>or</p>
-                          <p>
-                            <input
-                              name="attachments"
-                              type="file"
-                              multiple="multiple"
-                              accept=".pdf,.doc,.docx,.txt"
-                            />
-                          </p>
-                        </div>
-                        <button type="submit" class="btn btn-success">
-                          Apply
-                        </button>
-                      </form>
-                    </div>
+                      <div class="alert alert-danger">
+                        You can <strong>submit new documents</strong> here.
+                        <br />
+                        This
+                        <strong>will delete your previous documents</strong> ,
+                        and replace them with new ones. Be sure to include all
+                        documents needed
+                      </div>
+                      <p class="card-text">
+                        <strong>Number of attachements required : </strong
+                        ><%=jobApplication.numberofattachments%>
+                      </p>
+                      <p>
+                        <input
+                          name="attachments"
+                          type="file"
+                          multiple="multiple"
+                          accept=".pdf,.doc,.docx,.txt"
+                        />
+                      </p>
+                      <button type="submit" class="btn btn-success">
+                        Apply
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
         </div>
       </div>
     </div>
