@@ -15,7 +15,7 @@ module.exports = {
   getAllLikeLastnameOrFirstname: async (search) => {
     try {
       const [results] = await db.query(
-          `
+        `
           SELECT User.id as userid, Admin.id as adminid, 
           Admin.iduser, email, pwd, lastname, firstname, 
           phonenumber, dateofcreation, status 
@@ -23,7 +23,7 @@ module.exports = {
           WHERE User.status = 1
           AND ((lastname LIKE CONCAT(?,'%')) OR (firstname LIKE CONCAT(?,'%')))
           `,
-          [search, search]
+        [search, search]
       );
       return results;
     } catch (err) {
@@ -180,6 +180,16 @@ module.exports = {
       const [results] = await db.query(
         "UPDATE User SET status = 0 WHERE id = ?",
         [iduser]
+      );
+    } catch (err) {
+      throw err;
+    }
+  },
+  modifyUser: async (lastname, firstname, email, phonenumber, iduser) => {
+    try {
+      const [results] = await db.query(
+        "UPDATE User SET lastname = ?, firstname = ?, email = ?, phonenumber = ? WHERE id = ?",
+        [lastname, firstname, email, phonenumber, iduser]
       );
     } catch (err) {
       throw err;

@@ -239,4 +239,32 @@ router.post(
   })
 );
 
+/* Modify User */
+router.get(
+  "/:idAdmin/modify-user/:iduser",
+  asyncHandler(async (req, res, next) => {
+    const user = await User.getById(Number(req.params.iduser));
+    res.render("admin/modify_user", {
+      user: user,
+      idAdmin: req.session.rolesIdMap.adminId,
+      idRecruiter: req.session.rolesIdMap.recruiterId,
+      idApplicant: req.session.rolesIdMap.applicantId,
+    });
+  })
+);
+
+router.post(
+  "/:idAdmin/modify-user/:idUser",
+  asyncHandler(async (req, res, next) => {
+    await User.modifyUser(
+      req.body.lastname,
+      req.body.firstname,
+      req.body.email,
+      req.body.phonenumber,
+      req.params.idUser
+    );
+    res.redirect(`/admins/${req.params.idAdmin}/users`);
+  })
+);
+
 module.exports = router;
