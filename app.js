@@ -4,11 +4,9 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var session = require("express-session");
-var sessionUtility = require("./our_modules/sessionUtility");
 
 // router setup
 var indexRouter = require("./routes/index");
-var testingRouter = require("./routes/testing");
 var usersRouter = require("./routes/users");
 var applicantsRouter = require("./routes/applicants");
 var adminsRouter = require("./routes/admins");
@@ -45,13 +43,13 @@ app.all("*", (req, res, next) => {
     "/logout",
     "/create-account",
     "/users",
-    "/testing/who-am-i",
+      "/"
   ];
 
   if (unsecuredPaths.includes(req.path)) {
     return next();
   }
-  if (sessionUtility.isLoggedIn(req.session)) {
+  if (req.session.rolesIdMap!== undefined) {
     return next();
   }
   res.redirect("/login");
@@ -80,7 +78,6 @@ app.all("/applicants/:idApplicant*", (req, res, next) => {
 
 // use routers
 app.use("/", indexRouter);
-app.use("/testing", testingRouter);
 app.use("/users", usersRouter);
 app.use("/applicants", applicantsRouter);
 app.use("/admins", adminsRouter);

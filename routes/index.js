@@ -2,15 +2,12 @@ var express = require("express");
 var router = express.Router();
 const session = require("express-session");
 const User = require("../models/user");
-const Admin = require("../models/admin");
-const Recruiter = require("../models/recruiter");
-const Applicant = require("../models/applicant");
 
 const asyncHandler = require("express-async-handler");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+  res.render("index");
 });
 
 router.get("/login", (req, res, next) => {
