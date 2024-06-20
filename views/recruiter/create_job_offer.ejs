@@ -38,14 +38,14 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="/recruiters/<%=idRecruiter%>/jobDescription-registration-request"
+                href="/recruiters/<%=idRecruiter%>/organisation-registration-request"
                 >Add Organisation</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="/recruiters/<%=idRecruiter%>/join-jobDescription"
+                href="/recruiters/<%=idRecruiter%>/join-organisation"
                 >Join Organisation</a
               >
             </li>
@@ -69,6 +69,7 @@
       </div>
     </nav>
 
+    <% if (jobDescriptions) {%>
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
@@ -132,7 +133,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">
-                  Submit Job Description
+                  Submit Job Offer
                 </button>
               </form>
             </div>
@@ -140,5 +141,12 @@
         </div>
       </div>
     </div>
+  <%} else { %>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+      <div class="alert alert-danger" role="alert">
+        No Job Description linked to this recruiter !
+      </div>
+    </div>
+  <%}%>
   </body>
 </html>

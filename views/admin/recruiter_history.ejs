@@ -111,6 +111,10 @@
                 <%= recruiter.recruiterstatus%>
               </p>
               <% } else if (recruiter.recruiterstatus === "rejected") {%>
+                <p class="card-text">
+                  <strong>Date of rejection : </strong><%=
+                    recruiter.date%>
+                </p>
               <strong class="d-inline">Recruiter status : </strong>
               <p class="card-text text-danger d-inline">
                 <%= recruiter.recruiterstatus%>

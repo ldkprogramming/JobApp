@@ -6,7 +6,8 @@ const User = require("../models/user");
 const Organisation = require("../models/organisation");
 const Recruiter = require("../models/recruiter");
 const Applicant = require("../models/applicant");
-
+const RejectedRecruiter = require("../models/rejectedRecruiter");
+const RejectedOrganisation = require("../models/rejectedOrganisation")
 /* Home */
 
 router.get(
@@ -30,8 +31,12 @@ router.get(
       organisations = await Organisation.getAllLikeNameOrSirenExceptOnhold(
         req.query.search
       );
+      organisations.push(...(await RejectedOrganisation.getAllLikeNameOrSirenExceptOnhold(
+          req.query.search
+      )))
     } else {
       organisations = await Organisation.getAllExceptOnHold();
+      organisations.push(...(await RejectedOrganisation.getAllExceptOnHold()))
     }
 
     res.render("admin/organisation_registration_request_history", {
@@ -48,13 +53,18 @@ router.get(
 router.get(
   "/:idAdmin/manage-recruiter/history",
   asyncHandler(async (req, res, next) => {
+      // faut gerer les recruiters refuses pour tout !
     let recruiters;
     if (req.query.search) {
       recruiters = await Recruiter.getAllLikeLastnameOrFirstname(
         req.query.search
       );
+      recruiters.push(...(await RejectedRecruiter.getAllLikeLastnameOrFirstname(
+          req.query.search
+      )))
     } else {
       recruiters = await Recruiter.getAllByStatusWithInfo("accepted");
+      recruiters.push(...(await RejectedRecruiter.getAllByStatusWithInfo('rejected')))
     }
     res.render("admin/recruiter_history", {
       recruiters: recruiters,
@@ -135,11 +145,19 @@ router.post(
 router.post(
   "/:idAdmin/reject-organisation/:SIREN",
   asyncHandler(async (req, res, next) => {
-    const SIREN = Number(req.params.SIREN);
-    // on supprime la demande, et lorganisation, mais pas le compte
+
+      // rajouter le reject organisation !
+    const SIREN = req.params.SIREN;
+    // on supprime la demande, et lorganisation, mais ET le compte
     const recruiterOrganisations =
       await RecruiterOrganisation.getAllByIdOrganisation(SIREN);
+      // rajouter le reject recruiter!
+      await RejectedRecruiter.create((await Recruiter.getIdUserById(recruiterOrganisations[0].idrecruiter)), new Date());
+    await Recruiter.delete(recruiterOrganisations[0].idrecruiter);
     await RecruiterOrganisation.deleteByIdOrganisation(SIREN);
+
+    const organisation = await Organisation.getBySiren(SIREN);
+    await RejectedOrganisation.create(organisation.SIREN, organisation.name, organisation.type, organisation.headquarters);
     await Organisation.delete(SIREN);
 
     res.redirect(
@@ -188,11 +206,16 @@ router.post(
   "/:idAdmin/reject-recruiter/:idRecruiter/:idUser/:siren",
   asyncHandler(async (req, res, next) => {
     const idRecruiter = Number(req.params.idRecruiter);
-    // on supprime uniquement le recruiter organisation
+    // on ajoute dans Rejected Recruiter
+      await RejectedRecruiter.create((await Recruiter.getIdUserById(idRecruiter)), new Date());
+    // on supprimele recruiter organisation
     await RecruiterOrganisation.deleteByIdOrganisationAndIdRecruiter(
       req.params.siren,
       idRecruiter
     );
+    // On supprime le recruiter
+      await Recruiter.delete(idRecruiter);
+
     res.redirect(
       `/admins/${req.params.idAdmin}/recruiter-registration-requests/onhold`
     );
