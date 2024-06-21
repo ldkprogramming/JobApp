@@ -125,18 +125,20 @@ module.exports = {
     try {
       const date = new Date();
       const sql = `
-        SELECT JobOffer.id, JobDescription.title, JobOffer.deadline,
-            Organisation.name, JobDescription.description,
-            JobDescription.salary, JobDescription.workload, JobDescription.place,
-            JobDescription.supervisor, JobOffer.numberofattachments
-            FROM JobOffer
-            JOIN JobDescription
-            ON JobOffer.idjobdescription = JobDescription.id
-            JOIN Organisation 
-            ON JobDescription.idorganisation = Organisation.SIREN
-            WHERE JobOffer.status = '${status}' AND JobOffer.deadline > '${date.toISOString()}' AND ((JobDescription.title LIKE '${search}%') OR (Organisation.name LIKE '${search}%'))
-        `;
-      const [results] = await db.query(sql);
+      SELECT JobOffer.id, JobDescription.title, JobOffer.deadline,
+          Organisation.name, JobDescription.description,
+          JobDescription.salary, JobDescription.workload, JobDescription.place,
+          JobDescription.supervisor, JobOffer.numberofattachments
+      FROM JobOffer
+      JOIN JobDescription
+      ON JobOffer.idjobdescription = JobDescription.id
+      JOIN Organisation
+      ON JobDescription.idorganisation = Organisation.SIREN
+      WHERE JobOffer.status = ? AND JobOffer.deadline > ? AND ((JobDescription.title LIKE CONCAT(?,'%')) OR (Organisation.name LIKE CONCAT(?,'%')))
+      ;
+      `
+
+      const [results] = await db.query(sql, [status, date, search, search]);
       return results;
     } catch (err) {
       throw err;

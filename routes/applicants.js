@@ -106,43 +106,47 @@ router.post(
   "/:idApplicant/job-applications/:idJobOffer",
   upload.array("attachments", 20),
   asyncHandler(async (req, res, next) => {
-    await JobApplication.create(
-      Number(req.params.idApplicant),
-      Number(req.params.idJobOffer)
-    );
-    const jobApplications = await JobApplication.getIdByApplicantAndJobOffer(
-      Number(req.params.idApplicant),
-      Number(req.params.idJobOffer)
-    );
-    const fileInsertPromises = req.files.map(async (file) => {
-      try {
-        // Read the file data asynchronously
-        const fileData = await asyncFs.readFile(file.path);
+      if (req.files.length > (await JobOffer.get(Number(req.params.idJobOffer))).numberofattachments) {
+          res.render('attachmenterror', {idApplicant : Number(req.params.idApplicant)})
+      } else {
+          await JobApplication.create(
+              Number(req.params.idApplicant),
+              Number(req.params.idJobOffer)
+          );
+          const jobApplications = await JobApplication.getIdByApplicantAndJobOffer(
+              Number(req.params.idApplicant),
+              Number(req.params.idJobOffer)
+          );
+          const fileInsertPromises = req.files.map(async (file) => {
+              try {
+                  // Read the file data asynchronously
+                  const fileData = await asyncFs.readFile(file.path);
 
-        // Insert the file data into the SQL database
-        await Attachment.create(
-          jobApplications,
-          fileData,
-          file.originalname,
-          file.mimetype
-        );
+                  // Insert the file data into the SQL database
+                  await Attachment.create(
+                      jobApplications,
+                      fileData,
+                      file.originalname,
+                      file.mimetype
+                  );
 
-        // Optionally delete the file from the server after saving to the database
-        await asyncFs.unlink(file.path);
+                  // Optionally delete the file from the server after saving to the database
+                  await asyncFs.unlink(file.path);
 
-        return Promise.resolve(); // Resolve promise if successful
-      } catch (err) {
-        return Promise.reject(
-          `Error processing file ${file.originalname}: ${err}`
-        );
+                  return Promise.resolve(); // Resolve promise if successful
+              } catch (err) {
+                  return Promise.reject(
+                      `Error processing file ${file.originalname}: ${err}`
+                  );
+              }
+          });
+          try {
+              await Promise.all(fileInsertPromises);
+          } catch (err) {
+              res.status(500).send(err);
+          }
+          res.redirect(`/applicants/${req.params.idApplicant}/job-applications`);
       }
-    });
-    try {
-      await Promise.all(fileInsertPromises);
-    } catch (err) {
-      res.status(500).send(err);
-    }
-    res.redirect(`/applicants/${req.params.idApplicant}/job-applications`);
   })
 );
 
@@ -155,7 +159,6 @@ router.get(
     const jobApplication = await JobApplication.getWithInfo(
       req.params.idJobApplication
     );
-    console.log(jobApplication);
     res.render("applicant/complete_offer", {
       idApplicant: req.session.rolesIdMap.applicantId,
       idRecruiter: req.session.rolesIdMap.recruiterId,
@@ -169,36 +172,40 @@ router.post(
   "/:idApplicant/complete-application/:idJobApplication",
   upload.array("attachments", 20),
   asyncHandler(async (req, res, next) => {
-    await Attachment.deleteByIdApplication(Number(req.params.idJobApplication));
-    const fileInsertPromises = req.files.map(async (file) => {
-      try {
-        // Read the file data asynchronously
-        const fileData = await asyncFs.readFile(file.path);
+      if (req.files.length > (await JobApplication.getWithInfo(Number(req.params.idJobApplication))).numberofattachments) {
+          res.render('attachmenterror', {idApplicant : Number(req.params.idApplicant)})
+      } else {
+          await Attachment.deleteByIdApplication(Number(req.params.idJobApplication));
+          const fileInsertPromises = req.files.map(async (file) => {
+              try {
+                  // Read the file data asynchronously
+                  const fileData = await asyncFs.readFile(file.path);
 
-        // Insert the file data into the SQL database
-        await Attachment.create(
-          Number(req.params.idJobApplication),
-          fileData,
-          file.originalname,
-          file.mimetype
-        );
+                  // Insert the file data into the SQL database
+                  await Attachment.create(
+                      Number(req.params.idJobApplication),
+                      fileData,
+                      file.originalname,
+                      file.mimetype
+                  );
 
-        // Optionally delete the file from the server after saving to the database
-        await asyncFs.unlink(file.path);
+                  // Optionally delete the file from the server after saving to the database
+                  await asyncFs.unlink(file.path);
 
-        return Promise.resolve(); // Resolve promise if successful
-      } catch (err) {
-        return Promise.reject(
-          `Error processing file ${file.originalname}: ${err}`
-        );
+                  return Promise.resolve(); // Resolve promise if successful
+              } catch (err) {
+                  return Promise.reject(
+                      `Error processing file ${file.originalname}: ${err}`
+                  );
+              }
+          });
+          try {
+              await Promise.all(fileInsertPromises);
+          } catch (err) {
+              res.status(500).send(err);
+          }
+          res.redirect("back");
       }
-    });
-    try {
-      await Promise.all(fileInsertPromises);
-    } catch (err) {
-      res.status(500).send(err);
-    }
-    res.redirect("back");
   })
 );
 
