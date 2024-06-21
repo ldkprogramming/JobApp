@@ -28,9 +28,7 @@ router.post(
         res.redirect(`/applicants/${req.session.rolesIdMap.applicantId}`);
       }
     } else {
-      res.send({
-        message: "Nom d'utilisateur ou mot de passe incorrect.",
-      });
+      res.render(`incorrect`);
     }
   })
 );
