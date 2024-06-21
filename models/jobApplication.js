@@ -77,9 +77,9 @@ module.exports = {
       ON JO.idjobdescription = JD.id
       JOIN Organisation as O
       ON JD.idorganisation = O.SIREN
-      WHERE JA.id = ?
+      WHERE JA.id = ${id}
       `;
-      const [results] = await db.query(sql, [id]);
+      const [results] = await db.query(sql);
       if (results.length > 0) {
         return results[0];
       } else {
@@ -89,6 +89,7 @@ module.exports = {
       throw err;
     }
   },
+
   getAllLikeNameOrByIdApplicant: async (idapplicant, search) => {
     try {
       const date = new Date();

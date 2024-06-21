@@ -153,7 +153,7 @@ router.get(
   asyncHandler(async (req, res, next) => {
     // ptet verifier sil a le droit dy aller
     const jobApplication = await JobApplication.getWithInfo(
-      Number(req.params.idJobApplication)
+      req.params.idJobApplication
     );
     console.log(jobApplication);
     res.render("applicant/complete_offer", {

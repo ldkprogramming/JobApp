@@ -87,7 +87,9 @@ module.exports = {
         SELECT * FROM Organisation 
         WHERE Organisation.status = ?
         AND Organisation.SIREN NOT IN 
-        (SELECT RecruiterOrganisation.idorganisation FROM RecruiterOrganisation WHERE RecruiterOrganisation.idrecruiter = ?)`,
+        (SELECT RecruiterOrganisation.idorganisation 
+        FROM RecruiterOrganisation 
+        WHERE RecruiterOrganisation.idrecruiter = ?)`,
         [status, idRecruiter]
       );
       return results;

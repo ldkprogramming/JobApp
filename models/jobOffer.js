@@ -134,12 +134,13 @@ module.exports = {
             ON JobOffer.idjobdescription = JobDescription.id
             JOIN Organisation 
             ON JobDescription.idorganisation = Organisation.SIREN
-            WHERE JobOffer.status = ? AND JobOffer.deadline > ? AND ((JobDescription.title LIKE CONCAT(?,'%')) OR (Organisation.name LIKE CONCAT(?,'%')))
+            WHERE JobOffer.status = '${status}' AND JobOffer.deadline > '${date.toISOString()}' AND ((JobDescription.title LIKE '${search}%') OR (Organisation.name LIKE '${search}%'))
         `;
-      const [results] = await db.query(sql, [status, date, search, search]);
+      const [results] = await db.query(sql);
       return results;
     } catch (err) {
       throw err;
     }
   },
+
 };
